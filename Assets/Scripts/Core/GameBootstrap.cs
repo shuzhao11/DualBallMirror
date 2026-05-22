@@ -13,6 +13,11 @@ public class GameBootstrap : MonoBehaviour
 
     public void LoadLevel(int index)
     {
+        if (levels == null || levels.Length == 0)
+        {
+            Debug.LogError("[GameBootstrap] levels array is not configured");
+            return;
+        }
         _currentIndex      = Mathf.Clamp(index, 0, levels.Length - 1);
         var data           = levels[_currentIndex];
         var (blue, yellow) = levelLoader.LoadLevel(data);

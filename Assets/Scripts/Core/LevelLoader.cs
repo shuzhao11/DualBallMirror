@@ -19,8 +19,13 @@ public class LevelLoader : MonoBehaviour
             if (_yellowRb != null) Destroy(_yellowRb.gameObject);
         }
 
-        var prefab        = Resources.Load<GameObject>(data.prefabPath);
-        _currentLevel     = Instantiate(prefab, levelRoot);
+        var prefab = Resources.Load<GameObject>(data.prefabPath);
+        if (prefab == null)
+        {
+            Debug.LogError($"[LevelLoader] Prefab not found: '{data.prefabPath}'");
+            return (null, null);
+        }
+        _currentLevel = Instantiate(prefab, levelRoot);
 
         _blueSpawn        = _currentLevel.transform.Find("SpawnPoints/BlueBallSpawn").position;
         _yellowSpawn      = _currentLevel.transform.Find("SpawnPoints/YellowBallSpawn").position;
