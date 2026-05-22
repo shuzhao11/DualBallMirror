@@ -11,6 +11,12 @@ declare const tt: {
   };
   onHide(cb: () => void): void;
   onShow(cb: () => void): void;
+  navigateToScene?(opts: {
+    scene: 'sidebar';
+    success?: (res: unknown) => void;
+    fail?: (err: { errMsg?: string; errNo?: number }) => void;
+    complete?: () => void;
+  }): void;
 };
 
 function isTT(): boolean {
@@ -79,5 +85,27 @@ export const DouyinBridge = {
     } else {
       console.log('[Bridge] onShow stub (registered but will not fire)');
     }
+  },
+
+  /** 当前宿主是否支持侧边栏复访（tt.navigateToScene） */
+  canAddToSidebar(): boolean {
+    return isTT() && typeof tt.navigateToScene === 'function';
+  },
+
+  /**
+   * 跳转抖音侧边栏场景，引导用户把小游戏加入侧边栏（复访能力）。
+   * 抖音平台审核硬要求：必须存在 tt.navigateToScene({ scene: 'sidebar' }) 调用。
+   */
+  addToSidebar(onSuccess?: () => void, onFail?: (errMsg?: string) => void): void {
+    if (!this.canAddToSidebar()) {
+      console.log('[Bridge] addToSidebar stub (host unsupported)');
+      onSuccess?.();
+      return;
+    }
+    tt.navigateToScene!({
+      scene: 'sidebar',
+      success: () => onSuccess?.(),
+      fail: err => onFail?.(err?.errMsg),
+    });
   },
 };
