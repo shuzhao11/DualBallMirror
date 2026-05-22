@@ -56,7 +56,7 @@ export class MovingObstacle {
       Matter.Body.setPosition(this.body, { x: nx, y: ny });
 
     } else if (this.cfg.mode === 'rotate') {
-      this.t += (this.cfg.rotateSpeed * Math.PI / 180) * dt;
+      this.t = (this.t + (this.cfg.rotateSpeed * Math.PI / 180) * dt) % (2 * Math.PI);
       Matter.Body.setAngle(this.body, this.t);
     }
   }
