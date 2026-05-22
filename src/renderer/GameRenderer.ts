@@ -22,7 +22,7 @@ export class GameRenderer {
     dt:       number,
   ): void {
     const { ctx } = this;
-    this.holeAngle += dt * 1.5;  // 虚线圈每秒转 ~86 度
+    this.holeAngle = (this.holeAngle + dt * 1.5) % (Math.PI * 2);  // 虚线圈每秒转 ~86 度
 
     // 全画布清空
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -84,10 +84,10 @@ export class GameRenderer {
     // 旋转虚线外圈
     ctx.save();
     ctx.translate(pos.x, pos.y);
-    ctx.rotate(this.holeAngle);
     ctx.strokeStyle = '#ffffff';
     ctx.lineWidth   = 2;
     ctx.setLineDash([8, 8]);
+    ctx.lineDashOffset = -this.holeAngle * (radius + 6);
     ctx.beginPath();
     ctx.arc(0, 0, radius + 6, 0, Math.PI * 2);
     ctx.stroke();
@@ -95,7 +95,8 @@ export class GameRenderer {
     ctx.restore();
   }
 
-  private drawObstacle(cfg: ObstacleConfig, body: Matter.Body): void {
+  private drawObstacle(cfg: ObstacleConfig, body: Matter.Body | undefined): void {
+    if (!body) return;
     const { ctx } = this;
     const { x, y } = body.position;
     ctx.save();
