@@ -77,9 +77,20 @@ export class LevelLoader {
         console.warn(`[LevelLoader] obstacle out of bounds: (${obs.position.x}, ${obs.position.y})`);
       }
       const sp = logicToScreen(obs.position);
-      const body = obs.type === 'rect'
-        ? Matter.Bodies.rectangle(sp.x, sp.y, obs.width!,  obs.height!, { isStatic: true, label: 'obstacle' })
-        : Matter.Bodies.circle(   sp.x, sp.y, obs.radius!,               { isStatic: true, label: 'obstacle' });
+      let body: Matter.Body;
+      if (obs.type === 'rect') {
+        if (obs.width == null || obs.height == null) {
+          console.error(`[LevelLoader] rect obstacle missing width/height at (${obs.position.x}, ${obs.position.y})`);
+          continue;
+        }
+        body = Matter.Bodies.rectangle(sp.x, sp.y, obs.width, obs.height, { isStatic: true, label: 'obstacle' });
+      } else {
+        if (obs.radius == null) {
+          console.error(`[LevelLoader] circle obstacle missing radius at (${obs.position.x}, ${obs.position.y})`);
+          continue;
+        }
+        body = Matter.Bodies.circle(sp.x, sp.y, obs.radius, { isStatic: true, label: 'obstacle' });
+      }
       obstacleBodies.push(body);
 
       if (obs.moving) {
@@ -127,6 +138,9 @@ export class LevelLoader {
     return { engine, blueBody, yellowBody, wallBodies, obstacleBodies, detectors, movingObstacles, ballController };
   }
 
+  /**
+   * 销毁物理引擎和世界。调用后不得再使用 objects 中的任何方法或引用。
+   */
   unload(objects: LevelObjects): void {
     Matter.Composite.clear(objects.engine.world, false);
     Matter.Engine.clear(objects.engine);
