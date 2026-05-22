@@ -17,23 +17,31 @@ export class JoystickInput {
   private direction: Vec2 = { x: 0, y: 0 };
   private longPressTimer: ReturnType<typeof setTimeout> | null = null;
 
+  private readonly boundStart:  (e: any) => void = this.onTouchStart.bind(this);
+  private readonly boundMove:   (e: any) => void = this.onTouchMove.bind(this);
+  private readonly boundEnd:    (e: any) => void = this.onTouchEnd.bind(this);
+
   /**
    * @param canvas   tt.createCanvas() 返回的 Canvas 对象（或 HTMLCanvasElement）
    * @param onReset  长按 1.5s 触发的重置回调
    */
   constructor(
-    private readonly canvas: { addEventListener: (type: string, handler: (e: any) => void) => void },
+    private readonly canvas: {
+      addEventListener:    (type: string, handler: (e: any) => void) => void;
+      removeEventListener: (type: string, handler: (e: any) => void) => void;
+    },
     private readonly onReset: () => void,
   ) {
-    canvas.addEventListener('touchstart',  this.onTouchStart.bind(this));
-    canvas.addEventListener('touchmove',   this.onTouchMove.bind(this));
-    canvas.addEventListener('touchend',    this.onTouchEnd.bind(this));
-    canvas.addEventListener('touchcancel', this.onTouchEnd.bind(this));
+    canvas.addEventListener('touchstart',  this.boundStart);
+    canvas.addEventListener('touchmove',   this.boundMove);
+    canvas.addEventListener('touchend',    this.boundEnd);
+    canvas.addEventListener('touchcancel', this.boundEnd);
   }
 
   private onTouchStart(e: { changedTouches: { identifier: number; clientX: number; clientY: number }[] }): void {
     if (this.touchId !== null) return;  // 已有摇杆触摸点，忽略多指
     const touch = e.changedTouches[0];
+    if (!touch) return;
     this.touchId = touch.identifier;
     this.active  = true;
     this.updateHandle(touch.clientX, touch.clientY);
@@ -81,10 +89,19 @@ export class JoystickInput {
     }
   }
 
+  /** 移除所有事件监听，防止内存泄漏 */
+  destroy(): void {
+    this.canvas.removeEventListener('touchstart',  this.boundStart);
+    this.canvas.removeEventListener('touchmove',   this.boundMove);
+    this.canvas.removeEventListener('touchend',    this.boundEnd);
+    this.canvas.removeEventListener('touchcancel', this.boundEnd);
+    this.clearLongPress();
+  }
+
   /** 当前方向向量（逻辑坐标 Y 向上），零向量表示无输入 */
-  getDirection(): Vec2                     { return this.direction; }
+  getDirection(): Vec2                     { return { x: this.direction.x, y: this.direction.y }; }
   /** 手柄当前屏幕坐标（用于渲染） */
-  getHandlePos(): { x: number; y: number } { return this.handlePos; }
+  getHandlePos(): { x: number; y: number } { return { x: this.handlePos.x, y: this.handlePos.y }; }
   /** 摇杆基座屏幕坐标（用于渲染） */
   getBasePos():   { x: number; y: number } { return { x: JOYSTICK_BASE_X, y: JOYSTICK_BASE_Y }; }
   isActive(): boolean { return this.active; }
