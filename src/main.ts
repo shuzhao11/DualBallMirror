@@ -14,52 +14,20 @@ import { OverlayRenderer } from './ui/OverlayRenderer';
 import { DouyinBridge } from './platform/DouyinBridge';
 import { PHYSICS_STEP_MS } from './constants';
 
-// ── 平台 Canvas 创建 + 视口适配 ────────────────────────────────
+// ── 平台 Canvas 创建 + 视口适配（抖音小游戏唯一入口） ──────────
 import { Viewport } from './core/Viewport';
 
 declare const tt: any;
 
-function getDeviceMetrics(): { width: number; height: number; dpr: number } {
-  if (typeof tt !== 'undefined' && tt.getSystemInfoSync) {
-    const info = tt.getSystemInfoSync();
-    return {
-      width:  info.windowWidth  || info.screenWidth  || 720,
-      height: info.windowHeight || info.screenHeight || 1280,
-      dpr:    info.pixelRatio   || 1,
-    };
-  }
-  return {
-    width:  window.innerWidth,
-    height: window.innerHeight,
-    dpr:    window.devicePixelRatio || 1,
-  };
-}
-
-const metrics = getDeviceMetrics();
+const info = tt.getSystemInfoSync();
+const metrics = {
+  width:  info.windowWidth  || info.screenWidth  || 720,
+  height: info.windowHeight || info.screenHeight || 1280,
+  dpr:    info.pixelRatio   || 1,
+};
 const viewport = new Viewport(metrics.width, metrics.height, metrics.dpr);
 
-const canvas: any = typeof tt !== 'undefined'
-  ? tt.createCanvas()
-  : (() => {
-      let el = document.getElementById('game') as HTMLCanvasElement | null;
-      if (!el) {
-        el = document.createElement('canvas');
-        el.id = 'game';
-        document.body.style.margin     = '0';
-        document.body.style.padding    = '0';
-        document.body.style.overflow   = 'hidden';
-        document.body.style.background = '#000';
-        document.documentElement.style.height = '100%';
-        document.body.style.height     = '100%';
-        document.body.appendChild(el);
-      }
-      el.style.position = 'absolute';
-      el.style.left     = '0';
-      el.style.top      = '0';
-      el.style.width    = viewport.cssWidth  + 'px';
-      el.style.height   = viewport.cssHeight + 'px';
-      return el;
-    })();
+const canvas: any = tt.createCanvas();
 
 // 物理像素 = 设备像素 × dpr，让渲染使用 720×1280 逻辑坐标
 canvas.width  = metrics.width  * metrics.dpr;
