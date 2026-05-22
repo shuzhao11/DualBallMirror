@@ -22,7 +22,7 @@ public class HoleDetectorTests
         var rb = _ballGo.AddComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
         _ballGo.AddComponent<CircleCollider2D>().radius = 0.4f;
-        _ballGo.transform.position = Vector3.zero;
+        _ballGo.transform.position = new Vector3(10f, 10f, 0f); // 初始在洞外
     }
 
     [TearDown]
@@ -35,7 +35,11 @@ public class HoleDetectorTests
     [UnityTest]
     public IEnumerator AfterDwellThreshold_IsSatisfied()
     {
-        yield return new WaitForFixedUpdate();   // 等物理触发 OnTriggerEnter2D
+        // 主动移入洞内，等物理触发 OnTriggerEnter2D
+        _ballGo.transform.position = Vector3.zero;
+        yield return new WaitForFixedUpdate();
+        yield return new WaitForFixedUpdate();
+        // 此时 _inside 应含 "Blue"，开始积累 dwell
         yield return new WaitForSeconds(0.35f);
         Assert.IsTrue(_det.IsSatisfied(0.3f));
     }
@@ -43,10 +47,17 @@ public class HoleDetectorTests
     [UnityTest]
     public IEnumerator AfterBallLeaves_DwellTimeResets()
     {
-        yield return new WaitForFixedUpdate();   // 等物理触发进入
+        // 移入洞内
+        _ballGo.transform.position = Vector3.zero;
+        yield return new WaitForFixedUpdate();
+        yield return new WaitForFixedUpdate();
+        // 稍微积累一点 dwell
         yield return new WaitForSeconds(0.1f);
+        // 移出洞外，等 OnTriggerExit2D
         _ballGo.transform.position = new Vector3(10f, 10f, 0f);
-        yield return new WaitForFixedUpdate();   // 等物理触发 OnTriggerExit2D
+        yield return new WaitForFixedUpdate();
+        yield return new WaitForFixedUpdate();
+        // 再等 0.3s，_dwell 应已重置且不再积累
         yield return new WaitForSeconds(0.3f);
         Assert.IsFalse(_det.IsSatisfied(0.3f));
     }
