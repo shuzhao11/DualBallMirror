@@ -1,0 +1,6 @@
+{
+  "name": "DualBall.PlayMode",
+  "references": ["UnityEngine.TestRunner"],
+  "includePlatforms": [],
+  "optionalUnityReferences": ["TestAssemblies"]
+}
