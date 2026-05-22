@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
 
     public void ResetLevel()
     {
+        if (_current == null) return;
         StartLevel(_current);
         levelLoader?.ResetBalls();
     }
