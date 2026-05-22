@@ -1,6 +1,0 @@
-{
-  "name": "DualBall.EditMode",
-  "references": ["UnityEngine.TestRunner", "UnityEditor.TestRunner"],
-  "includePlatforms": ["Editor"],
-  "optionalUnityReferences": ["TestAssemblies"]
-}

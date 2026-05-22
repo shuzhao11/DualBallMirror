@@ -1,11 +1,16 @@
-/[Ll]ibrary/
-/[Tt]emp/
-/[Oo]bj/
-/[Bb]uild/
-/[Ll]ogs/
-/[Uu]ser[Ss]ettings/
-*.csproj
-*.sln
-*.suo
+# Node.js
+node_modules/
+dist/
+*.js.map
+*.tsbuildinfo
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Superpowers
 .superpowers/
