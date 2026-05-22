@@ -1,4 +1,9 @@
-import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../constants';
+import {
+  CANVAS_WIDTH, CANVAS_HEIGHT,
+  DOODLE_INK, DOODLE_PAPER,
+  DOODLE_BALL_YELLOW, DOODLE_BALL_BLUE,
+  DOODLE_SHADOW_PX, DOODLE_SHADOW,
+} from '../constants';
 
 interface ButtonRect { x: number; y: number; w: number; h: number; }
 
@@ -14,37 +19,41 @@ export class OverlayRenderer {
     this.clearButtons();
     ctx.save();
 
-    // 半透明遮罩
-    ctx.fillStyle = 'rgba(0,0,0,0.6)';
+    ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-    // 弹窗面板
-    const pw = 520, ph = 300;
-    const px = (CANVAS_WIDTH - pw) / 2;
+    const pw = 540, ph = 320;
+    const px = (CANVAS_WIDTH  - pw) / 2;
     const py = (CANVAS_HEIGHT - ph) / 2;
-    ctx.fillStyle = '#fffbe6';
-    this.roundRect(px, py, pw, ph, 20); ctx.fill();
-    ctx.strokeStyle = '#1a1a1a'; ctx.lineWidth = 4;
-    this.roundRect(px, py, pw, ph, 20); ctx.stroke();
 
-    // 标题
-    ctx.font = 'bold 52px sans-serif';
-    ctx.fillStyle = '#1a1a1a';
+    ctx.fillStyle = DOODLE_SHADOW;
+    this.roundRect(px + DOODLE_SHADOW_PX, py + DOODLE_SHADOW_PX, pw, ph, 22); ctx.fill();
+    ctx.fillStyle = DOODLE_PAPER;
+    this.roundRect(px, py, pw, ph, 22); ctx.fill();
+    ctx.strokeStyle = DOODLE_INK;
+    ctx.lineWidth   = 4;
+    ctx.lineJoin    = 'round';
+    this.roundRect(px, py, pw, ph, 22); ctx.stroke();
+
+    ctx.font      = 'bold 54px sans-serif';
+    ctx.fillStyle = DOODLE_INK;
     ctx.textAlign = 'center';
-    ctx.fillText('🎉 过关！', CANVAS_WIDTH / 2, py + 88);
+    ctx.fillText('🎉 过关！', CANVAS_WIDTH / 2, py + 96);
 
-    // 按钮
-    const bw = 220, bh = 64;
+    const bw = 240, bh = 70;
     const bx = (CANVAS_WIDTH - bw) / 2;
-    const by = py + 172;
+    const by = py + 188;
     this.nextBtn = { x: bx, y: by, w: bw, h: bh };
-    ctx.fillStyle = '#f5c518';
+    ctx.fillStyle = DOODLE_SHADOW;
+    this.roundRect(bx + DOODLE_SHADOW_PX, by + DOODLE_SHADOW_PX, bw, bh, 14); ctx.fill();
+    ctx.fillStyle = DOODLE_BALL_YELLOW;
     this.roundRect(bx, by, bw, bh, 14); ctx.fill();
-    ctx.strokeStyle = '#1a1a1a'; ctx.lineWidth = 3;
+    ctx.strokeStyle = DOODLE_INK;
+    ctx.lineWidth   = 4;
     this.roundRect(bx, by, bw, bh, 14); ctx.stroke();
-    ctx.font = 'bold 28px sans-serif';
-    ctx.fillStyle = '#1a1a1a';
-    ctx.fillText(isLastLevel ? '返回主界面' : '下一关', CANVAS_WIDTH / 2, by + 43);
+    ctx.font      = 'bold 30px sans-serif';
+    ctx.fillStyle = DOODLE_INK;
+    ctx.fillText(isLastLevel ? '返回主界面' : '下一关', CANVAS_WIDTH / 2, by + 46);
     ctx.textAlign = 'left';
     ctx.restore();
   }
@@ -55,33 +64,45 @@ export class OverlayRenderer {
     this.clearButtons();
     ctx.save();
 
-    ctx.fillStyle = 'rgba(0,0,0,0.6)';
+    ctx.fillStyle = 'rgba(0,0,0,0.55)';
     ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-    const pw = 520, ph = 340;
-    const px = (CANVAS_WIDTH - pw) / 2;
+    const pw = 540, ph = 340;
+    const px = (CANVAS_WIDTH  - pw) / 2;
     const py = (CANVAS_HEIGHT - ph) / 2;
-    ctx.fillStyle = '#fffbe6';
-    this.roundRect(px, py, pw, ph, 20); ctx.fill();
-    ctx.strokeStyle = '#1a1a1a'; ctx.lineWidth = 4;
-    this.roundRect(px, py, pw, ph, 20); ctx.stroke();
 
-    ctx.font = 'bold 52px sans-serif';
-    ctx.fillStyle = '#1a1a1a';
+    ctx.fillStyle = DOODLE_SHADOW;
+    this.roundRect(px + DOODLE_SHADOW_PX, py + DOODLE_SHADOW_PX, pw, ph, 22); ctx.fill();
+    ctx.fillStyle = DOODLE_PAPER;
+    this.roundRect(px, py, pw, ph, 22); ctx.fill();
+    ctx.strokeStyle = DOODLE_INK;
+    ctx.lineWidth   = 4;
+    ctx.lineJoin    = 'round';
+    this.roundRect(px, py, pw, ph, 22); ctx.stroke();
+
+    ctx.font      = 'bold 54px sans-serif';
+    ctx.fillStyle = DOODLE_INK;
     ctx.textAlign = 'center';
-    ctx.fillText('⏰ 时间到！', CANVAS_WIDTH / 2, py + 88);
+    ctx.fillText('⏰ 时间到！', CANVAS_WIDTH / 2, py + 96);
 
-    const bw = 300, bh = 64;
+    const bw = 320, bh = 70;
     const bx = (CANVAS_WIDTH - bw) / 2;
-    const by = py + 172;
+    const by = py + 188;
     this.retryAdBtn = { x: bx, y: by, w: bw, h: bh };
-    ctx.fillStyle = '#5b9bd5';
+    ctx.fillStyle = DOODLE_SHADOW;
+    this.roundRect(bx + DOODLE_SHADOW_PX, by + DOODLE_SHADOW_PX, bw, bh, 14); ctx.fill();
+    ctx.fillStyle = DOODLE_BALL_BLUE;
     this.roundRect(bx, by, bw, bh, 14); ctx.fill();
-    ctx.strokeStyle = '#1a1a1a'; ctx.lineWidth = 3;
+    ctx.strokeStyle = DOODLE_INK;
+    ctx.lineWidth   = 4;
     this.roundRect(bx, by, bw, bh, 14); ctx.stroke();
-    ctx.font = 'bold 26px sans-serif';
+    ctx.font      = 'bold 28px sans-serif';
     ctx.fillStyle = '#ffffff';
-    ctx.fillText('看广告再试', CANVAS_WIDTH / 2, by + 43);
+    ctx.lineWidth = 4;
+    ctx.lineJoin  = 'round';
+    ctx.strokeStyle = DOODLE_INK;
+    ctx.strokeText('看广告再试', CANVAS_WIDTH / 2, by + 46);
+    ctx.fillText(  '看广告再试', CANVAS_WIDTH / 2, by + 46);
     ctx.textAlign = 'left';
     ctx.restore();
   }
