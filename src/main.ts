@@ -172,6 +172,9 @@ canvas.addEventListener('touchend', (e: any) => {
       () => resetLevel(),
       () => overlayRenderer.renderTimeout(),  // 提前关闭广告：重新显示弹窗
     );
+  } else if (hit === 'sidebar') {
+    // 侧边栏复访：抖音平台审核硬要求 tt.navigateToScene({ scene: 'sidebar' })
+    DouyinBridge.addToSidebar();
   }
 });
 

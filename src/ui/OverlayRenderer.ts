@@ -9,7 +9,7 @@ import { withHardShadow, doodleText } from '../renderer/DoodleStyle';
 interface ButtonRect { x: number; y: number; w: number; h: number; }
 
 export type OverlayHit =
-  | 'next' | 'retry' | 'retryAd' | 'menu'
+  | 'next' | 'retry' | 'retryAd' | 'menu' | 'sidebar'
   | 'level1' | 'level2' | 'level3';
 
 interface LevelMeta { title: string; subtitle: string; }
@@ -24,6 +24,7 @@ export class OverlayRenderer {
   private retryBtn:   ButtonRect | null = null;
   private retryAdBtn: ButtonRect | null = null;
   private menuBtn:    ButtonRect | null = null;
+  private sidebarBtn: ButtonRect | null = null;
   private levelBtns:  ButtonRect[] = [];  // 索引 0/1/2 对应 level1/2/3
 
   // 每帧自增的"涂鸦呼吸"相位，让主界面卡片轻微浮动
@@ -131,6 +132,13 @@ export class OverlayRenderer {
       DOODLE_INK,
     );
 
+    // 副行：加入侧边栏（抖音复访能力，审核硬要求）
+    const sidebarBw = smallBw * 2 + gap;
+    const sidebarBh = 52;
+    const sidebarY  = btnY + smallBh + 16;
+    this.sidebarBtn = { x: startX, y: sidebarY, w: sidebarBw, h: sidebarBh };
+    this.drawButton(this.sidebarBtn, '⭐ 加入侧边栏', DOODLE_PAPER_DARK, DOODLE_INK);
+
     ctx.textAlign = 'left';
     ctx.restore();
   }
@@ -172,6 +180,13 @@ export class OverlayRenderer {
     this.menuBtn = { x: subBx, y: subBy, w: subBw, h: subBh };
     this.drawButton(this.menuBtn, '返回主界面', DOODLE_PAPER_DARK, DOODLE_INK);
 
+    // 副行：加入侧边栏（抖音复访能力，审核硬要求）
+    const sidebarBw = 280, sidebarBh = 48;
+    const sidebarBx = (CANVAS_WIDTH - sidebarBw) / 2;
+    const sidebarBy = subBy + subBh + 14;
+    this.sidebarBtn = { x: sidebarBx, y: sidebarBy, w: sidebarBw, h: sidebarBh };
+    this.drawButton(this.sidebarBtn, '⭐ 加入侧边栏', DOODLE_PAPER_DARK, DOODLE_INK);
+
     ctx.textAlign = 'left';
     ctx.restore();
   }
@@ -182,6 +197,7 @@ export class OverlayRenderer {
     if (this.retryBtn   && this.inside(x, y, this.retryBtn))   return 'retry';
     if (this.retryAdBtn && this.inside(x, y, this.retryAdBtn)) return 'retryAd';
     if (this.menuBtn    && this.inside(x, y, this.menuBtn))    return 'menu';
+    if (this.sidebarBtn && this.inside(x, y, this.sidebarBtn)) return 'sidebar';
     for (let i = 0; i < this.levelBtns.length; i++) {
       if (this.inside(x, y, this.levelBtns[i])) return (`level${i + 1}` as OverlayHit);
     }
@@ -195,6 +211,7 @@ export class OverlayRenderer {
     this.retryBtn   = null;
     this.retryAdBtn = null;
     this.menuBtn    = null;
+    this.sidebarBtn = null;
     this.levelBtns  = [];
   }
 
