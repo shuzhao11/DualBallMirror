@@ -59,6 +59,7 @@ function loadLevel(index: number): void {
 
   const cfg  = LEVELS[index];
   levelObjects = loader.load(cfg);
+  if (joystick) joystick.destroy();
   joystick     = new JoystickInput(canvas, () => resetLevel());
   gameManager  = new GameManager(
     cfg,
@@ -95,10 +96,18 @@ canvas.addEventListener('touchend', (e: any) => {
   if (!touch) return;
   const hit = overlayRenderer.hitTest(touch.clientX, touch.clientY);
   if (hit === 'next') {
-    currentLevelIndex = Math.min(currentLevelIndex + 1, LEVELS.length - 1);
+    if (currentLevelIndex >= LEVELS.length - 1) {
+      // 最后一关通关：从第 1 关重新开始
+      currentLevelIndex = 0;
+    } else {
+      currentLevelIndex++;
+    }
     loadLevel(currentLevelIndex);
   } else if (hit === 'retryAd') {
-    DouyinBridge.showRewardedAd(() => resetLevel());
+    DouyinBridge.showRewardedAd(
+      () => resetLevel(),
+      () => overlayRenderer.renderTimeout(),  // 提前关闭广告：重新显示弹窗
+    );
   }
 });
 
