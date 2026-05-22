@@ -8,7 +8,7 @@ import {
   MAP_TOP, MAP_HEIGHT,
   BALL_RADIUS, JOYSTICK_RADIUS,
   DOODLE_INK, DOODLE_BALL_BLUE, DOODLE_BALL_YELLOW,
-  DOODLE_OBSTACLE, DOODLE_STROKE_PX,
+  DOODLE_OBSTACLE, DOODLE_STROKE_PX, DOODLE_BALL_TILT_DEG,
 } from '../constants';
 import { PaperBackground } from './PaperBackground';
 import { withHardShadow } from './DoodleStyle';
@@ -50,18 +50,18 @@ export class GameRenderer {
     });
 
     // 球体（黄球先画，蓝球叠在上方）
-    this.drawBall(objects.yellowBody.position.x, objects.yellowBody.position.y, DOODLE_BALL_YELLOW);
-    this.drawBall(objects.blueBody.position.x,   objects.blueBody.position.y,   DOODLE_BALL_BLUE);
+    this.drawBall(objects.yellowBody.position.x, objects.yellowBody.position.y, DOODLE_BALL_YELLOW,  DOODLE_BALL_TILT_DEG);
+    this.drawBall(objects.blueBody.position.x,   objects.blueBody.position.y,   DOODLE_BALL_BLUE,   -DOODLE_BALL_TILT_DEG);
 
     // 摇杆
     if (joystick.isVisible()) this.drawJoystick(joystick);
   }
 
-  private drawBall(x: number, y: number, fill: string): void {
+  private drawBall(x: number, y: number, fill: string, tiltDeg: number): void {
     const { ctx } = this;
     ctx.save();
     ctx.translate(x, y);
-    ctx.rotate((fill === DOODLE_BALL_BLUE ? -3 : 3) * Math.PI / 180);
+    ctx.rotate(tiltDeg * Math.PI / 180);
     withHardShadow(ctx, () => {
       ctx.beginPath();
       ctx.arc(0, 0, BALL_RADIUS, 0, Math.PI * 2);

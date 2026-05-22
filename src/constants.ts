@@ -35,3 +35,6 @@ export const DOODLE_OBSTACLE    = '#e8d9b0';
 export const DOODLE_SHADOW      = 'rgba(26,26,26,0.85)';
 export const DOODLE_STROKE_PX   = 4;
 export const DOODLE_SHADOW_PX   = 4;
+
+/** 球体涂鸦风歪斜角（度） */
+export const DOODLE_BALL_TILT_DEG = 3;

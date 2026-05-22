@@ -7,6 +7,7 @@ export function withHardShadow(
   pathFn: () => void,
   fill: string,
 ): void {
+  // 阴影段
   ctx.save();
   ctx.translate(DOODLE_SHADOW_PX, DOODLE_SHADOW_PX);
   ctx.fillStyle = DOODLE_SHADOW;
@@ -14,6 +15,8 @@ export function withHardShadow(
   ctx.fill();
   ctx.restore();
 
+  // 本体 + 描边，整体用 save/restore 兜底，不污染调用方 ctx
+  ctx.save();
   ctx.fillStyle = fill;
   pathFn();
   ctx.fill();
@@ -23,19 +26,23 @@ export function withHardShadow(
   ctx.lineCap     = 'round';
   pathFn();
   ctx.stroke();
+  ctx.restore();
 }
 
 export function doodleText(
   ctx: CanvasRenderingContext2D,
   text: string, x: number, y: number, sizePx: number,
   align: CanvasTextAlign = 'left',
+  fillColor: string = '#ffffff',
 ): void {
+  ctx.save();
   ctx.font        = `bold ${sizePx}px sans-serif`;
   ctx.textAlign   = align;
   ctx.lineWidth   = Math.max(4, sizePx / 8);
   ctx.lineJoin    = 'round';
   ctx.strokeStyle = DOODLE_INK;
   ctx.strokeText(text, x, y);
-  ctx.fillStyle   = '#ffffff';
+  ctx.fillStyle   = fillColor;
   ctx.fillText(text, x, y);
+  ctx.restore();
 }
