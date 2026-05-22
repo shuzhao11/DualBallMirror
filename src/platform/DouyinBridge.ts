@@ -13,12 +13,14 @@ declare const tt: {
   onShow(cb: () => void): void;
 };
 
-const isTT = typeof tt !== 'undefined';
+function isTT(): boolean {
+  return typeof tt !== 'undefined';
+}
 
 export const DouyinBridge = {
   /** 短震动反馈（通关、碰撞等） */
   vibrate(): void {
-    if (isTT) {
+    if (isTT()) {
       tt.vibrateShort({ type: 'light' });
     } else {
       console.log('[Bridge] vibrate stub');
@@ -27,7 +29,7 @@ export const DouyinBridge = {
 
   /** 分享当前关卡成绩 */
   showShare(title: string): void {
-    if (isTT) {
+    if (isTT()) {
       tt.shareAppMessage({ title });
     } else {
       console.log('[Bridge] share stub:', title);
@@ -40,12 +42,16 @@ export const DouyinBridge = {
    * 开发环境（非抖音）直接调用 onSuccess。
    */
   showRewardedAd(onSuccess: () => void, onFail?: () => void): void {
-    if (!isTT) {
+    if (!isTT()) {
       onSuccess();
       return;
     }
     // 替换为在抖音开发者后台申请的广告单元 ID
-    const ad = tt.createRewardedVideoAd({ adUnitId: 'YOUR_AD_UNIT_ID' });
+    const adUnitId = 'YOUR_AD_UNIT_ID';
+    if (adUnitId === 'YOUR_AD_UNIT_ID') {
+      console.warn('[Bridge] adUnitId 尚未配置，广告不会展示');
+    }
+    const ad = tt.createRewardedVideoAd({ adUnitId });
     ad.onClose(res => {
       if (res.isEnded) {
         onSuccess();
@@ -59,11 +65,19 @@ export const DouyinBridge = {
 
   /** 切后台事件（用于暂停游戏循环） */
   onHide(cb: () => void): void {
-    if (isTT) tt.onHide(cb);
+    if (isTT()) {
+      tt.onHide(cb);
+    } else {
+      console.log('[Bridge] onHide stub (registered but will not fire)');
+    }
   },
 
   /** 切回前台事件（用于恢复游戏循环） */
   onShow(cb: () => void): void {
-    if (isTT) tt.onShow(cb);
+    if (isTT()) {
+      tt.onShow(cb);
+    } else {
+      console.log('[Bridge] onShow stub (registered but will not fire)');
+    }
   },
 };
