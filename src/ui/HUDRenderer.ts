@@ -10,6 +10,7 @@ export class HUDRenderer {
    */
   render(levelIndex: number, elapsed: number, timeLimitSeconds: number): void {
     const { ctx } = this;
+    ctx.save();
 
     // HUD 背景
     ctx.fillStyle = '#2a2a2a';
@@ -37,5 +38,7 @@ export class HUDRenderer {
       ctx.fillText( timerText, CANVAS_WIDTH - 24, 52);
       ctx.textAlign = 'left';
     }
+
+    ctx.restore();
   }
 }

@@ -9,9 +9,10 @@ export class OverlayRenderer {
   constructor(private readonly ctx: CanvasRenderingContext2D) {}
 
   /** 渲染过关弹窗 */
-  renderWin(levelIndex: number, isLastLevel: boolean): void {
+  renderWin(isLastLevel: boolean): void {
     const { ctx } = this;
     this.clearButtons();
+    ctx.save();
 
     // 半透明遮罩
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
@@ -45,12 +46,14 @@ export class OverlayRenderer {
     ctx.fillStyle = '#1a1a1a';
     ctx.fillText(isLastLevel ? '返回主界面' : '下一关', CANVAS_WIDTH / 2, by + 43);
     ctx.textAlign = 'left';
+    ctx.restore();
   }
 
   /** 渲染超时弹窗 */
   renderTimeout(): void {
     const { ctx } = this;
     this.clearButtons();
+    ctx.save();
 
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -80,6 +83,7 @@ export class OverlayRenderer {
     ctx.fillStyle = '#ffffff';
     ctx.fillText('看广告再试', CANVAS_WIDTH / 2, by + 43);
     ctx.textAlign = 'left';
+    ctx.restore();
   }
 
   /**
