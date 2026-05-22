@@ -21,8 +21,20 @@ export const FORCE_SCALE = 0.003;
 /** 物理固定步长（毫秒） */
 export const PHYSICS_STEP_MS = 1000 / 60;
 
-/** 浮动摇杆（左下角，固定基座位置） */
-export const JOYSTICK_BASE_X   = 120;
-export const JOYSTICK_BASE_Y   = MAP_TOP + MAP_HEIGHT + 80; // 1200
+/** 浮动摇杆 —— 基座位置由 touchstart 决定 */
 export const JOYSTICK_RADIUS   = 60;
 export const JOYSTICK_DEADZONE = 0.15;
+
+/** 涂鸦卡通调色板（visual-style.html C 卡片规范） */
+export const DOODLE_INK         = '#1a1a1a';
+export const DOODLE_PAPER       = '#fffef6';
+export const DOODLE_PAPER_DARK  = '#f2ecd8';
+export const DOODLE_BALL_BLUE   = '#4a90e2';
+export const DOODLE_BALL_YELLOW = '#f5c518';
+export const DOODLE_OBSTACLE    = '#e8d9b0';
+export const DOODLE_SHADOW      = 'rgba(26,26,26,0.85)';
+export const DOODLE_STROKE_PX   = 4;
+export const DOODLE_SHADOW_PX   = 4;
+
+/** 球体涂鸦风歪斜角（度） */
+export const DOODLE_BALL_TILT_DEG = 3;

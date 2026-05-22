@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev":   "esbuild src/main.ts --bundle --platform=browser --outfile=dist/game.js --watch --sourcemap",
-    "build": "esbuild src/main.ts --bundle --platform=browser --target=es2017 --minify --outfile=dist/game.js",
+    "dev":   "esbuild src/main.ts --bundle --platform=browser --outfile=game.js --watch --sourcemap",
+    "build": "esbuild src/main.ts --bundle --platform=browser --target=es2017 --minify --outfile=game.js",
     "test":  "vitest run"
   },
   "dependencies": {

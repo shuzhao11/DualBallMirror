@@ -14,27 +14,36 @@ import { OverlayRenderer } from './ui/OverlayRenderer';
 import { DouyinBridge } from './platform/DouyinBridge';
 import { PHYSICS_STEP_MS } from './constants';
 
-// ── 平台 Canvas 创建 ────────────────────────────────────────────
-declare const tt: any;
-const canvas: any = typeof tt !== 'undefined'
-  ? tt.createCanvas()
-  : (() => {
-      // 浏览器调试：查找 id="game" 的 canvas，或自动创建
-      let el = document.getElementById('game') as HTMLCanvasElement | null;
-      if (!el) {
-        el = document.createElement('canvas');
-        el.id = 'game';
-        document.body.style.margin = '0';
-        document.body.style.background = '#222';
-        document.body.appendChild(el);
-      }
-      return el;
-    })();
+// ── 平台 Canvas 创建 + 视口适配（抖音小游戏唯一入口） ──────────
+import { Viewport } from './core/Viewport';
 
-canvas.width  = 720;
-canvas.height = 1280;
+declare const tt: any;
+
+const info = tt.getSystemInfoSync();
+const metrics = {
+  width:  info.windowWidth  || info.screenWidth  || 720,
+  height: info.windowHeight || info.screenHeight || 1280,
+  dpr:    info.pixelRatio   || 1,
+};
+const viewport = new Viewport(metrics.width, metrics.height, metrics.dpr);
+
+const canvas: any = tt.createCanvas();
+
+// 物理像素 = 设备像素 × dpr，让渲染使用 720×1280 逻辑坐标
+canvas.width  = metrics.width  * metrics.dpr;
+canvas.height = metrics.height * metrics.dpr;
 
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+
+function applyViewportTransform(): void {
+  ctx.setTransform(
+    viewport.scale * metrics.dpr, 0,
+    0, viewport.scale * metrics.dpr,
+    viewport.offsetX * metrics.dpr,
+    viewport.offsetY * metrics.dpr,
+  );
+}
+applyViewportTransform();
 
 // ── 模块实例 ────────────────────────────────────────────────────
 const LEVELS: LevelConfig[]   = [LEVEL_1, LEVEL_2, LEVEL_3];
@@ -60,7 +69,7 @@ function loadLevel(index: number): void {
   const cfg  = LEVELS[index];
   levelObjects = loader.load(cfg);
   if (joystick) joystick.destroy();
-  joystick     = new JoystickInput(canvas, () => resetLevel());
+  joystick     = new JoystickInput(canvas, viewport, () => resetLevel());
   gameManager  = new GameManager(
     cfg,
     levelObjects.detectors,
@@ -94,7 +103,8 @@ canvas.addEventListener('touchend', (e: any) => {
 
   const touch = e.changedTouches[0];
   if (!touch) return;
-  const hit = overlayRenderer.hitTest(touch.clientX, touch.clientY);
+  const lp = viewport.toLogical(touch.clientX, touch.clientY);
+  const hit = overlayRenderer.hitTest(lp.x, lp.y);
   if (hit === 'next') {
     if (currentLevelIndex >= LEVELS.length - 1) {
       // 最后一关通关：从第 1 关重新开始
@@ -120,6 +130,8 @@ function gameLoop(now: number): void {
   requestAnimationFrame(gameLoop);
 
   if (paused || !levelObjects || !gameManager || !joystick) return;
+
+  applyViewportTransform();
 
   // 首帧跳过（lastTime=0 时 dt 会异常大）
   if (lastTime === 0) { lastTime = now; return; }
