@@ -34,9 +34,10 @@ export class JoystickInput {
   }
 
   private onTouchStart(e: { changedTouches: { identifier: number; clientX: number; clientY: number }[] }): void {
-    if (this.touchId !== null) return;
     const touch = e.changedTouches[0];
     if (!touch) return;
+    // 抢占式：即使已有触摸在追踪也强制重置到新位置，避免"旧摇杆位置残留"
+    this.clearLongPress();
     const logical = this.viewport.toLogical(touch.clientX, touch.clientY);
     this.touchId   = touch.identifier;
     this.active    = true;

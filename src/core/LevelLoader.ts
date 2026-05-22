@@ -52,11 +52,11 @@ export class LevelLoader {
 
     const blueBody = Matter.Bodies.circle(
       blueScreen.x, blueScreen.y, BALL_RADIUS,
-      { frictionAir: 0.08, restitution: 0.2, label: 'blue' },
+      { frictionAir: 0.05, restitution: 0.2, label: 'blue' },
     );
     const yellowBody = Matter.Bodies.circle(
       yellowScreen.x, yellowScreen.y, BALL_RADIUS,
-      { frictionAir: 0.08, restitution: 0.2, label: 'yellow' },
+      { frictionAir: 0.05, restitution: 0.2, label: 'yellow' },
     );
 
     // 地图边界墙（4 面，isStatic）
