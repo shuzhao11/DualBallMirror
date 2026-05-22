@@ -25,7 +25,7 @@ function getDeviceMetrics(): { width: number; height: number; dpr: number } {
     return {
       width:  info.windowWidth  || info.screenWidth  || 720,
       height: info.windowHeight || info.screenHeight || 1280,
-      dpr:    info.pixelRatio   ?? 1,
+      dpr:    info.pixelRatio   || 1,
     };
   }
   return {
