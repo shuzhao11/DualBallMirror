@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
-    "lib": ["ES2017", "DOM"],
+    "target": "ES2015",
+    "lib": ["ES2015", "DOM"],
     "module": "ESNext",
     "moduleResolution": "bundler",
     "strict": true,
