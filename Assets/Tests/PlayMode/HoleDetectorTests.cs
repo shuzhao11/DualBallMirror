@@ -35,6 +35,7 @@ public class HoleDetectorTests
     [UnityTest]
     public IEnumerator AfterDwellThreshold_IsSatisfied()
     {
+        yield return new WaitForFixedUpdate();   // 等物理触发 OnTriggerEnter2D
         yield return new WaitForSeconds(0.35f);
         Assert.IsTrue(_det.IsSatisfied(0.3f));
     }
@@ -42,9 +43,10 @@ public class HoleDetectorTests
     [UnityTest]
     public IEnumerator AfterBallLeaves_DwellTimeResets()
     {
+        yield return new WaitForFixedUpdate();   // 等物理触发进入
         yield return new WaitForSeconds(0.1f);
         _ballGo.transform.position = new Vector3(10f, 10f, 0f);
-        yield return new WaitForFixedUpdate();
+        yield return new WaitForFixedUpdate();   // 等物理触发 OnTriggerExit2D
         yield return new WaitForSeconds(0.3f);
         Assert.IsFalse(_det.IsSatisfied(0.3f));
     }
