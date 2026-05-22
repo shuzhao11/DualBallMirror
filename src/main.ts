@@ -23,8 +23,8 @@ function getDeviceMetrics(): { width: number; height: number; dpr: number } {
   if (typeof tt !== 'undefined' && tt.getSystemInfoSync) {
     const info = tt.getSystemInfoSync();
     return {
-      width:  info.windowWidth  ?? info.screenWidth  ?? 720,
-      height: info.windowHeight ?? info.screenHeight ?? 1280,
+      width:  info.windowWidth  || info.screenWidth  || 720,
+      height: info.windowHeight || info.screenHeight || 1280,
       dpr:    info.pixelRatio   ?? 1,
     };
   }
@@ -101,7 +101,7 @@ function loadLevel(index: number): void {
   const cfg  = LEVELS[index];
   levelObjects = loader.load(cfg);
   if (joystick) joystick.destroy();
-  joystick     = new JoystickInput(canvas, () => resetLevel());
+  joystick     = new JoystickInput(canvas, viewport, () => resetLevel());
   gameManager  = new GameManager(
     cfg,
     levelObjects.detectors,
@@ -135,7 +135,8 @@ canvas.addEventListener('touchend', (e: any) => {
 
   const touch = e.changedTouches[0];
   if (!touch) return;
-  const hit = overlayRenderer.hitTest(touch.clientX, touch.clientY);
+  const lp = viewport.toLogical(touch.clientX, touch.clientY);
+  const hit = overlayRenderer.hitTest(lp.x, lp.y);
   if (hit === 'next') {
     if (currentLevelIndex >= LEVELS.length - 1) {
       // 最后一关通关：从第 1 关重新开始

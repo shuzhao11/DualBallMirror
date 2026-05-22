@@ -51,7 +51,7 @@ export class GameRenderer {
     this.drawBall(objects.blueBody.position.x,   objects.blueBody.position.y,   '#5b9bd5', '#2a6aad');
 
     // 摇杆
-    this.drawJoystick(joystick);
+    if (joystick.isVisible()) this.drawJoystick(joystick);
   }
 
   private drawBall(x: number, y: number, fill: string, stroke: string): void {

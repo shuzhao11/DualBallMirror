@@ -21,8 +21,6 @@ export const FORCE_SCALE = 0.003;
 /** 物理固定步长（毫秒） */
 export const PHYSICS_STEP_MS = 1000 / 60;
 
-/** 浮动摇杆（左下角，固定基座位置） */
-export const JOYSTICK_BASE_X   = 120;
-export const JOYSTICK_BASE_Y   = MAP_TOP + MAP_HEIGHT + 80; // 1200
+/** 浮动摇杆 —— 基座位置由 touchstart 决定 */
 export const JOYSTICK_RADIUS   = 60;
 export const JOYSTICK_DEADZONE = 0.15;
