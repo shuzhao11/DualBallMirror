@@ -15,8 +15,8 @@ export const CENTER_Y = MAP_TOP + MAP_HEIGHT / 2;   // 640
 /** 球体半径（物理 & 渲染用同一值） */
 export const BALL_RADIUS = 28;
 
-/** 每帧施力缩放（Matter.js 力单位较小） */
-export const FORCE_SCALE = 0.003;
+/** 每帧施力缩放（Matter.js 力单位较小）。速度与摇杆 magnitude 成正比，此值控制满杆速度。 */
+export const FORCE_SCALE = 0.006;
 
 /** 物理固定步长（毫秒） */
 export const PHYSICS_STEP_MS = 1000 / 60;

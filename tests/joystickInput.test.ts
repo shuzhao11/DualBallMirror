@@ -47,15 +47,15 @@ describe('JoystickInput (floating)', () => {
     expect(js.getDirection()).toEqual({ x: 0, y: 0 });
   });
 
-  it('second touch is ignored while first is active (single-finger joystick)', () => {
+  it('second touch preempts the first: base moves to the new touch (no ghost joystick)', () => {
     const canvas = makeFakeCanvas();
     const js = new JoystickInput(canvas as any, vp, () => {});
     canvas.fire('touchstart', { changedTouches: [{ identifier: 1, clientX: 200, clientY: 900 }] });
-    const base1 = js.getBasePos();
     canvas.fire('touchstart', { changedTouches: [{ identifier: 2, clientX: 500, clientY: 500 }] });
     const base2 = js.getBasePos();
-    expect(base2.x).toBe(base1.x);
-    expect(base2.y).toBe(base1.y);
+    expect(base2.x).toBeCloseTo(500, 1);
+    expect(base2.y).toBeCloseTo(500, 1);
+    expect(js.isActive()).toBe(true);
   });
 
   it('long-press 1.5s without significant move triggers reset', () => {

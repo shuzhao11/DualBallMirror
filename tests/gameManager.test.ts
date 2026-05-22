@@ -30,7 +30,7 @@ const BASE_CFG: LevelConfig = {
 };
 
 describe('GameManager', () => {
-  afterEach(() => vi.restoreAllMocks());
+  afterEach(() => { vi.restoreAllMocks(); });
 
   it('starts in "loading" state', () => {
     const gm = new GameManager(BASE_CFG, [], () => {}, () => {});

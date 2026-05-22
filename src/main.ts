@@ -43,6 +43,13 @@ function applyViewportTransform(): void {
     viewport.offsetY * metrics.dpr,
   );
 }
+
+// letterbox 区域（逻辑坐标外的物理黑边）每帧必须强制清除，
+// 否则摇杆等绘制在边界外的内容会永久残留。
+function clearFullCanvas(): void {
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
 applyViewportTransform();
 
 // ── 模块实例 ────────────────────────────────────────────────────
@@ -57,15 +64,30 @@ let currentLevelIndex = 0;
 let levelObjects: LevelObjects  | null = null;
 let gameManager:  GameManager   | null = null;
 let joystick:     JoystickInput | null = null;
+let inMenu    = true;   // 启动即处于选关界面，loadLevel 时置 false
 let paused    = false;
 let lastTime  = 0;
 let physAccum = 0;
+let autoAdvanceTimer: ReturnType<typeof setTimeout> | null = null;
+
+// 通关后展示弹窗的延时（毫秒），到时自动进入下一关。
+const AUTO_ADVANCE_DELAY_MS = 1500;
+
+function clearAutoAdvanceTimer(): void {
+  if (autoAdvanceTimer !== null) {
+    clearTimeout(autoAdvanceTimer);
+    autoAdvanceTimer = null;
+  }
+}
 
 // ── 关卡控制 ────────────────────────────────────────────────────
 function loadLevel(index: number): void {
+  clearAutoAdvanceTimer();
   if (levelObjects) loader.unload(levelObjects);
   overlayRenderer.clear();
 
+  currentLevelIndex = index;
+  inMenu = false;
   const cfg  = LEVELS[index];
   levelObjects = loader.load(cfg);
   if (joystick) joystick.destroy();
@@ -81,6 +103,15 @@ function loadLevel(index: number): void {
   physAccum = 0;
 }
 
+function goToMenu(): void {
+  clearAutoAdvanceTimer();
+  if (levelObjects) { loader.unload(levelObjects); levelObjects = null; }
+  if (joystick)     { joystick.destroy();          joystick     = null; }
+  gameManager = null;
+  inMenu      = true;
+  overlayRenderer.clear();
+}
+
 function resetLevel(): void {
   loadLevel(currentLevelIndex);
 }
@@ -88,7 +119,16 @@ function resetLevel(): void {
 function onLevelComplete(): void {
   DouyinBridge.vibrate();
   DouyinBridge.showShare(`我通过了第 ${currentLevelIndex + 1} 关！`);
-  overlayRenderer.renderWin(currentLevelIndex >= LEVELS.length - 1);
+  const isLastLevel = currentLevelIndex >= LEVELS.length - 1;
+
+  // 通关后自动推进：非最后一关延时进入下一关；最后一关延时返回主界面。
+  // gameLoop 会持续重绘 win 弹窗，用户在延时内点击按钮也会触发 clearAutoAdvanceTimer。
+  clearAutoAdvanceTimer();
+  autoAdvanceTimer = setTimeout(() => {
+    autoAdvanceTimer = null;
+    if (isLastLevel) goToMenu();
+    else             loadLevel(currentLevelIndex + 1);
+  }, AUTO_ADVANCE_DELAY_MS);
 }
 
 function onTimeout(): void {
@@ -97,22 +137,36 @@ function onTimeout(): void {
 
 // ── 弹窗按钮点击处理 ────────────────────────────────────────────
 canvas.addEventListener('touchend', (e: any) => {
-  if (!gameManager) return;
-  const state = gameManager.getState();
-  if (state !== 'levelComplete' && state !== 'timeout') return;
-
   const touch = e.changedTouches[0];
   if (!touch) return;
   const lp = viewport.toLogical(touch.clientX, touch.clientY);
   const hit = overlayRenderer.hitTest(lp.x, lp.y);
+
+  // 选关界面
+  if (inMenu) {
+    if (hit === 'level1' || hit === 'level2' || hit === 'level3') {
+      loadLevel(Number(hit.slice(5)) - 1);
+    }
+    return;
+  }
+
+  // 通关/超时弹窗
+  if (!gameManager) return;
+  const state = gameManager.getState();
+  if (state !== 'levelComplete' && state !== 'timeout') return;
   if (hit === 'next') {
     if (currentLevelIndex >= LEVELS.length - 1) {
-      // 最后一关通关：从第 1 关重新开始
-      currentLevelIndex = 0;
+      // 最后一关：返回选关主界面
+      goToMenu();
     } else {
-      currentLevelIndex++;
+      loadLevel(currentLevelIndex + 1);
     }
-    loadLevel(currentLevelIndex);
+  } else if (hit === 'retry') {
+    // 通关后再玩一次本关
+    resetLevel();
+  } else if (hit === 'menu') {
+    // 超时后返回主界面
+    goToMenu();
   } else if (hit === 'retryAd') {
     DouyinBridge.showRewardedAd(
       () => resetLevel(),
@@ -129,9 +183,17 @@ DouyinBridge.onShow(() => { paused = false; lastTime = 0; });
 function gameLoop(now: number): void {
   requestAnimationFrame(gameLoop);
 
-  if (paused || !levelObjects || !gameManager || !joystick) return;
-
+  if (paused) return;
+  clearFullCanvas();
   applyViewportTransform();
+
+  // 选关界面：每帧重绘（保留按钮 hit 区域）
+  if (inMenu) {
+    overlayRenderer.renderLevelSelect();
+    return;
+  }
+
+  if (!levelObjects || !gameManager || !joystick) return;
 
   // 首帧跳过（lastTime=0 时 dt 会异常大）
   if (lastTime === 0) { lastTime = now; return; }
@@ -160,8 +222,20 @@ function gameLoop(now: number): void {
   // 4. 渲染（playing/levelComplete/timeout 都渲染，让弹窗可见）
   gameRenderer.render(levelObjects, LEVELS[currentLevelIndex], joystick, dt);
   hudRenderer.render(currentLevelIndex, gameManager.getElapsed(), LEVELS[currentLevelIndex].timeLimitSeconds);
+
+  // 通关 / 超时弹窗需要每帧重绘，否则会被 gameRenderer 的 clearRect 立刻擦掉
+  const state = gameManager.getState();
+  if (state === 'levelComplete') {
+    overlayRenderer.renderWin(
+      currentLevelIndex >= LEVELS.length - 1,
+      gameManager.getElapsed(),
+      currentLevelIndex,
+    );
+  } else if (state === 'timeout') {
+    overlayRenderer.renderTimeout();
+  }
 }
 
 // ── 启动 ────────────────────────────────────────────────────────
-loadLevel(0);
+// 启动即停在选关界面（inMenu=true），gameLoop 每帧重绘 renderLevelSelect()
 requestAnimationFrame(gameLoop);

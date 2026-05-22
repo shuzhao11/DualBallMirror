@@ -4,7 +4,7 @@ import Matter from 'matter-js';
 import { BallController } from '../src/ball/BallController';
 
 describe('BallController', () => {
-  afterEach(() => vi.restoreAllMocks());
+  afterEach(() => { vi.restoreAllMocks(); });
 
   it('applies +F to blue and -F to yellow on x-direction input', () => {
     const blue   = Matter.Bodies.circle(0, 0, 28);

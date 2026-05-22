@@ -7,7 +7,7 @@ import {
   CANVAS_WIDTH, CANVAS_HEIGHT,
   MAP_TOP, MAP_HEIGHT,
   BALL_RADIUS, JOYSTICK_RADIUS,
-  DOODLE_INK, DOODLE_BALL_BLUE, DOODLE_BALL_YELLOW,
+  DOODLE_INK, DOODLE_PAPER, DOODLE_BALL_BLUE, DOODLE_BALL_YELLOW,
   DOODLE_OBSTACLE, DOODLE_STROKE_PX, DOODLE_BALL_TILT_DEG,
 } from '../constants';
 import { PaperBackground } from './PaperBackground';
@@ -29,8 +29,10 @@ export class GameRenderer {
     const { ctx } = this;
     this.holeAngle = (this.holeAngle + dt * 1.5) % (Math.PI * 2);  // 虚线圈每秒转 ~86 度
 
-    // 全画布清空
+    // 全画布清空（保险：任何上一帧痕迹都被覆盖）
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    ctx.fillStyle = DOODLE_PAPER;
+    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
     // 涂鸦纸质背景 + 粗黑描边
     this.paper.draw(ctx);
