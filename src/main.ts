@@ -14,27 +14,68 @@ import { OverlayRenderer } from './ui/OverlayRenderer';
 import { DouyinBridge } from './platform/DouyinBridge';
 import { PHYSICS_STEP_MS } from './constants';
 
-// ── 平台 Canvas 创建 ────────────────────────────────────────────
+// ── 平台 Canvas 创建 + 视口适配 ────────────────────────────────
+import { Viewport } from './core/Viewport';
+
 declare const tt: any;
+
+function getDeviceMetrics(): { width: number; height: number; dpr: number } {
+  if (typeof tt !== 'undefined' && tt.getSystemInfoSync) {
+    const info = tt.getSystemInfoSync();
+    return {
+      width:  info.windowWidth  ?? info.screenWidth  ?? 720,
+      height: info.windowHeight ?? info.screenHeight ?? 1280,
+      dpr:    info.pixelRatio   ?? 1,
+    };
+  }
+  return {
+    width:  window.innerWidth,
+    height: window.innerHeight,
+    dpr:    window.devicePixelRatio || 1,
+  };
+}
+
+const metrics = getDeviceMetrics();
+const viewport = new Viewport(metrics.width, metrics.height, metrics.dpr);
+
 const canvas: any = typeof tt !== 'undefined'
   ? tt.createCanvas()
   : (() => {
-      // 浏览器调试：查找 id="game" 的 canvas，或自动创建
       let el = document.getElementById('game') as HTMLCanvasElement | null;
       if (!el) {
         el = document.createElement('canvas');
         el.id = 'game';
-        document.body.style.margin = '0';
-        document.body.style.background = '#222';
+        document.body.style.margin     = '0';
+        document.body.style.padding    = '0';
+        document.body.style.overflow   = 'hidden';
+        document.body.style.background = '#000';
+        document.documentElement.style.height = '100%';
+        document.body.style.height     = '100%';
         document.body.appendChild(el);
       }
+      el.style.position = 'absolute';
+      el.style.left     = '0';
+      el.style.top      = '0';
+      el.style.width    = viewport.cssWidth  + 'px';
+      el.style.height   = viewport.cssHeight + 'px';
       return el;
     })();
 
-canvas.width  = 720;
-canvas.height = 1280;
+// 物理像素 = 设备像素 × dpr，让渲染使用 720×1280 逻辑坐标
+canvas.width  = metrics.width  * metrics.dpr;
+canvas.height = metrics.height * metrics.dpr;
 
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+
+function applyViewportTransform(): void {
+  ctx.setTransform(
+    viewport.scale * metrics.dpr, 0,
+    0, viewport.scale * metrics.dpr,
+    viewport.offsetX * metrics.dpr,
+    viewport.offsetY * metrics.dpr,
+  );
+}
+applyViewportTransform();
 
 // ── 模块实例 ────────────────────────────────────────────────────
 const LEVELS: LevelConfig[]   = [LEVEL_1, LEVEL_2, LEVEL_3];
@@ -120,6 +161,8 @@ function gameLoop(now: number): void {
   requestAnimationFrame(gameLoop);
 
   if (paused || !levelObjects || !gameManager || !joystick) return;
+
+  applyViewportTransform();
 
   // 首帧跳过（lastTime=0 时 dt 会异常大）
   if (lastTime === 0) { lastTime = now; return; }
