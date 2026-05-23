@@ -108,9 +108,9 @@ export class ReactiveBlockSystem {
 
     const mag = Math.hypot(joystickDir.x, joystickDir.y);
     if (mag > 0.12) {
-      // 3 跟随球的实际方向（即使球被墙挡住，摇杆输入仍累加）
-      this.accumX += actualDirX * STEP_SPEED * dt;
-      this.accumY += actualDirY * STEP_SPEED * dt;
+      // 3 向球实际运动方向的反方向移动
+      this.accumX += -actualDirX * STEP_SPEED * dt;
+      this.accumY += -actualDirY * STEP_SPEED * dt;
     }
 
     // ── 离散步进：累加量每满一格，3 跟随球移动一格 ─────────────────
