@@ -1,1 +1,14 @@
-{"appid":"tt02c1747c9ca60e4e07","projectname":"DualBallMirror","setting":{"orientation":"portrait"},"miniprogramRoot":"/"}
+{
+    "appid": "testAppId",
+    "projectname": "DualBallMirror",
+    "setting": {
+        "orientation": "portrait"
+    },
+    "miniprogramRoot": "/",
+    "condition": {
+        "game": {
+            "current": -1,
+            "list": []
+        }
+    }
+}

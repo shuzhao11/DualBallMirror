@@ -5,19 +5,13 @@ import {
   DOODLE_SHADOW_PX, DOODLE_SHADOW,
 } from '../constants';
 import { withHardShadow, doodleText } from '../renderer/DoodleStyle';
+import type { LevelDefinition } from '../core/levels/types';
 
 interface ButtonRect { x: number; y: number; w: number; h: number; }
 
 export type OverlayHit =
   | 'next' | 'retry' | 'retryAd' | 'menu' | 'sidebar'
   | 'level1' | 'level2' | 'level3';
-
-interface LevelMeta { title: string; subtitle: string; }
-const LEVEL_META: LevelMeta[] = [
-  { title: '第 1 关', subtitle: '单球入洞 · 初识镜像' },
-  { title: '第 2 关', subtitle: '双球同入 · 共振时刻' },
-  { title: '第 3 关', subtitle: '穿越机关 · 60 秒挑战' },
-];
 
 export class OverlayRenderer {
   private nextBtn:    ButtonRect | null = null;
@@ -30,7 +24,10 @@ export class OverlayRenderer {
   // 每帧自增的"涂鸦呼吸"相位，让主界面卡片轻微浮动
   private breathPhase = 0;
 
-  constructor(private readonly ctx: CanvasRenderingContext2D) {}
+  constructor(
+    private readonly ctx: CanvasRenderingContext2D,
+    private readonly levels: LevelDefinition[],
+  ) {}
 
   /** 渲染选关主界面（启动时 & 通关返回时显示） */
   renderLevelSelect(): void {
@@ -63,7 +60,7 @@ export class OverlayRenderer {
     const gap    = 160;
 
     this.levelBtns = [];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < this.levels.length; i++) {
       const breathOffset = Math.sin(this.breathPhase + i * 1.3) * 1.5;
       const by = startY + i * gap + breathOffset;
       this.levelBtns.push({ x: cardX, y: by, w: cardW, h: cardH });
@@ -106,7 +103,8 @@ export class OverlayRenderer {
     doodleText(ctx, `第 ${levelIndex + 1} 关 完 成`, CANVAS_WIDTH / 2, py + 150, 44, 'center', DOODLE_INK);
 
     // 三星 + 用时
-    this.drawStars(CANVAS_WIDTH / 2, py + 210, this.starsForTime(elapsedSeconds, levelIndex));
+    const starTarget = this.levels[levelIndex]?.meta.starTargetSeconds ?? 30;
+    this.drawStars(CANVAS_WIDTH / 2, py + 210, this.starsForTime(elapsedSeconds, starTarget));
 
     ctx.font      = '600 28px sans-serif';
     ctx.fillStyle = '#666';
@@ -296,7 +294,7 @@ export class OverlayRenderer {
   /** 单张关卡卡片（带小预览图 + 标题 + 副标） */
   private drawLevelCard(x: number, y: number, w: number, h: number, idx: number): void {
     const { ctx } = this;
-    const meta = LEVEL_META[idx];
+    const meta = this.levels[idx].meta;
     const accent = idx % 2 === 0 ? DOODLE_BALL_BLUE : DOODLE_BALL_YELLOW;
 
     // 阴影
@@ -466,12 +464,10 @@ export class OverlayRenderer {
     ctx.restore();
   }
 
-  /** 按完成时间和关卡分配星级（无目标时间则恒 3 星） */
-  private starsForTime(elapsed: number, levelIndex: number): number {
-    const targets = [15, 25, 40];  // 每关 3 星目标用时
-    const t = targets[levelIndex] ?? 30;
-    if (elapsed <= t)         return 3;
-    if (elapsed <= t * 1.6)   return 2;
+  /** 按完成时间和 3 星目标分配星级 */
+  private starsForTime(elapsed: number, starTarget: number): number {
+    if (elapsed <= starTarget)        return 3;
+    if (elapsed <= starTarget * 1.6)  return 2;
     return 1;
   }
 

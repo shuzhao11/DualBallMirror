@@ -41,3 +41,15 @@ export interface LevelConfig {
   blueSpawn: Vec2;
   yellowSpawn: Vec2;
 }
+
+export interface LevelMeta {
+  title: string;
+  subtitle: string;
+  /** 3 星评级目标用时（秒）：≤ target 得 3 星，≤ target×1.6 得 2 星，否则 1 星 */
+  starTargetSeconds: number;
+}
+
+export interface LevelDefinition {
+  config: LevelConfig;
+  meta: LevelMeta;
+}

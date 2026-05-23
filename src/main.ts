@@ -1,9 +1,6 @@
 // src/main.ts
 import Matter from 'matter-js';
-import { LEVEL_1 } from './core/levels/level1';
-import { LEVEL_2 } from './core/levels/level2';
-import { LEVEL_3 } from './core/levels/level3';
-import type { LevelConfig } from './core/levels/types';
+import { ALL_LEVELS } from './core/levels/index';
 import { LevelLoader } from './core/LevelLoader';
 import type { LevelObjects } from './core/LevelLoader';
 import { GameManager } from './core/GameManager';
@@ -53,11 +50,10 @@ function clearFullCanvas(): void {
 applyViewportTransform();
 
 // ── 模块实例 ────────────────────────────────────────────────────
-const LEVELS: LevelConfig[]   = [LEVEL_1, LEVEL_2, LEVEL_3];
 const loader          = new LevelLoader();
 const gameRenderer    = new GameRenderer(ctx);
 const hudRenderer     = new HUDRenderer(ctx);
-const overlayRenderer = new OverlayRenderer(ctx);
+const overlayRenderer = new OverlayRenderer(ctx, ALL_LEVELS);
 
 // ── 游戏状态 ────────────────────────────────────────────────────
 let currentLevelIndex = 0;
@@ -88,7 +84,7 @@ function loadLevel(index: number): void {
 
   currentLevelIndex = index;
   inMenu = false;
-  const cfg  = LEVELS[index];
+  const cfg  = ALL_LEVELS[index].config;
   levelObjects = loader.load(cfg);
   if (joystick) joystick.destroy();
   joystick     = new JoystickInput(canvas, viewport, () => resetLevel());
@@ -119,7 +115,7 @@ function resetLevel(): void {
 function onLevelComplete(): void {
   DouyinBridge.vibrate();
   DouyinBridge.showShare(`我通过了第 ${currentLevelIndex + 1} 关！`);
-  const isLastLevel = currentLevelIndex >= LEVELS.length - 1;
+  const isLastLevel = currentLevelIndex >= ALL_LEVELS.length - 1;
 
   // 通关后自动推进：非最后一关延时进入下一关；最后一关延时返回主界面。
   // gameLoop 会持续重绘 win 弹窗，用户在延时内点击按钮也会触发 clearAutoAdvanceTimer。
@@ -155,7 +151,7 @@ canvas.addEventListener('touchend', (e: any) => {
   const state = gameManager.getState();
   if (state !== 'levelComplete' && state !== 'timeout') return;
   if (hit === 'next') {
-    if (currentLevelIndex >= LEVELS.length - 1) {
+    if (currentLevelIndex >= ALL_LEVELS.length - 1) {
       // 最后一关：返回选关主界面
       goToMenu();
     } else {
@@ -223,14 +219,14 @@ function gameLoop(now: number): void {
   }
 
   // 4. 渲染（playing/levelComplete/timeout 都渲染，让弹窗可见）
-  gameRenderer.render(levelObjects, LEVELS[currentLevelIndex], joystick, dt);
-  hudRenderer.render(currentLevelIndex, gameManager.getElapsed(), LEVELS[currentLevelIndex].timeLimitSeconds);
+  gameRenderer.render(levelObjects, ALL_LEVELS[currentLevelIndex].config, joystick, dt);
+  hudRenderer.render(currentLevelIndex, gameManager.getElapsed(), ALL_LEVELS[currentLevelIndex].config.timeLimitSeconds);
 
   // 通关 / 超时弹窗需要每帧重绘，否则会被 gameRenderer 的 clearRect 立刻擦掉
   const state = gameManager.getState();
   if (state === 'levelComplete') {
     overlayRenderer.renderWin(
-      currentLevelIndex >= LEVELS.length - 1,
+      currentLevelIndex >= ALL_LEVELS.length - 1,
       gameManager.getElapsed(),
       currentLevelIndex,
     );
