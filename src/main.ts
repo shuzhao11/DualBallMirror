@@ -138,10 +138,11 @@ canvas.addEventListener('touchend', (e: any) => {
   const lp = viewport.toLogical(touch.clientX, touch.clientY);
   const hit = overlayRenderer.hitTest(lp.x, lp.y);
 
-  // 选关界面
+  // 选关界面：levelN → 加载第 N-1 关（支持任意数量关卡）
   if (inMenu) {
-    if (hit === 'level1' || hit === 'level2' || hit === 'level3') {
-      loadLevel(Number(hit.slice(5)) - 1);
+    if (hit && hit.startsWith('level')) {
+      const idx = Number(hit.slice(5)) - 1;
+      if (idx >= 0 && idx < ALL_LEVELS.length) loadLevel(idx);
     }
     return;
   }
@@ -203,7 +204,8 @@ function gameLoop(now: number): void {
 
   if (gameManager.getState() === 'playing') {
     // 1. 施力（力镜像）
-    levelObjects.ballController.update(joystick.getDirection());
+    const dir = joystick.getDirection();
+    levelObjects.ballController.update(dir);
 
     // 2. 固定步长物理推进
     physAccum += dt * 1000;
@@ -212,8 +214,11 @@ function gameLoop(now: number): void {
       physAccum -= PHYSICS_STEP_MS;
     }
 
-    // 3. 移动障碍 + 洞口检测 + 通关判定
+    // 3. 移动障碍 + 触发响应方块 + 洞口检测 + 通关判定
     levelObjects.movingObstacles.forEach(mo => mo.update(dt));
+    levelObjects.reactiveBlockSystems.forEach(rbs =>
+      rbs.update(levelObjects!.blueBody, levelObjects!.yellowBody, dir, dt),
+    );
     levelObjects.detectors.forEach(d => d.update(dt));
     gameManager.update(dt);
   }

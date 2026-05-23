@@ -11,7 +11,7 @@ interface ButtonRect { x: number; y: number; w: number; h: number; }
 
 export type OverlayHit =
   | 'next' | 'retry' | 'retryAd' | 'menu' | 'sidebar'
-  | 'level1' | 'level2' | 'level3';
+  | 'level1' | 'level2' | 'level3' | 'level4';
 
 export class OverlayRenderer {
   private nextBtn:    ButtonRect | null = null;

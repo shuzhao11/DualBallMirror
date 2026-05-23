@@ -9,6 +9,7 @@ import {
   BALL_RADIUS, JOYSTICK_RADIUS,
   DOODLE_INK, DOODLE_PAPER, DOODLE_BALL_BLUE, DOODLE_BALL_YELLOW,
   DOODLE_OBSTACLE, DOODLE_STROKE_PX, DOODLE_BALL_TILT_DEG,
+  DOODLE_REACTIVE_BLOCK, DOODLE_TRIGGER_BLOCK,
 } from '../constants';
 import { PaperBackground } from './PaperBackground';
 import { withHardShadow } from './DoodleStyle';
@@ -49,6 +50,12 @@ export class GameRenderer {
     // 障碍物
     cfg.obstacles.forEach((obsCfg, i) => {
       this.drawObstacle(obsCfg, objects.obstacleBodies[i]);
+    });
+
+    // 触发-响应方块（粉色4 在前，褐色3 在后，都在球层之下）
+    objects.reactiveBlockSystems.forEach(rbs => {
+      this.drawColorRect(rbs.getTriggerBody(),  DOODLE_TRIGGER_BLOCK,  true);
+      this.drawColorRect(rbs.getReactiveBody(), DOODLE_REACTIVE_BLOCK, false);
     });
 
     // 球体（黄球先画，蓝球叠在上方）
@@ -109,6 +116,32 @@ export class GameRenderer {
         ctx.beginPath();
         ctx.arc(0, 0, cfg.radius!, 0, Math.PI * 2);
       }, DOODLE_OBSTACLE);
+    }
+    ctx.restore();
+  }
+
+  /**
+   * 按 body.bounds 绘制有色方块。
+   * isSensor=true（触发区 4）用虚线边框区别于实体方块（响应块 3）。
+   */
+  private drawColorRect(body: Matter.Body, fill: string, dashed: boolean): void {
+    const { ctx } = this;
+    const w = body.bounds.max.x - body.bounds.min.x;
+    const h = body.bounds.max.y - body.bounds.min.y;
+    const hw = w / 2, hh = h / 2;
+    ctx.save();
+    ctx.translate(body.position.x, body.position.y);
+    ctx.rotate(body.angle);
+    withHardShadow(ctx, () => {
+      ctx.beginPath();
+      ctx.rect(-hw, -hh, w, h);
+    }, fill);
+    if (dashed) {
+      ctx.strokeStyle = DOODLE_INK;
+      ctx.lineWidth   = DOODLE_STROKE_PX;
+      ctx.setLineDash([8, 6]);
+      ctx.strokeRect(-hw, -hh, w, h);
+      ctx.setLineDash([]);
     }
     ctx.restore();
   }

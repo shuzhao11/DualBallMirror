@@ -38,3 +38,7 @@ export const DOODLE_SHADOW_PX   = 4;
 
 /** 球体涂鸦风歪斜角（度） */
 export const DOODLE_BALL_TILT_DEG = 3;
+
+/** 响应方块色（褐色 3）和触发方块色（粉色 4） */
+export const DOODLE_REACTIVE_BLOCK = '#8B4513';
+export const DOODLE_TRIGGER_BLOCK  = '#F472B6';

@@ -30,6 +30,24 @@ export interface ObstacleConfig {
   };
 }
 
+/**
+ * 触发-响应方块对（粉色 4 + 褐色 3）。
+ * 球进入触发区后，响应方块按球位移的反方向以格子步长移动；
+ * 球离开触发区后响应方块回到初始位置。
+ */
+export interface ReactiveBlockPairConfig {
+  /** 粉色触发区（4），sensor 体，逻辑坐标 */
+  trigger:  { position: Vec2; width: number; height: number };
+  /** 褐色响应方块（3），solid 体，逻辑坐标 */
+  reactive: { position: Vec2; width: number; height: number };
+  /** 每步移动量（逻辑单位），默认 80（一格） */
+  cellSize?: number;
+  /** X 轴允许偏移的最大格数（±），默认 3 */
+  maxShiftX?: number;
+  /** Y 轴允许偏移的最大格数（±），默认 3 */
+  maxShiftY?: number;
+}
+
 export interface LevelConfig {
   requireBothBalls: boolean;
   /** 球在洞内停留满足通关的最短时间（秒） */
@@ -40,6 +58,8 @@ export interface LevelConfig {
   obstacles: ObstacleConfig[];
   blueSpawn: Vec2;
   yellowSpawn: Vec2;
+  /** 触发-响应方块对（可选，用于 level4+ 的联动机关） */
+  reactiveBlockPairs?: ReactiveBlockPairConfig[];
 }
 
 export interface LevelMeta {

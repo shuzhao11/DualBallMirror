@@ -20,7 +20,7 @@
 // Border walls (top/bottom/left/right) are added automatically by LevelLoader
 // and must NOT be included in the map string.
 
-import type { LevelConfig, ObstacleConfig, Vec2, HoleConfig } from './types';
+import type { LevelConfig, ObstacleConfig, Vec2, HoleConfig, ReactiveBlockPairConfig } from './types';
 
 export interface MapOptions {
   /** Dwell time (seconds) for holes — default 0.3 */
@@ -33,6 +33,12 @@ export interface MapOptions {
   rotateSpeed?: number;
   /** Extra obstacles not expressible in the grid (e.g. moving obstacles) */
   extraObstacles?: ObstacleConfig[];
+  /**
+   * Per-pair overrides for '3'/'4' reactive block pairs (in declaration order).
+   * maxShiftX / maxShiftY limit how many cells 3 can slide in ±X and ±Y.
+   * Use this to keep 3 inside empty cells (away from walls and screen edges).
+   */
+  reactiveBlockOverrides?: Array<{ maxShiftX?: number; maxShiftY?: number }>;
 }
 
 export function parseMap(mapStr: string, opts: MapOptions = {}): LevelConfig {
@@ -59,6 +65,8 @@ export function parseMap(mapStr: string, opts: MapOptions = {}): LevelConfig {
     new Array<boolean>(numCols).fill(false),
   );
   const holeRadius = opts.holeRadius ?? 40;
+  const triggerPositions: Vec2[] = [];
+  const reactivePositions: Vec2[] = [];
 
   for (let r = 0; r < numRows; r++) {
     const row = rows[r] ?? '';
@@ -72,9 +80,27 @@ export function parseMap(mapStr: string, opts: MapOptions = {}): LevelConfig {
         case 'z': holes.push({ position: toLogical(c, r), radius: holeRadius, requireBlue: true,  requireYellow: false }); break;
         // uppercase Z or B → both-balls hole
         case 'Z': case 'B': holes.push({ position: toLogical(c, r), radius: holeRadius, requireBlue: true, requireYellow: true }); break;
+        // '4' = pink trigger block，'3' = brown reactive block
+        case '4': triggerPositions.push(toLogical(c, r)); break;
+        case '3': reactivePositions.push(toLogical(c, r)); break;
       }
     }
   }
+
+  // 配对触发-响应方块（按出现顺序 1:1 配对）
+  const reactiveBlockPairs: ReactiveBlockPairConfig[] = triggerPositions.map((tPos, i) => {
+    if (i >= reactivePositions.length) {
+      console.warn('[parseMap] trigger block (4) has no matching reactive block (3)');
+    }
+    const override = opts.reactiveBlockOverrides?.[i] ?? {};
+    return {
+      trigger:  { position: tPos,                    width: cellW, height: cellH },
+      reactive: { position: reactivePositions[i] ?? tPos, width: cellW, height: cellH },
+      cellSize:  Math.min(cellW, cellH),
+      maxShiftX: override.maxShiftX ?? 3,
+      maxShiftY: override.maxShiftY ?? 3,
+    };
+  });
 
   const obstacles = [
     ...mergeWallRects(wallGrid, numRows, numCols, cellW, cellH),
@@ -93,6 +119,7 @@ export function parseMap(mapStr: string, opts: MapOptions = {}): LevelConfig {
     obstacles,
     blueSpawn,
     yellowSpawn,
+    ...(reactiveBlockPairs.length > 0 ? { reactiveBlockPairs } : {}),
   };
 }
 

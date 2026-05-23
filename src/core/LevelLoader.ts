@@ -5,6 +5,7 @@ import { HoleDetector } from '../ball/HoleDetector';
 import { BallController } from '../ball/BallController';
 import { MovingObstacle } from '../obstacles/MovingObstacle';
 import type { MovingObstacleConfig } from '../obstacles/MovingObstacle';
+import { ReactiveBlockSystem } from '../obstacles/ReactiveBlockSystem';
 import {
   CANVAS_WIDTH,
   MAP_TOP, MAP_HEIGHT, CENTER_X, CENTER_Y, BALL_RADIUS,
@@ -16,14 +17,15 @@ export function logicToScreen(v: Vec2): { x: number; y: number } {
 }
 
 export interface LevelObjects {
-  engine:          Matter.Engine;
-  blueBody:        Matter.Body;
-  yellowBody:      Matter.Body;
-  wallBodies:      Matter.Body[];
-  obstacleBodies:  Matter.Body[];
-  detectors:       HoleDetector[];
-  movingObstacles: MovingObstacle[];
-  ballController:  BallController;
+  engine:               Matter.Engine;
+  blueBody:             Matter.Body;
+  yellowBody:           Matter.Body;
+  wallBodies:           Matter.Body[];
+  obstacleBodies:       Matter.Body[];
+  detectors:            HoleDetector[];
+  movingObstacles:      MovingObstacle[];
+  ballController:       BallController;
+  reactiveBlockSystems: ReactiveBlockSystem[];
 }
 
 const WALL_T = 20;  // 边界墙厚度（px）
@@ -115,11 +117,29 @@ export class LevelLoader {
       }
     }
 
+    // 触发-响应方块系统（粉色4 + 褐色3）
+    const reactiveBlockSystems: ReactiveBlockSystem[] = [];
+    for (const pair of (cfg.reactiveBlockPairs ?? [])) {
+      const tSp = logicToScreen(pair.trigger.position);
+      const rSp = logicToScreen(pair.reactive.position);
+      const rbs = new ReactiveBlockSystem(
+        tSp, pair.trigger.width,  pair.trigger.height,
+        rSp, pair.reactive.width, pair.reactive.height,
+        pair.cellSize  ?? 80,
+        pair.maxShiftX ?? 3,
+        pair.maxShiftY ?? 3,
+      );
+      reactiveBlockSystems.push(rbs);
+    }
+
     // 将所有物理体加入世界
     Matter.Composite.add(engine.world, [
       blueBody, yellowBody,
       ...wallBodies,
       ...obstacleBodies,
+      ...reactiveBlockSystems.reduce<Matter.Body[]>(
+        (acc, rbs) => { acc.push(rbs.getTriggerBody(), rbs.getReactiveBody()); return acc; }, [],
+      ),
     ]);
 
     // 洞口检测器（LevelConfig 逻辑坐标 -> 屏幕坐标）
@@ -135,7 +155,7 @@ export class LevelLoader {
 
     const ballController = new BallController(blueBody, yellowBody);
 
-    return { engine, blueBody, yellowBody, wallBodies, obstacleBodies, detectors, movingObstacles, ballController };
+    return { engine, blueBody, yellowBody, wallBodies, obstacleBodies, detectors, movingObstacles, ballController, reactiveBlockSystems };
   }
 
   /**
