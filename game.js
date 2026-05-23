@@ -1,4 +1,6356 @@
-"use strict";(()=>{var Et=Object.create;var ht=Object.defineProperty;var bt=Object.getOwnPropertyDescriptor;var Dt=Object.getOwnPropertyNames;var It=Object.getPrototypeOf,Ot=Object.prototype.hasOwnProperty;var Rt=(B,d)=>()=>(d||B((d={exports:{}}).exports,d),d.exports);var Vt=(B,d,o,e)=>{if(d&&typeof d=="object"||typeof d=="function")for(let n of Dt(d))!Ot.call(B,n)&&n!==o&&ht(B,n,{get:()=>d[n],enumerable:!(e=bt(d,n))||e.enumerable});return B};var Ee=(B,d,o)=>(o=B!=null?Et(It(B)):{},Vt(d||!B||!B.__esModule?ht(o,"default",{value:B,enumerable:!0}):o,B));var Pe=Rt((we,ze)=>{(function(d,o){typeof we=="object"&&typeof ze=="object"?ze.exports=o():typeof define=="function"&&define.amd?define("Matter",[],o):typeof we=="object"?we.Matter=o():d.Matter=o()})(we,function(){return function(B){var d={};function o(e){if(d[e])return d[e].exports;var n=d[e]={i:e,l:!1,exports:{}};return B[e].call(n.exports,n,n.exports,o),n.l=!0,n.exports}return o.m=B,o.c=d,o.d=function(e,n,r){o.o(e,n)||Object.defineProperty(e,n,{enumerable:!0,get:r})},o.r=function(e){typeof Symbol!="undefined"&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},o.t=function(e,n){if(n&1&&(e=o(e)),n&8||n&4&&typeof e=="object"&&e&&e.__esModule)return e;var r=Object.create(null);if(o.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),n&2&&typeof e!="string")for(var i in e)o.d(r,i,function(u){return e[u]}.bind(null,i));return r},o.n=function(e){var n=e&&e.__esModule?function(){return e.default}:function(){return e};return o.d(n,"a",n),n},o.o=function(e,n){return Object.prototype.hasOwnProperty.call(e,n)},o.p="",o(o.s=20)}([function(B,d){var o={};B.exports=o,function(){o._baseDelta=1e3/60,o._nextId=0,o._seed=0,o._nowStartTime=+new Date,o._warnedOnce={},o._decomp=null,o.extend=function(n,r){var i,u,f;typeof r=="boolean"?(i=2,f=r):(i=1,f=!0);for(var v=i;v<arguments.length;v++){var l=arguments[v];if(l)for(var t in l)f&&l[t]&&l[t].constructor===Object&&(!n[t]||n[t].constructor===Object)?(n[t]=n[t]||{},o.extend(n[t],f,l[t])):n[t]=l[t]}return n},o.clone=function(n,r){return o.extend({},r,n)},o.keys=function(n){if(Object.keys)return Object.keys(n);var r=[];for(var i in n)r.push(i);return r},o.values=function(n){var r=[];if(Object.keys){for(var i=Object.keys(n),u=0;u<i.length;u++)r.push(n[i[u]]);return r}for(var f in n)r.push(n[f]);return r},o.get=function(n,r,i,u){r=r.split(".").slice(i,u);for(var f=0;f<r.length;f+=1)n=n[r[f]];return n},o.set=function(n,r,i,u,f){var v=r.split(".").slice(u,f);return o.get(n,r,0,-1)[v[v.length-1]]=i,i},o.shuffle=function(n){for(var r=n.length-1;r>0;r--){var i=Math.floor(o.random()*(r+1)),u=n[r];n[r]=n[i],n[i]=u}return n},o.choose=function(n){return n[Math.floor(o.random()*n.length)]},o.isElement=function(n){return typeof HTMLElement!="undefined"?n instanceof HTMLElement:!!(n&&n.nodeType&&n.nodeName)},o.isArray=function(n){return Object.prototype.toString.call(n)==="[object Array]"},o.isFunction=function(n){return typeof n=="function"},o.isPlainObject=function(n){return typeof n=="object"&&n.constructor===Object},o.isString=function(n){return toString.call(n)==="[object String]"},o.clamp=function(n,r,i){return n<r?r:n>i?i:n},o.sign=function(n){return n<0?-1:1},o.now=function(){if(typeof window!="undefined"&&window.performance){if(window.performance.now)return window.performance.now();if(window.performance.webkitNow)return window.performance.webkitNow()}return Date.now?Date.now():new Date-o._nowStartTime},o.random=function(n,r){return n=typeof n!="undefined"?n:0,r=typeof r!="undefined"?r:1,n+e()*(r-n)};var e=function(){return o._seed=(o._seed*9301+49297)%233280,o._seed/233280};o.colorToNumber=function(n){return n=n.replace("#",""),n.length==3&&(n=n.charAt(0)+n.charAt(0)+n.charAt(1)+n.charAt(1)+n.charAt(2)+n.charAt(2)),parseInt(n,16)},o.logLevel=1,o.log=function(){console&&o.logLevel>0&&o.logLevel<=3&&console.log.apply(console,["matter-js:"].concat(Array.prototype.slice.call(arguments)))},o.info=function(){console&&o.logLevel>0&&o.logLevel<=2&&console.info.apply(console,["matter-js:"].concat(Array.prototype.slice.call(arguments)))},o.warn=function(){console&&o.logLevel>0&&o.logLevel<=3&&console.warn.apply(console,["matter-js:"].concat(Array.prototype.slice.call(arguments)))},o.warnOnce=function(){var n=Array.prototype.slice.call(arguments).join(" ");o._warnedOnce[n]||(o.warn(n),o._warnedOnce[n]=!0)},o.deprecated=function(n,r,i){n[r]=o.chain(function(){o.warnOnce("\u{1F505} deprecated \u{1F505}",i)},n[r])},o.nextId=function(){return o._nextId++},o.indexOf=function(n,r){if(n.indexOf)return n.indexOf(r);for(var i=0;i<n.length;i++)if(n[i]===r)return i;return-1},o.map=function(n,r){if(n.map)return n.map(r);for(var i=[],u=0;u<n.length;u+=1)i.push(r(n[u]));return i},o.topologicalSort=function(n){var r=[],i=[],u=[];for(var f in n)!i[f]&&!u[f]&&o._topologicalSort(f,i,u,n,r);return r},o._topologicalSort=function(n,r,i,u,f){var v=u[n]||[];i[n]=!0;for(var l=0;l<v.length;l+=1){var t=v[l];i[t]||r[t]||o._topologicalSort(t,r,i,u,f)}i[n]=!1,r[n]=!0,f.push(n)},o.chain=function(){for(var n=[],r=0;r<arguments.length;r+=1){var i=arguments[r];i._chained?n.push.apply(n,i._chained):n.push(i)}var u=function(){for(var f,v=new Array(arguments.length),l=0,t=arguments.length;l<t;l++)v[l]=arguments[l];for(l=0;l<n.length;l+=1){var s=n[l].apply(f,v);typeof s!="undefined"&&(f=s)}return f};return u._chained=n,u},o.chainPathBefore=function(n,r,i){return o.set(n,r,o.chain(i,o.get(n,r)))},o.chainPathAfter=function(n,r,i){return o.set(n,r,o.chain(o.get(n,r),i))},o.setDecomp=function(n){o._decomp=n},o.getDecomp=function(){var n=o._decomp;try{!n&&typeof window!="undefined"&&(n=window.decomp),!n&&typeof global!="undefined"&&(n=global.decomp)}catch(r){n=null}return n}}()},function(B,d){var o={};B.exports=o,function(){o.create=function(e){var n={min:{x:0,y:0},max:{x:0,y:0}};return e&&o.update(n,e),n},o.update=function(e,n,r){e.min.x=1/0,e.max.x=-1/0,e.min.y=1/0,e.max.y=-1/0;for(var i=0;i<n.length;i++){var u=n[i];u.x>e.max.x&&(e.max.x=u.x),u.x<e.min.x&&(e.min.x=u.x),u.y>e.max.y&&(e.max.y=u.y),u.y<e.min.y&&(e.min.y=u.y)}r&&(r.x>0?e.max.x+=r.x:e.min.x+=r.x,r.y>0?e.max.y+=r.y:e.min.y+=r.y)},o.contains=function(e,n){return n.x>=e.min.x&&n.x<=e.max.x&&n.y>=e.min.y&&n.y<=e.max.y},o.overlaps=function(e,n){return e.min.x<=n.max.x&&e.max.x>=n.min.x&&e.max.y>=n.min.y&&e.min.y<=n.max.y},o.translate=function(e,n){e.min.x+=n.x,e.max.x+=n.x,e.min.y+=n.y,e.max.y+=n.y},o.shift=function(e,n){var r=e.max.x-e.min.x,i=e.max.y-e.min.y;e.min.x=n.x,e.max.x=n.x+r,e.min.y=n.y,e.max.y=n.y+i}}()},function(B,d){var o={};B.exports=o,function(){o.create=function(e,n){return{x:e||0,y:n||0}},o.clone=function(e){return{x:e.x,y:e.y}},o.magnitude=function(e){return Math.sqrt(e.x*e.x+e.y*e.y)},o.magnitudeSquared=function(e){return e.x*e.x+e.y*e.y},o.rotate=function(e,n,r){var i=Math.cos(n),u=Math.sin(n);r||(r={});var f=e.x*i-e.y*u;return r.y=e.x*u+e.y*i,r.x=f,r},o.rotateAbout=function(e,n,r,i){var u=Math.cos(n),f=Math.sin(n);i||(i={});var v=r.x+((e.x-r.x)*u-(e.y-r.y)*f);return i.y=r.y+((e.x-r.x)*f+(e.y-r.y)*u),i.x=v,i},o.normalise=function(e){var n=o.magnitude(e);return n===0?{x:0,y:0}:{x:e.x/n,y:e.y/n}},o.dot=function(e,n){return e.x*n.x+e.y*n.y},o.cross=function(e,n){return e.x*n.y-e.y*n.x},o.cross3=function(e,n,r){return(n.x-e.x)*(r.y-e.y)-(n.y-e.y)*(r.x-e.x)},o.add=function(e,n,r){return r||(r={}),r.x=e.x+n.x,r.y=e.y+n.y,r},o.sub=function(e,n,r){return r||(r={}),r.x=e.x-n.x,r.y=e.y-n.y,r},o.mult=function(e,n){return{x:e.x*n,y:e.y*n}},o.div=function(e,n){return{x:e.x/n,y:e.y/n}},o.perp=function(e,n){return n=n===!0?-1:1,{x:n*-e.y,y:n*e.x}},o.neg=function(e){return{x:-e.x,y:-e.y}},o.angle=function(e,n){return Math.atan2(n.y-e.y,n.x-e.x)},o._temp=[o.create(),o.create(),o.create(),o.create(),o.create(),o.create()]}()},function(B,d,o){var e={};B.exports=e;var n=o(2),r=o(0);(function(){e.create=function(i,u){for(var f=[],v=0;v<i.length;v++){var l=i[v],t={x:l.x,y:l.y,index:v,body:u,isInternal:!1};f.push(t)}return f},e.fromPath=function(i,u){var f=/L?\s*([-\d.e]+)[\s,]*([-\d.e]+)*/ig,v=[];return i.replace(f,function(l,t,s){v.push({x:parseFloat(t),y:parseFloat(s)})}),e.create(v,u)},e.centre=function(i){for(var u=e.area(i,!0),f={x:0,y:0},v,l,t,s=0;s<i.length;s++)t=(s+1)%i.length,v=n.cross(i[s],i[t]),l=n.mult(n.add(i[s],i[t]),v),f=n.add(f,l);return n.div(f,6*u)},e.mean=function(i){for(var u={x:0,y:0},f=0;f<i.length;f++)u.x+=i[f].x,u.y+=i[f].y;return n.div(u,i.length)},e.area=function(i,u){for(var f=0,v=i.length-1,l=0;l<i.length;l++)f+=(i[v].x-i[l].x)*(i[v].y+i[l].y),v=l;return u?f/2:Math.abs(f)/2},e.inertia=function(i,u){for(var f=0,v=0,l=i,t,s,a=0;a<l.length;a++)s=(a+1)%l.length,t=Math.abs(n.cross(l[s],l[a])),f+=t*(n.dot(l[s],l[s])+n.dot(l[s],l[a])+n.dot(l[a],l[a])),v+=t;return u/6*(f/v)},e.translate=function(i,u,f){f=typeof f!="undefined"?f:1;var v=i.length,l=u.x*f,t=u.y*f,s;for(s=0;s<v;s++)i[s].x+=l,i[s].y+=t;return i},e.rotate=function(i,u,f){if(u!==0){var v=Math.cos(u),l=Math.sin(u),t=f.x,s=f.y,a=i.length,c,p,w,y;for(y=0;y<a;y++)c=i[y],p=c.x-t,w=c.y-s,c.x=t+(p*v-w*l),c.y=s+(p*l+w*v);return i}},e.contains=function(i,u){for(var f=u.x,v=u.y,l=i.length,t=i[l-1],s,a=0;a<l;a++){if(s=i[a],(f-t.x)*(s.y-t.y)+(v-t.y)*(t.x-s.x)>0)return!1;t=s}return!0},e.scale=function(i,u,f,v){if(u===1&&f===1)return i;v=v||e.centre(i);for(var l,t,s=0;s<i.length;s++)l=i[s],t=n.sub(l,v),i[s].x=v.x+t.x*u,i[s].y=v.y+t.y*f;return i},e.chamfer=function(i,u,f,v,l){typeof u=="number"?u=[u]:u=u||[8],f=typeof f!="undefined"?f:-1,v=v||2,l=l||14;for(var t=[],s=0;s<i.length;s++){var a=i[s-1>=0?s-1:i.length-1],c=i[s],p=i[(s+1)%i.length],w=u[s<u.length?s:u.length-1];if(w===0){t.push(c);continue}var y=n.normalise({x:c.y-a.y,y:a.x-c.x}),S=n.normalise({x:p.y-c.y,y:c.x-p.x}),h=Math.sqrt(2*Math.pow(w,2)),g=n.mult(r.clone(y),w),x=n.normalise(n.mult(n.add(y,S),.5)),m=n.sub(c,n.mult(x,h)),P=f;f===-1&&(P=Math.pow(w,.32)*1.75),P=r.clamp(P,v,l),P%2===1&&(P+=1);for(var M=Math.acos(n.dot(y,S)),C=M/P,T=0;T<P;T++)t.push(n.add(n.rotate(g,C*T),m))}return t},e.clockwiseSort=function(i){var u=e.mean(i);return i.sort(function(f,v){return n.angle(u,f)-n.angle(u,v)}),i},e.isConvex=function(i){var u=0,f=i.length,v,l,t,s;if(f<3)return null;for(v=0;v<f;v++)if(l=(v+1)%f,t=(v+2)%f,s=(i[l].x-i[v].x)*(i[t].y-i[l].y),s-=(i[l].y-i[v].y)*(i[t].x-i[l].x),s<0?u|=1:s>0&&(u|=2),u===3)return!1;return u!==0?!0:null},e.hull=function(i){var u=[],f=[],v,l;for(i=i.slice(0),i.sort(function(t,s){var a=t.x-s.x;return a!==0?a:t.y-s.y}),l=0;l<i.length;l+=1){for(v=i[l];f.length>=2&&n.cross3(f[f.length-2],f[f.length-1],v)<=0;)f.pop();f.push(v)}for(l=i.length-1;l>=0;l-=1){for(v=i[l];u.length>=2&&n.cross3(u[u.length-2],u[u.length-1],v)<=0;)u.pop();u.push(v)}return u.pop(),f.pop(),u.concat(f)}})()},function(B,d,o){var e={};B.exports=e;var n=o(3),r=o(2),i=o(7),u=o(0),f=o(1),v=o(11);(function(){e._timeCorrection=!0,e._inertiaScale=4,e._nextCollidingGroupId=1,e._nextNonCollidingGroupId=-1,e._nextCategory=1,e._baseDelta=1e3/60,e.create=function(t){var s={id:u.nextId(),type:"body",label:"Body",parts:[],plugin:{},angle:0,vertices:n.fromPath("L 0 0 L 40 0 L 40 40 L 0 40"),position:{x:0,y:0},force:{x:0,y:0},torque:0,positionImpulse:{x:0,y:0},constraintImpulse:{x:0,y:0,angle:0},totalContacts:0,speed:0,angularSpeed:0,velocity:{x:0,y:0},angularVelocity:0,isSensor:!1,isStatic:!1,isSleeping:!1,motion:0,sleepThreshold:60,density:.001,restitution:0,friction:.1,frictionStatic:.5,frictionAir:.01,collisionFilter:{category:1,mask:4294967295,group:0},slop:.05,timeScale:1,render:{visible:!0,opacity:1,strokeStyle:null,fillStyle:null,lineWidth:null,sprite:{xScale:1,yScale:1,xOffset:0,yOffset:0}},events:null,bounds:null,chamfer:null,circleRadius:0,positionPrev:null,anglePrev:0,parent:null,axes:null,area:0,mass:0,inertia:0,deltaTime:16.666666666666668,_original:null},a=u.extend(s,t);return l(a,t),a},e.nextGroup=function(t){return t?e._nextNonCollidingGroupId--:e._nextCollidingGroupId++},e.nextCategory=function(){return e._nextCategory=e._nextCategory<<1,e._nextCategory};var l=function(t,s){s=s||{},e.set(t,{bounds:t.bounds||f.create(t.vertices),positionPrev:t.positionPrev||r.clone(t.position),anglePrev:t.anglePrev||t.angle,vertices:t.vertices,parts:t.parts||[t],isStatic:t.isStatic,isSleeping:t.isSleeping,parent:t.parent||t}),n.rotate(t.vertices,t.angle,t.position),v.rotate(t.axes,t.angle),f.update(t.bounds,t.vertices,t.velocity),e.set(t,{axes:s.axes||t.axes,area:s.area||t.area,mass:s.mass||t.mass,inertia:s.inertia||t.inertia});var a=t.isStatic?"#14151f":u.choose(["#f19648","#f5d259","#f55a3c","#063e7b","#ececd1"]),c=t.isStatic?"#555":"#ccc",p=t.isStatic&&t.render.fillStyle===null?1:0;t.render.fillStyle=t.render.fillStyle||a,t.render.strokeStyle=t.render.strokeStyle||c,t.render.lineWidth=t.render.lineWidth||p,t.render.sprite.xOffset+=-(t.bounds.min.x-t.position.x)/(t.bounds.max.x-t.bounds.min.x),t.render.sprite.yOffset+=-(t.bounds.min.y-t.position.y)/(t.bounds.max.y-t.bounds.min.y)};e.set=function(t,s,a){var c;typeof s=="string"&&(c=s,s={},s[c]=a);for(c in s)if(Object.prototype.hasOwnProperty.call(s,c))switch(a=s[c],c){case"isStatic":e.setStatic(t,a);break;case"isSleeping":i.set(t,a);break;case"mass":e.setMass(t,a);break;case"density":e.setDensity(t,a);break;case"inertia":e.setInertia(t,a);break;case"vertices":e.setVertices(t,a);break;case"position":e.setPosition(t,a);break;case"angle":e.setAngle(t,a);break;case"velocity":e.setVelocity(t,a);break;case"angularVelocity":e.setAngularVelocity(t,a);break;case"speed":e.setSpeed(t,a);break;case"angularSpeed":e.setAngularSpeed(t,a);break;case"parts":e.setParts(t,a);break;case"centre":e.setCentre(t,a);break;default:t[c]=a}},e.setStatic=function(t,s){for(var a=0;a<t.parts.length;a++){var c=t.parts[a];c.isStatic=s,s?(c._original={restitution:c.restitution,friction:c.friction,mass:c.mass,inertia:c.inertia,density:c.density,inverseMass:c.inverseMass,inverseInertia:c.inverseInertia},c.restitution=0,c.friction=1,c.mass=c.inertia=c.density=1/0,c.inverseMass=c.inverseInertia=0,c.positionPrev.x=c.position.x,c.positionPrev.y=c.position.y,c.anglePrev=c.angle,c.angularVelocity=0,c.speed=0,c.angularSpeed=0,c.motion=0):c._original&&(c.restitution=c._original.restitution,c.friction=c._original.friction,c.mass=c._original.mass,c.inertia=c._original.inertia,c.density=c._original.density,c.inverseMass=c._original.inverseMass,c.inverseInertia=c._original.inverseInertia,c._original=null)}},e.setMass=function(t,s){var a=t.inertia/(t.mass/6);t.inertia=a*(s/6),t.inverseInertia=1/t.inertia,t.mass=s,t.inverseMass=1/t.mass,t.density=t.mass/t.area},e.setDensity=function(t,s){e.setMass(t,s*t.area),t.density=s},e.setInertia=function(t,s){t.inertia=s,t.inverseInertia=1/t.inertia},e.setVertices=function(t,s){s[0].body===t?t.vertices=s:t.vertices=n.create(s,t),t.axes=v.fromVertices(t.vertices),t.area=n.area(t.vertices),e.setMass(t,t.density*t.area);var a=n.centre(t.vertices);n.translate(t.vertices,a,-1),e.setInertia(t,e._inertiaScale*n.inertia(t.vertices,t.mass)),n.translate(t.vertices,t.position),f.update(t.bounds,t.vertices,t.velocity)},e.setParts=function(t,s,a){var c;for(s=s.slice(0),t.parts.length=0,t.parts.push(t),t.parent=t,c=0;c<s.length;c++){var p=s[c];p!==t&&(p.parent=t,t.parts.push(p))}if(t.parts.length!==1){if(a=typeof a!="undefined"?a:!0,a){var w=[];for(c=0;c<s.length;c++)w=w.concat(s[c].vertices);n.clockwiseSort(w);var y=n.hull(w),S=n.centre(y);e.setVertices(t,y),n.translate(t.vertices,S)}var h=e._totalProperties(t);t.area=h.area,t.parent=t,t.position.x=h.centre.x,t.position.y=h.centre.y,t.positionPrev.x=h.centre.x,t.positionPrev.y=h.centre.y,e.setMass(t,h.mass),e.setInertia(t,h.inertia),e.setPosition(t,h.centre)}},e.setCentre=function(t,s,a){a?(t.positionPrev.x+=s.x,t.positionPrev.y+=s.y,t.position.x+=s.x,t.position.y+=s.y):(t.positionPrev.x=s.x-(t.position.x-t.positionPrev.x),t.positionPrev.y=s.y-(t.position.y-t.positionPrev.y),t.position.x=s.x,t.position.y=s.y)},e.setPosition=function(t,s,a){var c=r.sub(s,t.position);a?(t.positionPrev.x=t.position.x,t.positionPrev.y=t.position.y,t.velocity.x=c.x,t.velocity.y=c.y,t.speed=r.magnitude(c)):(t.positionPrev.x+=c.x,t.positionPrev.y+=c.y);for(var p=0;p<t.parts.length;p++){var w=t.parts[p];w.position.x+=c.x,w.position.y+=c.y,n.translate(w.vertices,c),f.update(w.bounds,w.vertices,t.velocity)}},e.setAngle=function(t,s,a){var c=s-t.angle;a?(t.anglePrev=t.angle,t.angularVelocity=c,t.angularSpeed=Math.abs(c)):t.anglePrev+=c;for(var p=0;p<t.parts.length;p++){var w=t.parts[p];w.angle+=c,n.rotate(w.vertices,c,t.position),v.rotate(w.axes,c),f.update(w.bounds,w.vertices,t.velocity),p>0&&r.rotateAbout(w.position,c,t.position,w.position)}},e.setVelocity=function(t,s){var a=t.deltaTime/e._baseDelta;t.positionPrev.x=t.position.x-s.x*a,t.positionPrev.y=t.position.y-s.y*a,t.velocity.x=(t.position.x-t.positionPrev.x)/a,t.velocity.y=(t.position.y-t.positionPrev.y)/a,t.speed=r.magnitude(t.velocity)},e.getVelocity=function(t){var s=e._baseDelta/t.deltaTime;return{x:(t.position.x-t.positionPrev.x)*s,y:(t.position.y-t.positionPrev.y)*s}},e.getSpeed=function(t){return r.magnitude(e.getVelocity(t))},e.setSpeed=function(t,s){e.setVelocity(t,r.mult(r.normalise(e.getVelocity(t)),s))},e.setAngularVelocity=function(t,s){var a=t.deltaTime/e._baseDelta;t.anglePrev=t.angle-s*a,t.angularVelocity=(t.angle-t.anglePrev)/a,t.angularSpeed=Math.abs(t.angularVelocity)},e.getAngularVelocity=function(t){return(t.angle-t.anglePrev)*e._baseDelta/t.deltaTime},e.getAngularSpeed=function(t){return Math.abs(e.getAngularVelocity(t))},e.setAngularSpeed=function(t,s){e.setAngularVelocity(t,u.sign(e.getAngularVelocity(t))*s)},e.translate=function(t,s,a){e.setPosition(t,r.add(t.position,s),a)},e.rotate=function(t,s,a,c){if(!a)e.setAngle(t,t.angle+s,c);else{var p=Math.cos(s),w=Math.sin(s),y=t.position.x-a.x,S=t.position.y-a.y;e.setPosition(t,{x:a.x+(y*p-S*w),y:a.y+(y*w+S*p)},c),e.setAngle(t,t.angle+s,c)}},e.scale=function(t,s,a,c){var p=0,w=0;c=c||t.position;for(var y=0;y<t.parts.length;y++){var S=t.parts[y];n.scale(S.vertices,s,a,c),S.axes=v.fromVertices(S.vertices),S.area=n.area(S.vertices),e.setMass(S,t.density*S.area),n.translate(S.vertices,{x:-S.position.x,y:-S.position.y}),e.setInertia(S,e._inertiaScale*n.inertia(S.vertices,S.mass)),n.translate(S.vertices,{x:S.position.x,y:S.position.y}),y>0&&(p+=S.area,w+=S.inertia),S.position.x=c.x+(S.position.x-c.x)*s,S.position.y=c.y+(S.position.y-c.y)*a,f.update(S.bounds,S.vertices,t.velocity)}t.parts.length>1&&(t.area=p,t.isStatic||(e.setMass(t,t.density*p),e.setInertia(t,w))),t.circleRadius&&(s===a?t.circleRadius*=s:t.circleRadius=null)},e.update=function(t,s){s=(typeof s!="undefined"?s:1e3/60)*t.timeScale;var a=s*s,c=e._timeCorrection?s/(t.deltaTime||s):1,p=1-t.frictionAir*(s/u._baseDelta),w=(t.position.x-t.positionPrev.x)*c,y=(t.position.y-t.positionPrev.y)*c;t.velocity.x=w*p+t.force.x/t.mass*a,t.velocity.y=y*p+t.force.y/t.mass*a,t.positionPrev.x=t.position.x,t.positionPrev.y=t.position.y,t.position.x+=t.velocity.x,t.position.y+=t.velocity.y,t.deltaTime=s,t.angularVelocity=(t.angle-t.anglePrev)*p*c+t.torque/t.inertia*a,t.anglePrev=t.angle,t.angle+=t.angularVelocity;for(var S=0;S<t.parts.length;S++){var h=t.parts[S];n.translate(h.vertices,t.velocity),S>0&&(h.position.x+=t.velocity.x,h.position.y+=t.velocity.y),t.angularVelocity!==0&&(n.rotate(h.vertices,t.angularVelocity,t.position),v.rotate(h.axes,t.angularVelocity),S>0&&r.rotateAbout(h.position,t.angularVelocity,t.position,h.position)),f.update(h.bounds,h.vertices,t.velocity)}},e.updateVelocities=function(t){var s=e._baseDelta/t.deltaTime,a=t.velocity;a.x=(t.position.x-t.positionPrev.x)*s,a.y=(t.position.y-t.positionPrev.y)*s,t.speed=Math.sqrt(a.x*a.x+a.y*a.y),t.angularVelocity=(t.angle-t.anglePrev)*s,t.angularSpeed=Math.abs(t.angularVelocity)},e.applyForce=function(t,s,a){var c={x:s.x-t.position.x,y:s.y-t.position.y};t.force.x+=a.x,t.force.y+=a.y,t.torque+=c.x*a.y-c.y*a.x},e._totalProperties=function(t){for(var s={mass:0,area:0,inertia:0,centre:{x:0,y:0}},a=t.parts.length===1?0:1;a<t.parts.length;a++){var c=t.parts[a],p=c.mass!==1/0?c.mass:1;s.mass+=p,s.area+=c.area,s.inertia+=c.inertia,s.centre=r.add(s.centre,r.mult(c.position,p))}return s.centre=r.div(s.centre,s.mass),s}})()},function(B,d,o){var e={};B.exports=e;var n=o(0);(function(){e.on=function(r,i,u){for(var f=i.split(" "),v,l=0;l<f.length;l++)v=f[l],r.events=r.events||{},r.events[v]=r.events[v]||[],r.events[v].push(u);return u},e.off=function(r,i,u){if(!i){r.events={};return}typeof i=="function"&&(u=i,i=n.keys(r.events).join(" "));for(var f=i.split(" "),v=0;v<f.length;v++){var l=r.events[f[v]],t=[];if(u&&l)for(var s=0;s<l.length;s++)l[s]!==u&&t.push(l[s]);r.events[f[v]]=t}},e.trigger=function(r,i,u){var f,v,l,t,s=r.events;if(s&&n.keys(s).length>0){u||(u={}),f=i.split(" ");for(var a=0;a<f.length;a++)if(v=f[a],l=s[v],l){t=n.clone(u,!1),t.name=v,t.source=r;for(var c=0;c<l.length;c++)l[c].apply(r,[t])}}}})()},function(B,d,o){var e={};B.exports=e;var n=o(5),r=o(0),i=o(1),u=o(4);(function(){e.create=function(f){return r.extend({id:r.nextId(),type:"composite",parent:null,isModified:!1,bodies:[],constraints:[],composites:[],label:"Composite",plugin:{},cache:{allBodies:null,allConstraints:null,allComposites:null}},f)},e.setModified=function(f,v,l,t){if(f.isModified=v,v&&f.cache&&(f.cache.allBodies=null,f.cache.allConstraints=null,f.cache.allComposites=null),l&&f.parent&&e.setModified(f.parent,v,l,t),t)for(var s=0;s<f.composites.length;s++){var a=f.composites[s];e.setModified(a,v,l,t)}},e.add=function(f,v){var l=[].concat(v);n.trigger(f,"beforeAdd",{object:v});for(var t=0;t<l.length;t++){var s=l[t];switch(s.type){case"body":if(s.parent!==s){r.warn("Composite.add: skipped adding a compound body part (you must add its parent instead)");break}e.addBody(f,s);break;case"constraint":e.addConstraint(f,s);break;case"composite":e.addComposite(f,s);break;case"mouseConstraint":e.addConstraint(f,s.constraint);break}}return n.trigger(f,"afterAdd",{object:v}),f},e.remove=function(f,v,l){var t=[].concat(v);n.trigger(f,"beforeRemove",{object:v});for(var s=0;s<t.length;s++){var a=t[s];switch(a.type){case"body":e.removeBody(f,a,l);break;case"constraint":e.removeConstraint(f,a,l);break;case"composite":e.removeComposite(f,a,l);break;case"mouseConstraint":e.removeConstraint(f,a.constraint);break}}return n.trigger(f,"afterRemove",{object:v}),f},e.addComposite=function(f,v){return f.composites.push(v),v.parent=f,e.setModified(f,!0,!0,!1),f},e.removeComposite=function(f,v,l){var t=r.indexOf(f.composites,v);if(t!==-1&&e.removeCompositeAt(f,t),l)for(var s=0;s<f.composites.length;s++)e.removeComposite(f.composites[s],v,!0);return f},e.removeCompositeAt=function(f,v){return f.composites.splice(v,1),e.setModified(f,!0,!0,!1),f},e.addBody=function(f,v){return f.bodies.push(v),e.setModified(f,!0,!0,!1),f},e.removeBody=function(f,v,l){var t=r.indexOf(f.bodies,v);if(t!==-1&&e.removeBodyAt(f,t),l)for(var s=0;s<f.composites.length;s++)e.removeBody(f.composites[s],v,!0);return f},e.removeBodyAt=function(f,v){return f.bodies.splice(v,1),e.setModified(f,!0,!0,!1),f},e.addConstraint=function(f,v){return f.constraints.push(v),e.setModified(f,!0,!0,!1),f},e.removeConstraint=function(f,v,l){var t=r.indexOf(f.constraints,v);if(t!==-1&&e.removeConstraintAt(f,t),l)for(var s=0;s<f.composites.length;s++)e.removeConstraint(f.composites[s],v,!0);return f},e.removeConstraintAt=function(f,v){return f.constraints.splice(v,1),e.setModified(f,!0,!0,!1),f},e.clear=function(f,v,l){if(l)for(var t=0;t<f.composites.length;t++)e.clear(f.composites[t],v,!0);return v?f.bodies=f.bodies.filter(function(s){return s.isStatic}):f.bodies.length=0,f.constraints.length=0,f.composites.length=0,e.setModified(f,!0,!0,!1),f},e.allBodies=function(f){if(f.cache&&f.cache.allBodies)return f.cache.allBodies;for(var v=[].concat(f.bodies),l=0;l<f.composites.length;l++)v=v.concat(e.allBodies(f.composites[l]));return f.cache&&(f.cache.allBodies=v),v},e.allConstraints=function(f){if(f.cache&&f.cache.allConstraints)return f.cache.allConstraints;for(var v=[].concat(f.constraints),l=0;l<f.composites.length;l++)v=v.concat(e.allConstraints(f.composites[l]));return f.cache&&(f.cache.allConstraints=v),v},e.allComposites=function(f){if(f.cache&&f.cache.allComposites)return f.cache.allComposites;for(var v=[].concat(f.composites),l=0;l<f.composites.length;l++)v=v.concat(e.allComposites(f.composites[l]));return f.cache&&(f.cache.allComposites=v),v},e.get=function(f,v,l){var t,s;switch(l){case"body":t=e.allBodies(f);break;case"constraint":t=e.allConstraints(f);break;case"composite":t=e.allComposites(f).concat(f);break}return t?(s=t.filter(function(a){return a.id.toString()===v.toString()}),s.length===0?null:s[0]):null},e.move=function(f,v,l){return e.remove(f,v),e.add(l,v),f},e.rebase=function(f){for(var v=e.allBodies(f).concat(e.allConstraints(f)).concat(e.allComposites(f)),l=0;l<v.length;l++)v[l].id=r.nextId();return f},e.translate=function(f,v,l){for(var t=l?e.allBodies(f):f.bodies,s=0;s<t.length;s++)u.translate(t[s],v);return f},e.rotate=function(f,v,l,t){for(var s=Math.cos(v),a=Math.sin(v),c=t?e.allBodies(f):f.bodies,p=0;p<c.length;p++){var w=c[p],y=w.position.x-l.x,S=w.position.y-l.y;u.setPosition(w,{x:l.x+(y*s-S*a),y:l.y+(y*a+S*s)}),u.rotate(w,v)}return f},e.scale=function(f,v,l,t,s){for(var a=s?e.allBodies(f):f.bodies,c=0;c<a.length;c++){var p=a[c],w=p.position.x-t.x,y=p.position.y-t.y;u.setPosition(p,{x:t.x+w*v,y:t.y+y*l}),u.scale(p,v,l)}return f},e.bounds=function(f){for(var v=e.allBodies(f),l=[],t=0;t<v.length;t+=1){var s=v[t];l.push(s.bounds.min,s.bounds.max)}return i.create(l)}})()},function(B,d,o){var e={};B.exports=e;var n=o(4),r=o(5),i=o(0);(function(){e._motionWakeThreshold=.18,e._motionSleepThreshold=.08,e._minBias=.9,e.update=function(u,f){for(var v=f/i._baseDelta,l=e._motionSleepThreshold,t=0;t<u.length;t++){var s=u[t],a=n.getSpeed(s),c=n.getAngularSpeed(s),p=a*a+c*c;if(s.force.x!==0||s.force.y!==0){e.set(s,!1);continue}var w=Math.min(s.motion,p),y=Math.max(s.motion,p);s.motion=e._minBias*w+(1-e._minBias)*y,s.sleepThreshold>0&&s.motion<l?(s.sleepCounter+=1,s.sleepCounter>=s.sleepThreshold/v&&e.set(s,!0)):s.sleepCounter>0&&(s.sleepCounter-=1)}},e.afterCollisions=function(u){for(var f=e._motionSleepThreshold,v=0;v<u.length;v++){var l=u[v];if(l.isActive){var t=l.collision,s=t.bodyA.parent,a=t.bodyB.parent;if(!(s.isSleeping&&a.isSleeping||s.isStatic||a.isStatic)&&(s.isSleeping||a.isSleeping)){var c=s.isSleeping&&!s.isStatic?s:a,p=c===s?a:s;!c.isStatic&&p.motion>f&&e.set(c,!1)}}}},e.set=function(u,f){var v=u.isSleeping;f?(u.isSleeping=!0,u.sleepCounter=u.sleepThreshold,u.positionImpulse.x=0,u.positionImpulse.y=0,u.positionPrev.x=u.position.x,u.positionPrev.y=u.position.y,u.anglePrev=u.angle,u.speed=0,u.angularSpeed=0,u.motion=0,v||r.trigger(u,"sleepStart")):(u.isSleeping=!1,u.sleepCounter=0,v&&r.trigger(u,"sleepEnd"))}})()},function(B,d,o){var e={};B.exports=e;var n=o(3),r=o(9);(function(){var i=[],u={overlap:0,axis:null},f={overlap:0,axis:null};e.create=function(v,l){return{pair:null,collided:!1,bodyA:v,bodyB:l,parentA:v.parent,parentB:l.parent,depth:0,normal:{x:0,y:0},tangent:{x:0,y:0},penetration:{x:0,y:0},supports:[]}},e.collides=function(v,l,t){if(e._overlapAxes(u,v.vertices,l.vertices,v.axes),u.overlap<=0||(e._overlapAxes(f,l.vertices,v.vertices,l.axes),f.overlap<=0))return null;var s=t&&t.table[r.id(v,l)],a;s?a=s.collision:(a=e.create(v,l),a.collided=!0,a.bodyA=v.id<l.id?v:l,a.bodyB=v.id<l.id?l:v,a.parentA=a.bodyA.parent,a.parentB=a.bodyB.parent),v=a.bodyA,l=a.bodyB;var c;u.overlap<f.overlap?c=u:c=f;var p=a.normal,w=a.supports,y=c.axis,S=y.x,h=y.y;S*(l.position.x-v.position.x)+h*(l.position.y-v.position.y)<0?(p.x=S,p.y=h):(p.x=-S,p.y=-h),a.tangent.x=-p.y,a.tangent.y=p.x,a.depth=c.overlap,a.penetration.x=p.x*a.depth,a.penetration.y=p.y*a.depth;var g=e._findSupports(v,l,p,1),x=0;if(n.contains(v.vertices,g[0])&&(w[x++]=g[0]),n.contains(v.vertices,g[1])&&(w[x++]=g[1]),x<2){var m=e._findSupports(l,v,p,-1);n.contains(l.vertices,m[0])&&(w[x++]=m[0]),x<2&&n.contains(l.vertices,m[1])&&(w[x++]=m[1])}return x===0&&(w[x++]=g[0]),w.length=x,a},e._overlapAxes=function(v,l,t,s){var a=l.length,c=t.length,p=l[0].x,w=l[0].y,y=t[0].x,S=t[0].y,h=s.length,g=Number.MAX_VALUE,x=0,m,P,M,C,T,A;for(T=0;T<h;T++){var L=s[T],E=L.x,D=L.y,b=p*E+w*D,I=y*E+S*D,V=b,k=I;for(A=1;A<a;A+=1)C=l[A].x*E+l[A].y*D,C>V?V=C:C<b&&(b=C);for(A=1;A<c;A+=1)C=t[A].x*E+t[A].y*D,C>k?k=C:C<I&&(I=C);if(P=V-I,M=k-b,m=P<M?P:M,m<g&&(g=m,x=T,m<=0))break}v.axis=s[x],v.overlap=g},e._projectToAxis=function(v,l,t){for(var s=l[0].x*t.x+l[0].y*t.y,a=s,c=1;c<l.length;c+=1){var p=l[c].x*t.x+l[c].y*t.y;p>a?a=p:p<s&&(s=p)}v.min=s,v.max=a},e._findSupports=function(v,l,t,s){var a=l.vertices,c=a.length,p=v.position.x,w=v.position.y,y=t.x*s,S=t.y*s,h=Number.MAX_VALUE,g,x,m,P,M;for(M=0;M<c;M+=1)x=a[M],P=y*(p-x.x)+S*(w-x.y),P<h&&(h=P,g=x);return m=a[(c+g.index-1)%c],h=y*(p-m.x)+S*(w-m.y),x=a[(g.index+1)%c],y*(p-x.x)+S*(w-x.y)<h?(i[0]=g,i[1]=x,i):(i[0]=g,i[1]=m,i)}})()},function(B,d,o){var e={};B.exports=e;var n=o(16);(function(){e.create=function(r,i){var u=r.bodyA,f=r.bodyB,v={id:e.id(u,f),bodyA:u,bodyB:f,collision:r,contacts:[],activeContacts:[],separation:0,isActive:!0,confirmedActive:!0,isSensor:u.isSensor||f.isSensor,timeCreated:i,timeUpdated:i,inverseMass:0,friction:0,frictionStatic:0,restitution:0,slop:0};return e.update(v,r,i),v},e.update=function(r,i,u){var f=r.contacts,v=i.supports,l=r.activeContacts,t=i.parentA,s=i.parentB,a=t.vertices.length;r.isActive=!0,r.timeUpdated=u,r.collision=i,r.separation=i.depth,r.inverseMass=t.inverseMass+s.inverseMass,r.friction=t.friction<s.friction?t.friction:s.friction,r.frictionStatic=t.frictionStatic>s.frictionStatic?t.frictionStatic:s.frictionStatic,r.restitution=t.restitution>s.restitution?t.restitution:s.restitution,r.slop=t.slop>s.slop?t.slop:s.slop,i.pair=r,l.length=0;for(var c=0;c<v.length;c++){var p=v[c],w=p.body===t?p.index:a+p.index,y=f[w];y?l.push(y):l.push(f[w]=n.create(p))}},e.setActive=function(r,i,u){i?(r.isActive=!0,r.timeUpdated=u):(r.isActive=!1,r.activeContacts.length=0)},e.id=function(r,i){return r.id<i.id?"A"+r.id+"B"+i.id:"A"+i.id+"B"+r.id}})()},function(B,d,o){var e={};B.exports=e;var n=o(3),r=o(2),i=o(7),u=o(1),f=o(11),v=o(0);(function(){e._warming=.4,e._torqueDampen=1,e._minLength=1e-6,e.create=function(l){var t=l;t.bodyA&&!t.pointA&&(t.pointA={x:0,y:0}),t.bodyB&&!t.pointB&&(t.pointB={x:0,y:0});var s=t.bodyA?r.add(t.bodyA.position,t.pointA):t.pointA,a=t.bodyB?r.add(t.bodyB.position,t.pointB):t.pointB,c=r.magnitude(r.sub(s,a));t.length=typeof t.length!="undefined"?t.length:c,t.id=t.id||v.nextId(),t.label=t.label||"Constraint",t.type="constraint",t.stiffness=t.stiffness||(t.length>0?1:.7),t.damping=t.damping||0,t.angularStiffness=t.angularStiffness||0,t.angleA=t.bodyA?t.bodyA.angle:t.angleA,t.angleB=t.bodyB?t.bodyB.angle:t.angleB,t.plugin={};var p={visible:!0,lineWidth:2,strokeStyle:"#ffffff",type:"line",anchors:!0};return t.length===0&&t.stiffness>.1?(p.type="pin",p.anchors=!1):t.stiffness<.9&&(p.type="spring"),t.render=v.extend(p,t.render),t},e.preSolveAll=function(l){for(var t=0;t<l.length;t+=1){var s=l[t],a=s.constraintImpulse;s.isStatic||a.x===0&&a.y===0&&a.angle===0||(s.position.x+=a.x,s.position.y+=a.y,s.angle+=a.angle)}},e.solveAll=function(l,t){for(var s=v.clamp(t/v._baseDelta,0,1),a=0;a<l.length;a+=1){var c=l[a],p=!c.bodyA||c.bodyA&&c.bodyA.isStatic,w=!c.bodyB||c.bodyB&&c.bodyB.isStatic;(p||w)&&e.solve(l[a],s)}for(a=0;a<l.length;a+=1)c=l[a],p=!c.bodyA||c.bodyA&&c.bodyA.isStatic,w=!c.bodyB||c.bodyB&&c.bodyB.isStatic,!p&&!w&&e.solve(l[a],s)},e.solve=function(l,t){var s=l.bodyA,a=l.bodyB,c=l.pointA,p=l.pointB;if(!(!s&&!a)){s&&!s.isStatic&&(r.rotate(c,s.angle-l.angleA,c),l.angleA=s.angle),a&&!a.isStatic&&(r.rotate(p,a.angle-l.angleB,p),l.angleB=a.angle);var w=c,y=p;if(s&&(w=r.add(s.position,c)),a&&(y=r.add(a.position,p)),!(!w||!y)){var S=r.sub(w,y),h=r.magnitude(S);h<e._minLength&&(h=e._minLength);var g=(h-l.length)/h,x=l.stiffness>=1||l.length===0,m=x?l.stiffness*t:l.stiffness*t*t,P=l.damping*t,M=r.mult(S,g*m),C=(s?s.inverseMass:0)+(a?a.inverseMass:0),T=(s?s.inverseInertia:0)+(a?a.inverseInertia:0),A=C+T,L,E,D,b,I;if(P>0){var V=r.create();D=r.div(S,h),I=r.sub(a&&r.sub(a.position,a.positionPrev)||V,s&&r.sub(s.position,s.positionPrev)||V),b=r.dot(D,I)}s&&!s.isStatic&&(E=s.inverseMass/C,s.constraintImpulse.x-=M.x*E,s.constraintImpulse.y-=M.y*E,s.position.x-=M.x*E,s.position.y-=M.y*E,P>0&&(s.positionPrev.x-=P*D.x*b*E,s.positionPrev.y-=P*D.y*b*E),L=r.cross(c,M)/A*e._torqueDampen*s.inverseInertia*(1-l.angularStiffness),s.constraintImpulse.angle-=L,s.angle-=L),a&&!a.isStatic&&(E=a.inverseMass/C,a.constraintImpulse.x+=M.x*E,a.constraintImpulse.y+=M.y*E,a.position.x+=M.x*E,a.position.y+=M.y*E,P>0&&(a.positionPrev.x+=P*D.x*b*E,a.positionPrev.y+=P*D.y*b*E),L=r.cross(p,M)/A*e._torqueDampen*a.inverseInertia*(1-l.angularStiffness),a.constraintImpulse.angle+=L,a.angle+=L)}}},e.postSolveAll=function(l){for(var t=0;t<l.length;t++){var s=l[t],a=s.constraintImpulse;if(!(s.isStatic||a.x===0&&a.y===0&&a.angle===0)){i.set(s,!1);for(var c=0;c<s.parts.length;c++){var p=s.parts[c];n.translate(p.vertices,a),c>0&&(p.position.x+=a.x,p.position.y+=a.y),a.angle!==0&&(n.rotate(p.vertices,a.angle,s.position),f.rotate(p.axes,a.angle),c>0&&r.rotateAbout(p.position,a.angle,s.position,p.position)),u.update(p.bounds,p.vertices,s.velocity)}a.angle*=e._warming,a.x*=e._warming,a.y*=e._warming}}},e.pointAWorld=function(l){return{x:(l.bodyA?l.bodyA.position.x:0)+(l.pointA?l.pointA.x:0),y:(l.bodyA?l.bodyA.position.y:0)+(l.pointA?l.pointA.y:0)}},e.pointBWorld=function(l){return{x:(l.bodyB?l.bodyB.position.x:0)+(l.pointB?l.pointB.x:0),y:(l.bodyB?l.bodyB.position.y:0)+(l.pointB?l.pointB.y:0)}}})()},function(B,d,o){var e={};B.exports=e;var n=o(2),r=o(0);(function(){e.fromVertices=function(i){for(var u={},f=0;f<i.length;f++){var v=(f+1)%i.length,l=n.normalise({x:i[v].y-i[f].y,y:i[f].x-i[v].x}),t=l.y===0?1/0:l.x/l.y;t=t.toFixed(3).toString(),u[t]=l}return r.values(u)},e.rotate=function(i,u){if(u!==0)for(var f=Math.cos(u),v=Math.sin(u),l=0;l<i.length;l++){var t=i[l],s;s=t.x*f-t.y*v,t.y=t.x*v+t.y*f,t.x=s}}})()},function(B,d,o){var e={};B.exports=e;var n=o(3),r=o(0),i=o(4),u=o(1),f=o(2);(function(){e.rectangle=function(v,l,t,s,a){a=a||{};var c={label:"Rectangle Body",position:{x:v,y:l},vertices:n.fromPath("L 0 0 L "+t+" 0 L "+t+" "+s+" L 0 "+s)};if(a.chamfer){var p=a.chamfer;c.vertices=n.chamfer(c.vertices,p.radius,p.quality,p.qualityMin,p.qualityMax),delete a.chamfer}return i.create(r.extend({},c,a))},e.trapezoid=function(v,l,t,s,a,c){c=c||{},a*=.5;var p=(1-a*2)*t,w=t*a,y=w+p,S=y+w,h;a<.5?h="L 0 0 L "+w+" "+-s+" L "+y+" "+-s+" L "+S+" 0":h="L 0 0 L "+y+" "+-s+" L "+S+" 0";var g={label:"Trapezoid Body",position:{x:v,y:l},vertices:n.fromPath(h)};if(c.chamfer){var x=c.chamfer;g.vertices=n.chamfer(g.vertices,x.radius,x.quality,x.qualityMin,x.qualityMax),delete c.chamfer}return i.create(r.extend({},g,c))},e.circle=function(v,l,t,s,a){s=s||{};var c={label:"Circle Body",circleRadius:t};a=a||25;var p=Math.ceil(Math.max(10,Math.min(a,t)));return p%2===1&&(p+=1),e.polygon(v,l,p,t,r.extend({},c,s))},e.polygon=function(v,l,t,s,a){if(a=a||{},t<3)return e.circle(v,l,s,a);for(var c=2*Math.PI/t,p="",w=c*.5,y=0;y<t;y+=1){var S=w+y*c,h=Math.cos(S)*s,g=Math.sin(S)*s;p+="L "+h.toFixed(3)+" "+g.toFixed(3)+" "}var x={label:"Polygon Body",position:{x:v,y:l},vertices:n.fromPath(p)};if(a.chamfer){var m=a.chamfer;x.vertices=n.chamfer(x.vertices,m.radius,m.quality,m.qualityMin,m.qualityMax),delete a.chamfer}return i.create(r.extend({},x,a))},e.fromVertices=function(v,l,t,s,a,c,p,w){var y=r.getDecomp(),S,h,g,x,m,P,M,C,T,A,L;for(S=!!(y&&y.quickDecomp),s=s||{},g=[],a=typeof a!="undefined"?a:!1,c=typeof c!="undefined"?c:.01,p=typeof p!="undefined"?p:10,w=typeof w!="undefined"?w:.01,r.isArray(t[0])||(t=[t]),A=0;A<t.length;A+=1)if(P=t[A],x=n.isConvex(P),m=!x,m&&!S&&r.warnOnce("Bodies.fromVertices: Install the 'poly-decomp' library and use Common.setDecomp or provide 'decomp' as a global to decompose concave vertices."),x||!S)x?P=n.clockwiseSort(P):P=n.hull(P),g.push({position:{x:v,y:l},vertices:P});else{var E=P.map(function(F){return[F.x,F.y]});y.makeCCW(E),c!==!1&&y.removeCollinearPoints(E,c),w!==!1&&y.removeDuplicatePoints&&y.removeDuplicatePoints(E,w);var D=y.quickDecomp(E);for(M=0;M<D.length;M++){var b=D[M],I=b.map(function(F){return{x:F[0],y:F[1]}});p>0&&n.area(I)<p||g.push({position:n.centre(I),vertices:I})}}for(M=0;M<g.length;M++)g[M]=i.create(r.extend(g[M],s));if(a){var V=5;for(M=0;M<g.length;M++){var k=g[M];for(C=M+1;C<g.length;C++){var G=g[C];if(u.overlaps(k.bounds,G.bounds)){var R=k.vertices,N=G.vertices;for(T=0;T<k.vertices.length;T++)for(L=0;L<G.vertices.length;L++){var W=f.magnitudeSquared(f.sub(R[(T+1)%R.length],N[L])),Z=f.magnitudeSquared(f.sub(R[T],N[(L+1)%N.length]));W<V&&Z<V&&(R[T].isInternal=!0,N[L].isInternal=!0)}}}}}return g.length>1?(h=i.create(r.extend({parts:g.slice(0)},s)),i.setPosition(h,{x:v,y:l}),h):g[0]}})()},function(B,d,o){var e={};B.exports=e;var n=o(0),r=o(8);(function(){e.create=function(i){var u={bodies:[],pairs:null};return n.extend(u,i)},e.setBodies=function(i,u){i.bodies=u.slice(0)},e.clear=function(i){i.bodies=[]},e.collisions=function(i){var u=[],f=i.pairs,v=i.bodies,l=v.length,t=e.canCollide,s=r.collides,a,c;for(v.sort(e._compareBoundsX),a=0;a<l;a++){var p=v[a],w=p.bounds,y=p.bounds.max.x,S=p.bounds.max.y,h=p.bounds.min.y,g=p.isStatic||p.isSleeping,x=p.parts.length,m=x===1;for(c=a+1;c<l;c++){var P=v[c],M=P.bounds;if(M.min.x>y)break;if(!(S<M.min.y||h>M.max.y)&&!(g&&(P.isStatic||P.isSleeping))&&t(p.collisionFilter,P.collisionFilter)){var C=P.parts.length;if(m&&C===1){var T=s(p,P,f);T&&u.push(T)}else for(var A=x>1?1:0,L=C>1?1:0,E=A;E<x;E++)for(var D=p.parts[E],w=D.bounds,b=L;b<C;b++){var I=P.parts[b],M=I.bounds;if(!(w.min.x>M.max.x||w.max.x<M.min.x||w.max.y<M.min.y||w.min.y>M.max.y)){var T=s(D,I,f);T&&u.push(T)}}}}}return u},e.canCollide=function(i,u){return i.group===u.group&&i.group!==0?i.group>0:(i.mask&u.category)!==0&&(u.mask&i.category)!==0},e._compareBoundsX=function(i,u){return i.bounds.min.x-u.bounds.min.x}})()},function(B,d,o){var e={};B.exports=e;var n=o(0);(function(){e.create=function(r){var i={};return r||n.log("Mouse.create: element was undefined, defaulting to document.body","warn"),i.element=r||document.body,i.absolute={x:0,y:0},i.position={x:0,y:0},i.mousedownPosition={x:0,y:0},i.mouseupPosition={x:0,y:0},i.offset={x:0,y:0},i.scale={x:1,y:1},i.wheelDelta=0,i.button=-1,i.pixelRatio=parseInt(i.element.getAttribute("data-pixel-ratio"),10)||1,i.sourceEvents={mousemove:null,mousedown:null,mouseup:null,mousewheel:null},i.mousemove=function(u){var f=e._getRelativeMousePosition(u,i.element,i.pixelRatio),v=u.changedTouches;v&&(i.button=0,u.preventDefault()),i.absolute.x=f.x,i.absolute.y=f.y,i.position.x=i.absolute.x*i.scale.x+i.offset.x,i.position.y=i.absolute.y*i.scale.y+i.offset.y,i.sourceEvents.mousemove=u},i.mousedown=function(u){var f=e._getRelativeMousePosition(u,i.element,i.pixelRatio),v=u.changedTouches;v?(i.button=0,u.preventDefault()):i.button=u.button,i.absolute.x=f.x,i.absolute.y=f.y,i.position.x=i.absolute.x*i.scale.x+i.offset.x,i.position.y=i.absolute.y*i.scale.y+i.offset.y,i.mousedownPosition.x=i.position.x,i.mousedownPosition.y=i.position.y,i.sourceEvents.mousedown=u},i.mouseup=function(u){var f=e._getRelativeMousePosition(u,i.element,i.pixelRatio),v=u.changedTouches;v&&u.preventDefault(),i.button=-1,i.absolute.x=f.x,i.absolute.y=f.y,i.position.x=i.absolute.x*i.scale.x+i.offset.x,i.position.y=i.absolute.y*i.scale.y+i.offset.y,i.mouseupPosition.x=i.position.x,i.mouseupPosition.y=i.position.y,i.sourceEvents.mouseup=u},i.mousewheel=function(u){i.wheelDelta=Math.max(-1,Math.min(1,u.wheelDelta||-u.detail)),u.preventDefault()},e.setElement(i,i.element),i},e.setElement=function(r,i){r.element=i,i.addEventListener("mousemove",r.mousemove),i.addEventListener("mousedown",r.mousedown),i.addEventListener("mouseup",r.mouseup),i.addEventListener("mousewheel",r.mousewheel),i.addEventListener("DOMMouseScroll",r.mousewheel),i.addEventListener("touchmove",r.mousemove),i.addEventListener("touchstart",r.mousedown),i.addEventListener("touchend",r.mouseup)},e.clearSourceEvents=function(r){r.sourceEvents.mousemove=null,r.sourceEvents.mousedown=null,r.sourceEvents.mouseup=null,r.sourceEvents.mousewheel=null,r.wheelDelta=0},e.setOffset=function(r,i){r.offset.x=i.x,r.offset.y=i.y,r.position.x=r.absolute.x*r.scale.x+r.offset.x,r.position.y=r.absolute.y*r.scale.y+r.offset.y},e.setScale=function(r,i){r.scale.x=i.x,r.scale.y=i.y,r.position.x=r.absolute.x*r.scale.x+r.offset.x,r.position.y=r.absolute.y*r.scale.y+r.offset.y},e._getRelativeMousePosition=function(r,i,u){var f=i.getBoundingClientRect(),v=document.documentElement||document.body.parentNode||document.body,l=window.pageXOffset!==void 0?window.pageXOffset:v.scrollLeft,t=window.pageYOffset!==void 0?window.pageYOffset:v.scrollTop,s=r.changedTouches,a,c;return s?(a=s[0].pageX-f.left-l,c=s[0].pageY-f.top-t):(a=r.pageX-f.left-l,c=r.pageY-f.top-t),{x:a/(i.clientWidth/(i.width||i.clientWidth)*u),y:c/(i.clientHeight/(i.height||i.clientHeight)*u)}}})()},function(B,d,o){var e={};B.exports=e;var n=o(0);(function(){e._registry={},e.register=function(r){if(e.isPlugin(r)||n.warn("Plugin.register:",e.toString(r),"does not implement all required fields."),r.name in e._registry){var i=e._registry[r.name],u=e.versionParse(r.version).number,f=e.versionParse(i.version).number;u>f?(n.warn("Plugin.register:",e.toString(i),"was upgraded to",e.toString(r)),e._registry[r.name]=r):u<f?n.warn("Plugin.register:",e.toString(i),"can not be downgraded to",e.toString(r)):r!==i&&n.warn("Plugin.register:",e.toString(r),"is already registered to different plugin object")}else e._registry[r.name]=r;return r},e.resolve=function(r){return e._registry[e.dependencyParse(r).name]},e.toString=function(r){return typeof r=="string"?r:(r.name||"anonymous")+"@"+(r.version||r.range||"0.0.0")},e.isPlugin=function(r){return r&&r.name&&r.version&&r.install},e.isUsed=function(r,i){return r.used.indexOf(i)>-1},e.isFor=function(r,i){var u=r.for&&e.dependencyParse(r.for);return!r.for||i.name===u.name&&e.versionSatisfies(i.version,u.range)},e.use=function(r,i){if(r.uses=(r.uses||[]).concat(i||[]),r.uses.length===0){n.warn("Plugin.use:",e.toString(r),"does not specify any dependencies to install.");return}for(var u=e.dependencies(r),f=n.topologicalSort(u),v=[],l=0;l<f.length;l+=1)if(f[l]!==r.name){var t=e.resolve(f[l]);if(!t){v.push("\u274C "+f[l]);continue}e.isUsed(r,t.name)||(e.isFor(t,r)||(n.warn("Plugin.use:",e.toString(t),"is for",t.for,"but installed on",e.toString(r)+"."),t._warned=!0),t.install?t.install(r):(n.warn("Plugin.use:",e.toString(t),"does not specify an install function."),t._warned=!0),t._warned?(v.push("\u{1F536} "+e.toString(t)),delete t._warned):v.push("\u2705 "+e.toString(t)),r.used.push(t.name))}v.length>0&&n.info(v.join("  "))},e.dependencies=function(r,i){var u=e.dependencyParse(r),f=u.name;if(i=i||{},!(f in i)){r=e.resolve(r)||r,i[f]=n.map(r.uses||[],function(l){e.isPlugin(l)&&e.register(l);var t=e.dependencyParse(l),s=e.resolve(l);return s&&!e.versionSatisfies(s.version,t.range)?(n.warn("Plugin.dependencies:",e.toString(s),"does not satisfy",e.toString(t),"used by",e.toString(u)+"."),s._warned=!0,r._warned=!0):s||(n.warn("Plugin.dependencies:",e.toString(l),"used by",e.toString(u),"could not be resolved."),r._warned=!0),t.name});for(var v=0;v<i[f].length;v+=1)e.dependencies(i[f][v],i);return i}},e.dependencyParse=function(r){if(n.isString(r)){var i=/^[\w-]+(@(\*|[\^~]?\d+\.\d+\.\d+(-[0-9A-Za-z-+]+)?))?$/;return i.test(r)||n.warn("Plugin.dependencyParse:",r,"is not a valid dependency string."),{name:r.split("@")[0],range:r.split("@")[1]||"*"}}return{name:r.name,range:r.range||r.version}},e.versionParse=function(r){var i=/^(\*)|(\^|~|>=|>)?\s*((\d+)\.(\d+)\.(\d+))(-[0-9A-Za-z-+]+)?$/;i.test(r)||n.warn("Plugin.versionParse:",r,"is not a valid version or range.");var u=i.exec(r),f=Number(u[4]),v=Number(u[5]),l=Number(u[6]);return{isRange:!!(u[1]||u[2]),version:u[3],range:r,operator:u[1]||u[2]||"",major:f,minor:v,patch:l,parts:[f,v,l],prerelease:u[7],number:f*1e8+v*1e4+l}},e.versionSatisfies=function(r,i){i=i||"*";var u=e.versionParse(i),f=e.versionParse(r);if(u.isRange){if(u.operator==="*"||r==="*")return!0;if(u.operator===">")return f.number>u.number;if(u.operator===">=")return f.number>=u.number;if(u.operator==="~")return f.major===u.major&&f.minor===u.minor&&f.patch>=u.patch;if(u.operator==="^")return u.major>0?f.major===u.major&&f.number>=u.number:u.minor>0?f.minor===u.minor&&f.patch>=u.patch:f.patch===u.patch}return r===i||r==="*"}})()},function(B,d){var o={};B.exports=o,function(){o.create=function(e){return{vertex:e,normalImpulse:0,tangentImpulse:0}}}()},function(B,d,o){var e={};B.exports=e;var n=o(7),r=o(18),i=o(13),u=o(19),f=o(5),v=o(6),l=o(10),t=o(0),s=o(4);(function(){e.create=function(a){a=a||{};var c={positionIterations:6,velocityIterations:4,constraintIterations:2,enableSleeping:!1,events:[],plugin:{},gravity:{x:0,y:1,scale:.001},timing:{timestamp:0,timeScale:1,lastDelta:0,lastElapsed:0}},p=t.extend(c,a);return p.world=a.world||v.create({label:"World"}),p.pairs=a.pairs||u.create(),p.detector=a.detector||i.create(),p.grid={buckets:[]},p.world.gravity=p.gravity,p.broadphase=p.grid,p.metrics={},p},e.update=function(a,c){var p=t.now(),w=a.world,y=a.detector,S=a.pairs,h=a.timing,g=h.timestamp,x;c=typeof c!="undefined"?c:t._baseDelta,c*=h.timeScale,h.timestamp+=c,h.lastDelta=c;var m={timestamp:h.timestamp,delta:c};f.trigger(a,"beforeUpdate",m);var P=v.allBodies(w),M=v.allConstraints(w);for(w.isModified&&(i.setBodies(y,P),v.setModified(w,!1,!1,!0)),a.enableSleeping&&n.update(P,c),e._bodiesApplyGravity(P,a.gravity),c>0&&e._bodiesUpdate(P,c),l.preSolveAll(P),x=0;x<a.constraintIterations;x++)l.solveAll(M,c);l.postSolveAll(P),y.pairs=a.pairs;var C=i.collisions(y);u.update(S,C,g),a.enableSleeping&&n.afterCollisions(S.list),S.collisionStart.length>0&&f.trigger(a,"collisionStart",{pairs:S.collisionStart});var T=t.clamp(20/a.positionIterations,0,1);for(r.preSolvePosition(S.list),x=0;x<a.positionIterations;x++)r.solvePosition(S.list,c,T);for(r.postSolvePosition(P),l.preSolveAll(P),x=0;x<a.constraintIterations;x++)l.solveAll(M,c);for(l.postSolveAll(P),r.preSolveVelocity(S.list),x=0;x<a.velocityIterations;x++)r.solveVelocity(S.list,c);return e._bodiesUpdateVelocities(P),S.collisionActive.length>0&&f.trigger(a,"collisionActive",{pairs:S.collisionActive}),S.collisionEnd.length>0&&f.trigger(a,"collisionEnd",{pairs:S.collisionEnd}),e._bodiesClearForces(P),f.trigger(a,"afterUpdate",m),a.timing.lastElapsed=t.now()-p,a},e.merge=function(a,c){if(t.extend(a,c),c.world){a.world=c.world,e.clear(a);for(var p=v.allBodies(a.world),w=0;w<p.length;w++){var y=p[w];n.set(y,!1),y.id=t.nextId()}}},e.clear=function(a){u.clear(a.pairs),i.clear(a.detector)},e._bodiesClearForces=function(a){for(var c=a.length,p=0;p<c;p++){var w=a[p];w.force.x=0,w.force.y=0,w.torque=0}},e._bodiesApplyGravity=function(a,c){var p=typeof c.scale!="undefined"?c.scale:.001,w=a.length;if(!(c.x===0&&c.y===0||p===0))for(var y=0;y<w;y++){var S=a[y];S.isStatic||S.isSleeping||(S.force.y+=S.mass*c.y*p,S.force.x+=S.mass*c.x*p)}},e._bodiesUpdate=function(a,c){for(var p=a.length,w=0;w<p;w++){var y=a[w];y.isStatic||y.isSleeping||s.update(y,c)}},e._bodiesUpdateVelocities=function(a){for(var c=a.length,p=0;p<c;p++)s.updateVelocities(a[p])}})()},function(B,d,o){var e={};B.exports=e;var n=o(3),r=o(0),i=o(1);(function(){e._restingThresh=2,e._restingThreshTangent=Math.sqrt(6),e._positionDampen=.9,e._positionWarming=.8,e._frictionNormalMultiplier=5,e._frictionMaxStatic=Number.MAX_VALUE,e.preSolvePosition=function(u){var f,v,l,t=u.length;for(f=0;f<t;f++)v=u[f],v.isActive&&(l=v.activeContacts.length,v.collision.parentA.totalContacts+=l,v.collision.parentB.totalContacts+=l)},e.solvePosition=function(u,f,v){var l,t,s,a,c,p,w,y,S=e._positionDampen*(v||1),h=r.clamp(f/r._baseDelta,0,1),g=u.length;for(l=0;l<g;l++)t=u[l],!(!t.isActive||t.isSensor)&&(s=t.collision,a=s.parentA,c=s.parentB,p=s.normal,t.separation=p.x*(c.positionImpulse.x+s.penetration.x-a.positionImpulse.x)+p.y*(c.positionImpulse.y+s.penetration.y-a.positionImpulse.y));for(l=0;l<g;l++)t=u[l],!(!t.isActive||t.isSensor)&&(s=t.collision,a=s.parentA,c=s.parentB,p=s.normal,y=t.separation-t.slop*h,(a.isStatic||c.isStatic)&&(y*=2),a.isStatic||a.isSleeping||(w=S/a.totalContacts,a.positionImpulse.x+=p.x*y*w,a.positionImpulse.y+=p.y*y*w),c.isStatic||c.isSleeping||(w=S/c.totalContacts,c.positionImpulse.x-=p.x*y*w,c.positionImpulse.y-=p.y*y*w))},e.postSolvePosition=function(u){for(var f=e._positionWarming,v=u.length,l=n.translate,t=i.update,s=0;s<v;s++){var a=u[s],c=a.positionImpulse,p=c.x,w=c.y,y=a.velocity;if(a.totalContacts=0,p!==0||w!==0){for(var S=0;S<a.parts.length;S++){var h=a.parts[S];l(h.vertices,c),t(h.bounds,h.vertices,y),h.position.x+=p,h.position.y+=w}a.positionPrev.x+=p,a.positionPrev.y+=w,p*y.x+w*y.y<0?(c.x=0,c.y=0):(c.x*=f,c.y*=f)}}},e.preSolveVelocity=function(u){var f=u.length,v,l;for(v=0;v<f;v++){var t=u[v];if(!(!t.isActive||t.isSensor)){var s=t.activeContacts,a=s.length,c=t.collision,p=c.parentA,w=c.parentB,y=c.normal,S=c.tangent;for(l=0;l<a;l++){var h=s[l],g=h.vertex,x=h.normalImpulse,m=h.tangentImpulse;if(x!==0||m!==0){var P=y.x*x+S.x*m,M=y.y*x+S.y*m;p.isStatic||p.isSleeping||(p.positionPrev.x+=P*p.inverseMass,p.positionPrev.y+=M*p.inverseMass,p.anglePrev+=p.inverseInertia*((g.x-p.position.x)*M-(g.y-p.position.y)*P)),w.isStatic||w.isSleeping||(w.positionPrev.x-=P*w.inverseMass,w.positionPrev.y-=M*w.inverseMass,w.anglePrev-=w.inverseInertia*((g.x-w.position.x)*M-(g.y-w.position.y)*P))}}}}},e.solveVelocity=function(u,f){var v=f/r._baseDelta,l=v*v,t=l*v,s=-e._restingThresh*v,a=e._restingThreshTangent,c=e._frictionNormalMultiplier*v,p=e._frictionMaxStatic,w=u.length,y,S,h,g;for(h=0;h<w;h++){var x=u[h];if(!(!x.isActive||x.isSensor)){var m=x.collision,P=m.parentA,M=m.parentB,C=P.velocity,T=M.velocity,A=m.normal.x,L=m.normal.y,E=m.tangent.x,D=m.tangent.y,b=x.activeContacts,I=b.length,V=1/I,k=P.inverseMass+M.inverseMass,G=x.friction*x.frictionStatic*c;for(C.x=P.position.x-P.positionPrev.x,C.y=P.position.y-P.positionPrev.y,T.x=M.position.x-M.positionPrev.x,T.y=M.position.y-M.positionPrev.y,P.angularVelocity=P.angle-P.anglePrev,M.angularVelocity=M.angle-M.anglePrev,g=0;g<I;g++){var R=b[g],N=R.vertex,W=N.x-P.position.x,Z=N.y-P.position.y,F=N.x-M.position.x,ne=N.y-M.position.y,X=C.x-Z*P.angularVelocity,Mt=C.y+W*P.angularVelocity,Bt=T.x-ne*M.angularVelocity,At=T.y+F*M.angularVelocity,st=X-Bt,at=Mt-At,$e=A*st+L*at,ie=E*st+D*at,lt=x.separation+$e,Xe=Math.min(lt,1);Xe=lt<0?0:Xe;var ft=Xe*G;ie<-ft||ie>ft?(S=ie>0?ie:-ie,y=x.friction*(ie>0?1:-1)*t,y<-S?y=-S:y>S&&(y=S)):(y=ie,S=p);var ct=W*L-Z*A,ut=F*L-ne*A,vt=V/(k+P.inverseInertia*ct*ct+M.inverseInertia*ut*ut),Ae=(1+x.restitution)*$e*vt;if(y*=vt,$e<s)R.normalImpulse=0;else{var Tt=R.normalImpulse;R.normalImpulse+=Ae,R.normalImpulse>0&&(R.normalImpulse=0),Ae=R.normalImpulse-Tt}if(ie<-a||ie>a)R.tangentImpulse=0;else{var Lt=R.tangentImpulse;R.tangentImpulse+=y,R.tangentImpulse<-S&&(R.tangentImpulse=-S),R.tangentImpulse>S&&(R.tangentImpulse=S),y=R.tangentImpulse-Lt}var Te=A*Ae+E*y,Le=L*Ae+D*y;P.isStatic||P.isSleeping||(P.positionPrev.x+=Te*P.inverseMass,P.positionPrev.y+=Le*P.inverseMass,P.anglePrev+=(W*Le-Z*Te)*P.inverseInertia),M.isStatic||M.isSleeping||(M.positionPrev.x-=Te*M.inverseMass,M.positionPrev.y-=Le*M.inverseMass,M.anglePrev-=(F*Le-ne*Te)*M.inverseInertia)}}}}})()},function(B,d,o){var e={};B.exports=e;var n=o(9),r=o(0);(function(){e.create=function(i){return r.extend({table:{},list:[],collisionStart:[],collisionActive:[],collisionEnd:[]},i)},e.update=function(i,u,f){var v=i.list,l=v.length,t=i.table,s=u.length,a=i.collisionStart,c=i.collisionEnd,p=i.collisionActive,w,y,S,h;for(a.length=0,c.length=0,p.length=0,h=0;h<l;h++)v[h].confirmedActive=!1;for(h=0;h<s;h++)w=u[h],S=w.pair,S?(S.isActive?p.push(S):a.push(S),n.update(S,w,f),S.confirmedActive=!0):(S=n.create(w,f),t[S.id]=S,a.push(S),v.push(S));var g=[];for(l=v.length,h=0;h<l;h++)S=v[h],S.confirmedActive||(n.setActive(S,!1,f),c.push(S),!S.collision.bodyA.isSleeping&&!S.collision.bodyB.isSleeping&&g.push(h));for(h=0;h<g.length;h++)y=g[h]-h,S=v[y],v.splice(y,1),delete t[S.id]},e.clear=function(i){return i.table={},i.list.length=0,i.collisionStart.length=0,i.collisionActive.length=0,i.collisionEnd.length=0,i}})()},function(B,d,o){var e=B.exports=o(21);e.Axes=o(11),e.Bodies=o(12),e.Body=o(4),e.Bounds=o(1),e.Collision=o(8),e.Common=o(0),e.Composite=o(6),e.Composites=o(22),e.Constraint=o(10),e.Contact=o(16),e.Detector=o(13),e.Engine=o(17),e.Events=o(5),e.Grid=o(23),e.Mouse=o(14),e.MouseConstraint=o(24),e.Pair=o(9),e.Pairs=o(19),e.Plugin=o(15),e.Query=o(25),e.Render=o(26),e.Resolver=o(18),e.Runner=o(27),e.SAT=o(28),e.Sleeping=o(7),e.Svg=o(29),e.Vector=o(2),e.Vertices=o(3),e.World=o(30),e.Engine.run=e.Runner.run,e.Common.deprecated(e.Engine,"run","Engine.run \u27A4 use Matter.Runner.run(engine) instead")},function(B,d,o){var e={};B.exports=e;var n=o(15),r=o(0);(function(){e.name="matter-js",e.version="0.19.0",e.uses=[],e.used=[],e.use=function(){n.use(e,Array.prototype.slice.call(arguments))},e.before=function(i,u){return i=i.replace(/^Matter./,""),r.chainPathBefore(e,i,u)},e.after=function(i,u){return i=i.replace(/^Matter./,""),r.chainPathAfter(e,i,u)}})()},function(B,d,o){var e={};B.exports=e;var n=o(6),r=o(10),i=o(0),u=o(4),f=o(12),v=i.deprecated;(function(){e.stack=function(l,t,s,a,c,p,w){for(var y=n.create({label:"Stack"}),S=l,h=t,g,x=0,m=0;m<a;m++){for(var P=0,M=0;M<s;M++){var C=w(S,h,M,m,g,x);if(C){var T=C.bounds.max.y-C.bounds.min.y,A=C.bounds.max.x-C.bounds.min.x;T>P&&(P=T),u.translate(C,{x:A*.5,y:T*.5}),S=C.bounds.max.x+c,n.addBody(y,C),g=C,x+=1}else S+=c}h+=P+p,S=l}return y},e.chain=function(l,t,s,a,c,p){for(var w=l.bodies,y=1;y<w.length;y++){var S=w[y-1],h=w[y],g=S.bounds.max.y-S.bounds.min.y,x=S.bounds.max.x-S.bounds.min.x,m=h.bounds.max.y-h.bounds.min.y,P=h.bounds.max.x-h.bounds.min.x,M={bodyA:S,pointA:{x:x*t,y:g*s},bodyB:h,pointB:{x:P*a,y:m*c}},C=i.extend(M,p);n.addConstraint(l,r.create(C))}return l.label+=" Chain",l},e.mesh=function(l,t,s,a,c){var p=l.bodies,w,y,S,h,g;for(w=0;w<s;w++){for(y=1;y<t;y++)S=p[y-1+w*t],h=p[y+w*t],n.addConstraint(l,r.create(i.extend({bodyA:S,bodyB:h},c)));if(w>0)for(y=0;y<t;y++)S=p[y+(w-1)*t],h=p[y+w*t],n.addConstraint(l,r.create(i.extend({bodyA:S,bodyB:h},c))),a&&y>0&&(g=p[y-1+(w-1)*t],n.addConstraint(l,r.create(i.extend({bodyA:g,bodyB:h},c)))),a&&y<t-1&&(g=p[y+1+(w-1)*t],n.addConstraint(l,r.create(i.extend({bodyA:g,bodyB:h},c))))}return l.label+=" Mesh",l},e.pyramid=function(l,t,s,a,c,p,w){return e.stack(l,t,s,a,c,p,function(y,S,h,g,x,m){var P=Math.min(a,Math.ceil(s/2)),M=x?x.bounds.max.x-x.bounds.min.x:0;if(!(g>P)){g=P-g;var C=g,T=s-1-g;if(!(h<C||h>T)){m===1&&u.translate(x,{x:(h+(s%2===1?1:-1))*M,y:0});var A=x?h*M:0;return w(l+A+h*c,S,h,g,x,m)}}})},e.newtonsCradle=function(l,t,s,a,c){for(var p=n.create({label:"Newtons Cradle"}),w=0;w<s;w++){var y=1.9,S=f.circle(l+w*(a*y),t+c,a,{inertia:1/0,restitution:1,friction:0,frictionAir:1e-4,slop:1}),h=r.create({pointA:{x:l+w*(a*y),y:t},bodyB:S});n.addBody(p,S),n.addConstraint(p,h)}return p},v(e,"newtonsCradle","Composites.newtonsCradle \u27A4 moved to newtonsCradle example"),e.car=function(l,t,s,a,c){var p=u.nextGroup(!0),w=20,y=-s*.5+w,S=s*.5-w,h=0,g=n.create({label:"Car"}),x=f.rectangle(l,t,s,a,{collisionFilter:{group:p},chamfer:{radius:a*.5},density:2e-4}),m=f.circle(l+y,t+h,c,{collisionFilter:{group:p},friction:.8}),P=f.circle(l+S,t+h,c,{collisionFilter:{group:p},friction:.8}),M=r.create({bodyB:x,pointB:{x:y,y:h},bodyA:m,stiffness:1,length:0}),C=r.create({bodyB:x,pointB:{x:S,y:h},bodyA:P,stiffness:1,length:0});return n.addBody(g,x),n.addBody(g,m),n.addBody(g,P),n.addConstraint(g,M),n.addConstraint(g,C),g},v(e,"car","Composites.car \u27A4 moved to car example"),e.softBody=function(l,t,s,a,c,p,w,y,S,h){S=i.extend({inertia:1/0},S),h=i.extend({stiffness:.2,render:{type:"line",anchors:!1}},h);var g=e.stack(l,t,s,a,c,p,function(x,m){return f.circle(x,m,y,S)});return e.mesh(g,s,a,w,h),g.label="Soft Body",g},v(e,"softBody","Composites.softBody \u27A4 moved to softBody and cloth examples")})()},function(B,d,o){var e={};B.exports=e;var n=o(9),r=o(0),i=r.deprecated;(function(){e.create=function(u){var f={buckets:{},pairs:{},pairsList:[],bucketWidth:48,bucketHeight:48};return r.extend(f,u)},e.update=function(u,f,v,l){var t,s,a,c=v.world,p=u.buckets,w,y,S=!1;for(t=0;t<f.length;t++){var h=f[t];if(!(h.isSleeping&&!l)&&!(c.bounds&&(h.bounds.max.x<c.bounds.min.x||h.bounds.min.x>c.bounds.max.x||h.bounds.max.y<c.bounds.min.y||h.bounds.min.y>c.bounds.max.y))){var g=e._getRegion(u,h);if(!h.region||g.id!==h.region.id||l){(!h.region||l)&&(h.region=g);var x=e._regionUnion(g,h.region);for(s=x.startCol;s<=x.endCol;s++)for(a=x.startRow;a<=x.endRow;a++){y=e._getBucketId(s,a),w=p[y];var m=s>=g.startCol&&s<=g.endCol&&a>=g.startRow&&a<=g.endRow,P=s>=h.region.startCol&&s<=h.region.endCol&&a>=h.region.startRow&&a<=h.region.endRow;!m&&P&&P&&w&&e._bucketRemoveBody(u,w,h),(h.region===g||m&&!P||l)&&(w||(w=e._createBucket(p,y)),e._bucketAddBody(u,w,h))}h.region=g,S=!0}}}S&&(u.pairsList=e._createActivePairsList(u))},i(e,"update","Grid.update \u27A4 replaced by Matter.Detector"),e.clear=function(u){u.buckets={},u.pairs={},u.pairsList=[]},i(e,"clear","Grid.clear \u27A4 replaced by Matter.Detector"),e._regionUnion=function(u,f){var v=Math.min(u.startCol,f.startCol),l=Math.max(u.endCol,f.endCol),t=Math.min(u.startRow,f.startRow),s=Math.max(u.endRow,f.endRow);return e._createRegion(v,l,t,s)},e._getRegion=function(u,f){var v=f.bounds,l=Math.floor(v.min.x/u.bucketWidth),t=Math.floor(v.max.x/u.bucketWidth),s=Math.floor(v.min.y/u.bucketHeight),a=Math.floor(v.max.y/u.bucketHeight);return e._createRegion(l,t,s,a)},e._createRegion=function(u,f,v,l){return{id:u+","+f+","+v+","+l,startCol:u,endCol:f,startRow:v,endRow:l}},e._getBucketId=function(u,f){return"C"+u+"R"+f},e._createBucket=function(u,f){var v=u[f]=[];return v},e._bucketAddBody=function(u,f,v){var l=u.pairs,t=n.id,s=f.length,a;for(a=0;a<s;a++){var c=f[a];if(!(v.id===c.id||v.isStatic&&c.isStatic)){var p=t(v,c),w=l[p];w?w[2]+=1:l[p]=[v,c,1]}}f.push(v)},e._bucketRemoveBody=function(u,f,v){var l=u.pairs,t=n.id,s;f.splice(r.indexOf(f,v),1);var a=f.length;for(s=0;s<a;s++){var c=l[t(v,f[s])];c&&(c[2]-=1)}},e._createActivePairsList=function(u){var f,v=u.pairs,l=r.keys(v),t=l.length,s=[],a;for(a=0;a<t;a++)f=v[l[a]],f[2]>0?s.push(f):delete v[l[a]];return s}})()},function(B,d,o){var e={};B.exports=e;var n=o(3),r=o(7),i=o(14),u=o(5),f=o(13),v=o(10),l=o(6),t=o(0),s=o(1);(function(){e.create=function(a,c){var p=(a?a.mouse:null)||(c?c.mouse:null);p||(a&&a.render&&a.render.canvas?p=i.create(a.render.canvas):c&&c.element?p=i.create(c.element):(p=i.create(),t.warn("MouseConstraint.create: options.mouse was undefined, options.element was undefined, may not function as expected")));var w=v.create({label:"Mouse Constraint",pointA:p.position,pointB:{x:0,y:0},length:.01,stiffness:.1,angularStiffness:1,render:{strokeStyle:"#90EE90",lineWidth:3}}),y={type:"mouseConstraint",mouse:p,element:null,body:null,constraint:w,collisionFilter:{category:1,mask:4294967295,group:0}},S=t.extend(y,c);return u.on(a,"beforeUpdate",function(){var h=l.allBodies(a.world);e.update(S,h),e._triggerEvents(S)}),S},e.update=function(a,c){var p=a.mouse,w=a.constraint,y=a.body;if(p.button===0){if(w.bodyB)r.set(w.bodyB,!1),w.pointA=p.position;else for(var S=0;S<c.length;S++)if(y=c[S],s.contains(y.bounds,p.position)&&f.canCollide(y.collisionFilter,a.collisionFilter))for(var h=y.parts.length>1?1:0;h<y.parts.length;h++){var g=y.parts[h];if(n.contains(g.vertices,p.position)){w.pointA=p.position,w.bodyB=a.body=y,w.pointB={x:p.position.x-y.position.x,y:p.position.y-y.position.y},w.angleB=y.angle,r.set(y,!1),u.trigger(a,"startdrag",{mouse:p,body:y});break}}}else w.bodyB=a.body=null,w.pointB=null,y&&u.trigger(a,"enddrag",{mouse:p,body:y})},e._triggerEvents=function(a){var c=a.mouse,p=c.sourceEvents;p.mousemove&&u.trigger(a,"mousemove",{mouse:c}),p.mousedown&&u.trigger(a,"mousedown",{mouse:c}),p.mouseup&&u.trigger(a,"mouseup",{mouse:c}),i.clearSourceEvents(c)}})()},function(B,d,o){var e={};B.exports=e;var n=o(2),r=o(8),i=o(1),u=o(12),f=o(3);(function(){e.collides=function(v,l){for(var t=[],s=l.length,a=v.bounds,c=r.collides,p=i.overlaps,w=0;w<s;w++){var y=l[w],S=y.parts.length,h=S===1?0:1;if(p(y.bounds,a))for(var g=h;g<S;g++){var x=y.parts[g];if(p(x.bounds,a)){var m=c(x,v);if(m){t.push(m);break}}}}return t},e.ray=function(v,l,t,s){s=s||1e-100;for(var a=n.angle(l,t),c=n.magnitude(n.sub(l,t)),p=(t.x+l.x)*.5,w=(t.y+l.y)*.5,y=u.rectangle(p,w,c,s,{angle:a}),S=e.collides(y,v),h=0;h<S.length;h+=1){var g=S[h];g.body=g.bodyB=g.bodyA}return S},e.region=function(v,l,t){for(var s=[],a=0;a<v.length;a++){var c=v[a],p=i.overlaps(c.bounds,l);(p&&!t||!p&&t)&&s.push(c)}return s},e.point=function(v,l){for(var t=[],s=0;s<v.length;s++){var a=v[s];if(i.contains(a.bounds,l))for(var c=a.parts.length===1?0:1;c<a.parts.length;c++){var p=a.parts[c];if(i.contains(p.bounds,l)&&f.contains(p.vertices,l)){t.push(a);break}}}return t}})()},function(B,d,o){var e={};B.exports=e;var n=o(4),r=o(0),i=o(6),u=o(1),f=o(5),v=o(2),l=o(14);(function(){var t,s;typeof window!="undefined"&&(t=window.requestAnimationFrame||window.webkitRequestAnimationFrame||window.mozRequestAnimationFrame||window.msRequestAnimationFrame||function(h){window.setTimeout(function(){h(r.now())},1e3/60)},s=window.cancelAnimationFrame||window.mozCancelAnimationFrame||window.webkitCancelAnimationFrame||window.msCancelAnimationFrame),e._goodFps=30,e._goodDelta=1e3/60,e.create=function(h){var g={engine:null,element:null,canvas:null,mouse:null,frameRequestId:null,timing:{historySize:60,delta:0,deltaHistory:[],lastTime:0,lastTimestamp:0,lastElapsed:0,timestampElapsed:0,timestampElapsedHistory:[],engineDeltaHistory:[],engineElapsedHistory:[],elapsedHistory:[]},options:{width:800,height:600,pixelRatio:1,background:"#14151f",wireframeBackground:"#14151f",hasBounds:!!h.bounds,enabled:!0,wireframes:!0,showSleeping:!0,showDebug:!1,showStats:!1,showPerformance:!1,showBounds:!1,showVelocity:!1,showCollisions:!1,showSeparations:!1,showAxes:!1,showPositions:!1,showAngleIndicator:!1,showIds:!1,showVertexNumbers:!1,showConvexHulls:!1,showInternalEdges:!1,showMousePosition:!1}},x=r.extend(g,h);return x.canvas&&(x.canvas.width=x.options.width||x.canvas.width,x.canvas.height=x.options.height||x.canvas.height),x.mouse=h.mouse,x.engine=h.engine,x.canvas=x.canvas||p(x.options.width,x.options.height),x.context=x.canvas.getContext("2d"),x.textures={},x.bounds=x.bounds||{min:{x:0,y:0},max:{x:x.canvas.width,y:x.canvas.height}},x.controller=e,x.options.showBroadphase=!1,x.options.pixelRatio!==1&&e.setPixelRatio(x,x.options.pixelRatio),r.isElement(x.element)&&x.element.appendChild(x.canvas),x},e.run=function(h){(function g(x){h.frameRequestId=t(g),a(h,x),e.world(h,x),(h.options.showStats||h.options.showDebug)&&e.stats(h,h.context,x),(h.options.showPerformance||h.options.showDebug)&&e.performance(h,h.context,x)})()},e.stop=function(h){s(h.frameRequestId)},e.setPixelRatio=function(h,g){var x=h.options,m=h.canvas;g==="auto"&&(g=w(m)),x.pixelRatio=g,m.setAttribute("data-pixel-ratio",g),m.width=x.width*g,m.height=x.height*g,m.style.width=x.width+"px",m.style.height=x.height+"px"},e.lookAt=function(h,g,x,m){m=typeof m!="undefined"?m:!0,g=r.isArray(g)?g:[g],x=x||{x:0,y:0};for(var P={min:{x:1/0,y:1/0},max:{x:-1/0,y:-1/0}},M=0;M<g.length;M+=1){var C=g[M],T=C.bounds?C.bounds.min:C.min||C.position||C,A=C.bounds?C.bounds.max:C.max||C.position||C;T&&A&&(T.x<P.min.x&&(P.min.x=T.x),A.x>P.max.x&&(P.max.x=A.x),T.y<P.min.y&&(P.min.y=T.y),A.y>P.max.y&&(P.max.y=A.y))}var L=P.max.x-P.min.x+2*x.x,E=P.max.y-P.min.y+2*x.y,D=h.canvas.height,b=h.canvas.width,I=b/D,V=L/E,k=1,G=1;V>I?G=V/I:k=I/V,h.options.hasBounds=!0,h.bounds.min.x=P.min.x,h.bounds.max.x=P.min.x+L*k,h.bounds.min.y=P.min.y,h.bounds.max.y=P.min.y+E*G,m&&(h.bounds.min.x+=L*.5-L*k*.5,h.bounds.max.x+=L*.5-L*k*.5,h.bounds.min.y+=E*.5-E*G*.5,h.bounds.max.y+=E*.5-E*G*.5),h.bounds.min.x-=x.x,h.bounds.max.x-=x.x,h.bounds.min.y-=x.y,h.bounds.max.y-=x.y,h.mouse&&(l.setScale(h.mouse,{x:(h.bounds.max.x-h.bounds.min.x)/h.canvas.width,y:(h.bounds.max.y-h.bounds.min.y)/h.canvas.height}),l.setOffset(h.mouse,h.bounds.min))},e.startViewTransform=function(h){var g=h.bounds.max.x-h.bounds.min.x,x=h.bounds.max.y-h.bounds.min.y,m=g/h.options.width,P=x/h.options.height;h.context.setTransform(h.options.pixelRatio/m,0,0,h.options.pixelRatio/P,0,0),h.context.translate(-h.bounds.min.x,-h.bounds.min.y)},e.endViewTransform=function(h){h.context.setTransform(h.options.pixelRatio,0,0,h.options.pixelRatio,0,0)},e.world=function(h,g){var x=r.now(),m=h.engine,P=m.world,M=h.canvas,C=h.context,T=h.options,A=h.timing,L=i.allBodies(P),E=i.allConstraints(P),D=T.wireframes?T.wireframeBackground:T.background,b=[],I=[],V,k={timestamp:m.timing.timestamp};if(f.trigger(h,"beforeRender",k),h.currentBackground!==D&&S(h,D),C.globalCompositeOperation="source-in",C.fillStyle="transparent",C.fillRect(0,0,M.width,M.height),C.globalCompositeOperation="source-over",T.hasBounds){for(V=0;V<L.length;V++){var G=L[V];u.overlaps(G.bounds,h.bounds)&&b.push(G)}for(V=0;V<E.length;V++){var R=E[V],N=R.bodyA,W=R.bodyB,Z=R.pointA,F=R.pointB;N&&(Z=v.add(N.position,R.pointA)),W&&(F=v.add(W.position,R.pointB)),!(!Z||!F)&&(u.contains(h.bounds,Z)||u.contains(h.bounds,F))&&I.push(R)}e.startViewTransform(h),h.mouse&&(l.setScale(h.mouse,{x:(h.bounds.max.x-h.bounds.min.x)/h.options.width,y:(h.bounds.max.y-h.bounds.min.y)/h.options.height}),l.setOffset(h.mouse,h.bounds.min))}else I=E,b=L,h.options.pixelRatio!==1&&h.context.setTransform(h.options.pixelRatio,0,0,h.options.pixelRatio,0,0);!T.wireframes||m.enableSleeping&&T.showSleeping?e.bodies(h,b,C):(T.showConvexHulls&&e.bodyConvexHulls(h,b,C),e.bodyWireframes(h,b,C)),T.showBounds&&e.bodyBounds(h,b,C),(T.showAxes||T.showAngleIndicator)&&e.bodyAxes(h,b,C),T.showPositions&&e.bodyPositions(h,b,C),T.showVelocity&&e.bodyVelocity(h,b,C),T.showIds&&e.bodyIds(h,b,C),T.showSeparations&&e.separations(h,m.pairs.list,C),T.showCollisions&&e.collisions(h,m.pairs.list,C),T.showVertexNumbers&&e.vertexNumbers(h,b,C),T.showMousePosition&&e.mousePosition(h,h.mouse,C),e.constraints(I,C),T.hasBounds&&e.endViewTransform(h),f.trigger(h,"afterRender",k),A.lastElapsed=r.now()-x},e.stats=function(h,g,x){for(var m=h.engine,P=m.world,M=i.allBodies(P),C=0,T=55,A=44,L=0,E=0,D=0;D<M.length;D+=1)C+=M[D].parts.length;var b={Part:C,Body:M.length,Cons:i.allConstraints(P).length,Comp:i.allComposites(P).length,Pair:m.pairs.list.length};g.fillStyle="#0e0f19",g.fillRect(L,E,T*5.5,A),g.font="12px Arial",g.textBaseline="top",g.textAlign="right";for(var I in b){var V=b[I];g.fillStyle="#aaa",g.fillText(I,L+T,E+8),g.fillStyle="#eee",g.fillText(V,L+T,E+26),L+=T}},e.performance=function(h,g){var x=h.engine,m=h.timing,P=m.deltaHistory,M=m.elapsedHistory,C=m.timestampElapsedHistory,T=m.engineDeltaHistory,A=m.engineElapsedHistory,L=x.timing.lastDelta,E=c(P),D=c(M),b=c(T),I=c(A),V=c(C),k=V/E||0,G=1e3/E||0,R=4,N=12,W=60,Z=34,F=10,ne=69;g.fillStyle="#0e0f19",g.fillRect(0,50,N*4+W*5+22,Z),e.status(g,F,ne,W,R,P.length,Math.round(G)+" fps",G/e._goodFps,function(X){return P[X]/E-1}),e.status(g,F+N+W,ne,W,R,T.length,L.toFixed(2)+" dt",e._goodDelta/L,function(X){return T[X]/b-1}),e.status(g,F+(N+W)*2,ne,W,R,A.length,I.toFixed(2)+" ut",1-I/e._goodFps,function(X){return A[X]/I-1}),e.status(g,F+(N+W)*3,ne,W,R,M.length,D.toFixed(2)+" rt",1-D/e._goodFps,function(X){return M[X]/D-1}),e.status(g,F+(N+W)*4,ne,W,R,C.length,k.toFixed(2)+" x",k*k*k,function(X){return(C[X]/P[X]/k||0)-1})},e.status=function(h,g,x,m,P,M,C,T,A){h.strokeStyle="#888",h.fillStyle="#444",h.lineWidth=1,h.fillRect(g,x+7,m,1),h.beginPath(),h.moveTo(g,x+7-P*r.clamp(.4*A(0),-2,2));for(var L=0;L<m;L+=1)h.lineTo(g+L,x+7-(L<M?P*r.clamp(.4*A(L),-2,2):0));h.stroke(),h.fillStyle="hsl("+r.clamp(25+95*T,0,120)+",100%,60%)",h.fillRect(g,x-7,4,4),h.font="12px Arial",h.textBaseline="middle",h.textAlign="right",h.fillStyle="#eee",h.fillText(C,g+m,x-5)},e.constraints=function(h,g){for(var x=g,m=0;m<h.length;m++){var P=h[m];if(!(!P.render.visible||!P.pointA||!P.pointB)){var M=P.bodyA,C=P.bodyB,T,A;if(M?T=v.add(M.position,P.pointA):T=P.pointA,P.render.type==="pin")x.beginPath(),x.arc(T.x,T.y,3,0,2*Math.PI),x.closePath();else{if(C?A=v.add(C.position,P.pointB):A=P.pointB,x.beginPath(),x.moveTo(T.x,T.y),P.render.type==="spring")for(var L=v.sub(A,T),E=v.perp(v.normalise(L)),D=Math.ceil(r.clamp(P.length/5,12,20)),b,I=1;I<D;I+=1)b=I%2===0?1:-1,x.lineTo(T.x+L.x*(I/D)+E.x*b*4,T.y+L.y*(I/D)+E.y*b*4);x.lineTo(A.x,A.y)}P.render.lineWidth&&(x.lineWidth=P.render.lineWidth,x.strokeStyle=P.render.strokeStyle,x.stroke()),P.render.anchors&&(x.fillStyle=P.render.strokeStyle,x.beginPath(),x.arc(T.x,T.y,3,0,2*Math.PI),x.arc(A.x,A.y,3,0,2*Math.PI),x.closePath(),x.fill())}}},e.bodies=function(h,g,x){var m=x,P=h.engine,M=h.options,C=M.showInternalEdges||!M.wireframes,T,A,L,E;for(L=0;L<g.length;L++)if(T=g[L],!!T.render.visible){for(E=T.parts.length>1?1:0;E<T.parts.length;E++)if(A=T.parts[E],!!A.render.visible){if(M.showSleeping&&T.isSleeping?m.globalAlpha=.5*A.render.opacity:A.render.opacity!==1&&(m.globalAlpha=A.render.opacity),A.render.sprite&&A.render.sprite.texture&&!M.wireframes){var D=A.render.sprite,b=y(h,D.texture);m.translate(A.position.x,A.position.y),m.rotate(A.angle),m.drawImage(b,b.width*-D.xOffset*D.xScale,b.height*-D.yOffset*D.yScale,b.width*D.xScale,b.height*D.yScale),m.rotate(-A.angle),m.translate(-A.position.x,-A.position.y)}else{if(A.circleRadius)m.beginPath(),m.arc(A.position.x,A.position.y,A.circleRadius,0,2*Math.PI);else{m.beginPath(),m.moveTo(A.vertices[0].x,A.vertices[0].y);for(var I=1;I<A.vertices.length;I++)!A.vertices[I-1].isInternal||C?m.lineTo(A.vertices[I].x,A.vertices[I].y):m.moveTo(A.vertices[I].x,A.vertices[I].y),A.vertices[I].isInternal&&!C&&m.moveTo(A.vertices[(I+1)%A.vertices.length].x,A.vertices[(I+1)%A.vertices.length].y);m.lineTo(A.vertices[0].x,A.vertices[0].y),m.closePath()}M.wireframes?(m.lineWidth=1,m.strokeStyle="#bbb",m.stroke()):(m.fillStyle=A.render.fillStyle,A.render.lineWidth&&(m.lineWidth=A.render.lineWidth,m.strokeStyle=A.render.strokeStyle,m.stroke()),m.fill())}m.globalAlpha=1}}},e.bodyWireframes=function(h,g,x){var m=x,P=h.options.showInternalEdges,M,C,T,A,L;for(m.beginPath(),T=0;T<g.length;T++)if(M=g[T],!!M.render.visible)for(L=M.parts.length>1?1:0;L<M.parts.length;L++){for(C=M.parts[L],m.moveTo(C.vertices[0].x,C.vertices[0].y),A=1;A<C.vertices.length;A++)!C.vertices[A-1].isInternal||P?m.lineTo(C.vertices[A].x,C.vertices[A].y):m.moveTo(C.vertices[A].x,C.vertices[A].y),C.vertices[A].isInternal&&!P&&m.moveTo(C.vertices[(A+1)%C.vertices.length].x,C.vertices[(A+1)%C.vertices.length].y);m.lineTo(C.vertices[0].x,C.vertices[0].y)}m.lineWidth=1,m.strokeStyle="#bbb",m.stroke()},e.bodyConvexHulls=function(h,g,x){var m=x,P,M,C,T,A;for(m.beginPath(),C=0;C<g.length;C++)if(P=g[C],!(!P.render.visible||P.parts.length===1)){for(m.moveTo(P.vertices[0].x,P.vertices[0].y),T=1;T<P.vertices.length;T++)m.lineTo(P.vertices[T].x,P.vertices[T].y);m.lineTo(P.vertices[0].x,P.vertices[0].y)}m.lineWidth=1,m.strokeStyle="rgba(255,255,255,0.2)",m.stroke()},e.vertexNumbers=function(h,g,x){var m=x,P,M,C;for(P=0;P<g.length;P++){var T=g[P].parts;for(C=T.length>1?1:0;C<T.length;C++){var A=T[C];for(M=0;M<A.vertices.length;M++)m.fillStyle="rgba(255,255,255,0.2)",m.fillText(P+"_"+M,A.position.x+(A.vertices[M].x-A.position.x)*.8,A.position.y+(A.vertices[M].y-A.position.y)*.8)}}},e.mousePosition=function(h,g,x){var m=x;m.fillStyle="rgba(255,255,255,0.8)",m.fillText(g.position.x+"  "+g.position.y,g.position.x+5,g.position.y-5)},e.bodyBounds=function(h,g,x){var m=x,P=h.engine,M=h.options;m.beginPath();for(var C=0;C<g.length;C++){var T=g[C];if(T.render.visible)for(var A=g[C].parts,L=A.length>1?1:0;L<A.length;L++){var E=A[L];m.rect(E.bounds.min.x,E.bounds.min.y,E.bounds.max.x-E.bounds.min.x,E.bounds.max.y-E.bounds.min.y)}}M.wireframes?m.strokeStyle="rgba(255,255,255,0.08)":m.strokeStyle="rgba(0,0,0,0.1)",m.lineWidth=1,m.stroke()},e.bodyAxes=function(h,g,x){var m=x,P=h.engine,M=h.options,C,T,A,L;for(m.beginPath(),T=0;T<g.length;T++){var E=g[T],D=E.parts;if(E.render.visible)if(M.showAxes)for(A=D.length>1?1:0;A<D.length;A++)for(C=D[A],L=0;L<C.axes.length;L++){var b=C.axes[L];m.moveTo(C.position.x,C.position.y),m.lineTo(C.position.x+b.x*20,C.position.y+b.y*20)}else for(A=D.length>1?1:0;A<D.length;A++)for(C=D[A],L=0;L<C.axes.length;L++)m.moveTo(C.position.x,C.position.y),m.lineTo((C.vertices[0].x+C.vertices[C.vertices.length-1].x)/2,(C.vertices[0].y+C.vertices[C.vertices.length-1].y)/2)}M.wireframes?(m.strokeStyle="indianred",m.lineWidth=1):(m.strokeStyle="rgba(255, 255, 255, 0.4)",m.globalCompositeOperation="overlay",m.lineWidth=2),m.stroke(),m.globalCompositeOperation="source-over"},e.bodyPositions=function(h,g,x){var m=x,P=h.engine,M=h.options,C,T,A,L;for(m.beginPath(),A=0;A<g.length;A++)if(C=g[A],!!C.render.visible)for(L=0;L<C.parts.length;L++)T=C.parts[L],m.arc(T.position.x,T.position.y,3,0,2*Math.PI,!1),m.closePath();for(M.wireframes?m.fillStyle="indianred":m.fillStyle="rgba(0,0,0,0.5)",m.fill(),m.beginPath(),A=0;A<g.length;A++)C=g[A],C.render.visible&&(m.arc(C.positionPrev.x,C.positionPrev.y,2,0,2*Math.PI,!1),m.closePath());m.fillStyle="rgba(255,165,0,0.8)",m.fill()},e.bodyVelocity=function(h,g,x){var m=x;m.beginPath();for(var P=0;P<g.length;P++){var M=g[P];if(M.render.visible){var C=n.getVelocity(M);m.moveTo(M.position.x,M.position.y),m.lineTo(M.position.x+C.x,M.position.y+C.y)}}m.lineWidth=3,m.strokeStyle="cornflowerblue",m.stroke()},e.bodyIds=function(h,g,x){var m=x,P,M;for(P=0;P<g.length;P++)if(g[P].render.visible){var C=g[P].parts;for(M=C.length>1?1:0;M<C.length;M++){var T=C[M];m.font="12px Arial",m.fillStyle="rgba(255,255,255,0.5)",m.fillText(T.id,T.position.x+10,T.position.y-10)}}},e.collisions=function(h,g,x){var m=x,P=h.options,M,C,T,A,L,E,D;for(m.beginPath(),E=0;E<g.length;E++)if(M=g[E],!!M.isActive)for(C=M.collision,D=0;D<M.activeContacts.length;D++){var b=M.activeContacts[D],I=b.vertex;m.rect(I.x-1.5,I.y-1.5,3.5,3.5)}for(P.wireframes?m.fillStyle="rgba(255,255,255,0.7)":m.fillStyle="orange",m.fill(),m.beginPath(),E=0;E<g.length;E++)if(M=g[E],!!M.isActive&&(C=M.collision,M.activeContacts.length>0)){var V=M.activeContacts[0].vertex.x,k=M.activeContacts[0].vertex.y;M.activeContacts.length===2&&(V=(M.activeContacts[0].vertex.x+M.activeContacts[1].vertex.x)/2,k=(M.activeContacts[0].vertex.y+M.activeContacts[1].vertex.y)/2),C.bodyB===C.supports[0].body||C.bodyA.isStatic===!0?m.moveTo(V-C.normal.x*8,k-C.normal.y*8):m.moveTo(V+C.normal.x*8,k+C.normal.y*8),m.lineTo(V,k)}P.wireframes?m.strokeStyle="rgba(255,165,0,0.7)":m.strokeStyle="orange",m.lineWidth=1,m.stroke()},e.separations=function(h,g,x){var m=x,P=h.options,M,C,T,A,L,E,D;for(m.beginPath(),E=0;E<g.length;E++)if(M=g[E],!!M.isActive){C=M.collision,A=C.bodyA,L=C.bodyB;var b=1;!L.isStatic&&!A.isStatic&&(b=.5),L.isStatic&&(b=0),m.moveTo(L.position.x,L.position.y),m.lineTo(L.position.x-C.penetration.x*b,L.position.y-C.penetration.y*b),b=1,!L.isStatic&&!A.isStatic&&(b=.5),A.isStatic&&(b=0),m.moveTo(A.position.x,A.position.y),m.lineTo(A.position.x+C.penetration.x*b,A.position.y+C.penetration.y*b)}P.wireframes?m.strokeStyle="rgba(255,165,0,0.5)":m.strokeStyle="orange",m.stroke()},e.inspector=function(h,g){var x=h.engine,m=h.selected,P=h.render,M=P.options,C;if(M.hasBounds){var T=P.bounds.max.x-P.bounds.min.x,A=P.bounds.max.y-P.bounds.min.y,L=T/P.options.width,E=A/P.options.height;g.scale(1/L,1/E),g.translate(-P.bounds.min.x,-P.bounds.min.y)}for(var D=0;D<m.length;D++){var b=m[D].data;switch(g.translate(.5,.5),g.lineWidth=1,g.strokeStyle="rgba(255,165,0,0.9)",g.setLineDash([1,2]),b.type){case"body":C=b.bounds,g.beginPath(),g.rect(Math.floor(C.min.x-3),Math.floor(C.min.y-3),Math.floor(C.max.x-C.min.x+6),Math.floor(C.max.y-C.min.y+6)),g.closePath(),g.stroke();break;case"constraint":var I=b.pointA;b.bodyA&&(I=b.pointB),g.beginPath(),g.arc(I.x,I.y,10,0,2*Math.PI),g.closePath(),g.stroke();break}g.setLineDash([]),g.translate(-.5,-.5)}h.selectStart!==null&&(g.translate(.5,.5),g.lineWidth=1,g.strokeStyle="rgba(255,165,0,0.6)",g.fillStyle="rgba(255,165,0,0.1)",C=h.selectBounds,g.beginPath(),g.rect(Math.floor(C.min.x),Math.floor(C.min.y),Math.floor(C.max.x-C.min.x),Math.floor(C.max.y-C.min.y)),g.closePath(),g.stroke(),g.fill(),g.translate(-.5,-.5)),M.hasBounds&&g.setTransform(1,0,0,1,0,0)};var a=function(h,g){var x=h.engine,m=h.timing,P=m.historySize,M=x.timing.timestamp;m.delta=g-m.lastTime||e._goodDelta,m.lastTime=g,m.timestampElapsed=M-m.lastTimestamp||0,m.lastTimestamp=M,m.deltaHistory.unshift(m.delta),m.deltaHistory.length=Math.min(m.deltaHistory.length,P),m.engineDeltaHistory.unshift(x.timing.lastDelta),m.engineDeltaHistory.length=Math.min(m.engineDeltaHistory.length,P),m.timestampElapsedHistory.unshift(m.timestampElapsed),m.timestampElapsedHistory.length=Math.min(m.timestampElapsedHistory.length,P),m.engineElapsedHistory.unshift(x.timing.lastElapsed),m.engineElapsedHistory.length=Math.min(m.engineElapsedHistory.length,P),m.elapsedHistory.unshift(m.lastElapsed),m.elapsedHistory.length=Math.min(m.elapsedHistory.length,P)},c=function(h){for(var g=0,x=0;x<h.length;x+=1)g+=h[x];return g/h.length||0},p=function(h,g){var x=document.createElement("canvas");return x.width=h,x.height=g,x.oncontextmenu=function(){return!1},x.onselectstart=function(){return!1},x},w=function(h){var g=h.getContext("2d"),x=window.devicePixelRatio||1,m=g.webkitBackingStorePixelRatio||g.mozBackingStorePixelRatio||g.msBackingStorePixelRatio||g.oBackingStorePixelRatio||g.backingStorePixelRatio||1;return x/m},y=function(h,g){var x=h.textures[g];return x||(x=h.textures[g]=new Image,x.src=g,x)},S=function(h,g){var x=g;/(jpg|gif|png)$/.test(g)&&(x="url("+g+")"),h.canvas.style.background=x,h.canvas.style.backgroundSize="contain",h.currentBackground=g}})()},function(B,d,o){var e={};B.exports=e;var n=o(5),r=o(17),i=o(0);(function(){var u,f;if(typeof window!="undefined"&&(u=window.requestAnimationFrame||window.webkitRequestAnimationFrame||window.mozRequestAnimationFrame||window.msRequestAnimationFrame,f=window.cancelAnimationFrame||window.mozCancelAnimationFrame||window.webkitCancelAnimationFrame||window.msCancelAnimationFrame),!u){var v;u=function(l){v=setTimeout(function(){l(i.now())},1e3/60)},f=function(){clearTimeout(v)}}e.create=function(l){var t={fps:60,deltaSampleSize:60,counterTimestamp:0,frameCounter:0,deltaHistory:[],timePrev:null,frameRequestId:null,isFixed:!1,enabled:!0},s=i.extend(t,l);return s.delta=s.delta||1e3/s.fps,s.deltaMin=s.deltaMin||1e3/s.fps,s.deltaMax=s.deltaMax||1e3/(s.fps*.5),s.fps=1e3/s.delta,s},e.run=function(l,t){return typeof l.positionIterations!="undefined"&&(t=l,l=e.create()),function s(a){l.frameRequestId=u(s),a&&l.enabled&&e.tick(l,t,a)}(),l},e.tick=function(l,t,s){var a=t.timing,c;l.isFixed?c=l.delta:(c=s-l.timePrev||l.delta,l.timePrev=s,l.deltaHistory.push(c),l.deltaHistory=l.deltaHistory.slice(-l.deltaSampleSize),c=Math.min.apply(null,l.deltaHistory),c=c<l.deltaMin?l.deltaMin:c,c=c>l.deltaMax?l.deltaMax:c,l.delta=c);var p={timestamp:a.timestamp};n.trigger(l,"beforeTick",p),l.frameCounter+=1,s-l.counterTimestamp>=1e3&&(l.fps=l.frameCounter*((s-l.counterTimestamp)/1e3),l.counterTimestamp=s,l.frameCounter=0),n.trigger(l,"tick",p),n.trigger(l,"beforeUpdate",p),r.update(t,c),n.trigger(l,"afterUpdate",p),n.trigger(l,"afterTick",p)},e.stop=function(l){f(l.frameRequestId)},e.start=function(l,t){e.run(l,t)}})()},function(B,d,o){var e={};B.exports=e;var n=o(8),r=o(0),i=r.deprecated;(function(){e.collides=function(u,f){return n.collides(u,f)},i(e,"collides","SAT.collides \u27A4 replaced by Collision.collides")})()},function(B,d,o){var e={};B.exports=e;var n=o(1),r=o(0);(function(){e.pathToVertices=function(i,u){typeof window!="undefined"&&!("SVGPathSeg"in window)&&r.warn("Svg.pathToVertices: SVGPathSeg not defined, a polyfill is required.");var f,v,l,t,s,a,c,p,w,y,S=[],h,g,x=0,m=0,P=0;u=u||15;var M=function(T,A,L){var E=L%2===1&&L>1;if(!w||T!=w.x||A!=w.y){w&&E?(h=w.x,g=w.y):(h=0,g=0);var D={x:h+T,y:g+A};(E||!w)&&(w=D),S.push(D),m=h+T,P=g+A}},C=function(T){var A=T.pathSegTypeAsLetter.toUpperCase();if(A!=="Z"){switch(A){case"M":case"L":case"T":case"C":case"S":case"Q":m=T.x,P=T.y;break;case"H":m=T.x;break;case"V":P=T.y;break}M(m,P,T.pathSegType)}};for(e._svgPathToAbsolute(i),l=i.getTotalLength(),a=[],f=0;f<i.pathSegList.numberOfItems;f+=1)a.push(i.pathSegList.getItem(f));for(c=a.concat();x<l;){if(y=i.getPathSegAtLength(x),s=a[y],s!=p){for(;c.length&&c[0]!=s;)C(c.shift());p=s}switch(s.pathSegTypeAsLetter.toUpperCase()){case"C":case"T":case"S":case"Q":case"A":t=i.getPointAtLength(x),M(t.x,t.y,0);break}x+=u}for(f=0,v=c.length;f<v;++f)C(c[f]);return S},e._svgPathToAbsolute=function(i){for(var u,f,v,l,t,s,a=i.pathSegList,c=0,p=0,w=a.numberOfItems,y=0;y<w;++y){var S=a.getItem(y),h=S.pathSegTypeAsLetter;if(/[MLHVCSQTA]/.test(h))"x"in S&&(c=S.x),"y"in S&&(p=S.y);else switch("x1"in S&&(v=c+S.x1),"x2"in S&&(t=c+S.x2),"y1"in S&&(l=p+S.y1),"y2"in S&&(s=p+S.y2),"x"in S&&(c+=S.x),"y"in S&&(p+=S.y),h){case"m":a.replaceItem(i.createSVGPathSegMovetoAbs(c,p),y);break;case"l":a.replaceItem(i.createSVGPathSegLinetoAbs(c,p),y);break;case"h":a.replaceItem(i.createSVGPathSegLinetoHorizontalAbs(c),y);break;case"v":a.replaceItem(i.createSVGPathSegLinetoVerticalAbs(p),y);break;case"c":a.replaceItem(i.createSVGPathSegCurvetoCubicAbs(c,p,v,l,t,s),y);break;case"s":a.replaceItem(i.createSVGPathSegCurvetoCubicSmoothAbs(c,p,t,s),y);break;case"q":a.replaceItem(i.createSVGPathSegCurvetoQuadraticAbs(c,p,v,l),y);break;case"t":a.replaceItem(i.createSVGPathSegCurvetoQuadraticSmoothAbs(c,p),y);break;case"a":a.replaceItem(i.createSVGPathSegArcAbs(c,p,S.r1,S.r2,S.angle,S.largeArcFlag,S.sweepFlag),y);break;case"z":case"Z":c=u,p=f;break}(h=="M"||h=="m")&&(u=c,f=p)}}})()},function(B,d,o){var e={};B.exports=e;var n=o(6),r=o(0);(function(){e.create=n.create,e.add=n.add,e.remove=n.remove,e.clear=n.clear,e.addComposite=n.addComposite,e.addBody=n.addBody,e.addConstraint=n.addConstraint})()}])})});var wt=Ee(Pe());var dt={requireBothBalls:!1,holeDwellTime:.3,timeLimitSeconds:0,holes:[{position:{x:0,y:0},radius:40,requireBlue:!0,requireYellow:!1}],obstacles:[{type:"rect",position:{x:200,y:100},width:80,height:30},{type:"rect",position:{x:-200,y:-100},width:80,height:30},{type:"circle",position:{x:-100,y:-150},radius:25},{type:"circle",position:{x:100,y:150},radius:25}],blueSpawn:{x:-240,y:-320},yellowSpawn:{x:240,y:320}};var pt={requireBothBalls:!0,holeDwellTime:.3,timeLimitSeconds:0,holes:[{position:{x:0,y:240},radius:55,requireBlue:!0,requireYellow:!0}],obstacles:[{type:"rect",position:{x:-180,y:-120},width:240,height:25},{type:"rect",position:{x:-50,y:100},width:25,height:150},{type:"rect",position:{x:50,y:100},width:25,height:150},{type:"rect",position:{x:220,y:-50},width:150,height:25}],blueSpawn:{x:-240,y:-320},yellowSpawn:{x:240,y:320}};var gt={requireBothBalls:!0,holeDwellTime:.3,timeLimitSeconds:60,holes:[{position:{x:-180,y:300},radius:40,requireBlue:!1,requireYellow:!0},{position:{x:180,y:-300},radius:40,requireBlue:!0,requireYellow:!1}],obstacles:[{type:"rect",position:{x:0,y:150},width:150,height:25,moving:{mode:"patrol",offsetA:{x:-200,y:0},offsetB:{x:200,y:0},speed:120}},{type:"rect",position:{x:0,y:-150},width:150,height:25,moving:{mode:"patrol",offsetA:{x:200,y:0},offsetB:{x:-200,y:0},speed:150}},{type:"rect",position:{x:0,y:0},width:250,height:20,moving:{mode:"rotate",rotateSpeed:30}}],blueSpawn:{x:-240,y:-320},yellowSpawn:{x:240,y:320}};var K=Ee(Pe());var be=16.666666666666668,he=60,mt=.15,H="#1a1a1a",J="#fffef6",fe="#f2ecd8",ee="#4a90e2",re="#f5c518",Ce="#e8d9b0",se="rgba(26,26,26,0.85)",de=4,Y=4,Qe=3;function xt(B,d){return Math.hypot(B.x-d.x,B.y-d.y)}var De=class{constructor(d,o,e,n,r){this.cfg=d;this.screenPos=o;this.threshold=e;this.blueBody=n;this.yellowBody=r;this.dwell=0}update(d){let o=xt(this.blueBody.position,this.screenPos)<this.cfg.radius+28,e=xt(this.yellowBody.position,this.screenPos)<this.cfg.radius+28,n=(!this.cfg.requireBlue||o)&&(!this.cfg.requireYellow||e);this.dwell=n?this.dwell+d:0}get isSatisfied(){return this.dwell>=this.threshold}getScreenPos(){return this.screenPos}reset(){this.dwell=0}};var Ze=Ee(Pe());var Ie=class{constructor(d,o){this.blueBody=d;this.yellowBody=o}update(d){if(Math.hypot(d.x,d.y)<.01)return;let o={x:d.x*.006,y:-d.y*.006};Ze.default.Body.applyForce(this.blueBody,this.blueBody.position,o),Ze.default.Body.applyForce(this.yellowBody,this.yellowBody.position,{x:-o.x,y:-o.y})}};var je=Ee(Pe()),Oe=class{constructor(d,o,e){this.body=d;this.cfg=o;this.origin=e;this.t=0;this.dir=1}update(d){if(this.cfg.mode==="patrol"){let{offsetA:o,offsetB:e,speed:n}=this.cfg,r=e.x-o.x,i=e.y-o.y,u=Math.hypot(r,i);if(u<.001)return;this.t+=n*d/u*this.dir,this.t>=1&&(this.t=1,this.dir=-1),this.t<=0&&(this.t=0,this.dir=1);let f=this.origin.x+o.x+r*this.t,v=this.origin.y+o.y+i*this.t;je.default.Body.setPosition(this.body,{x:f,y:v})}else this.cfg.mode==="rotate"&&(this.t=(this.t+this.cfg.rotateSpeed*Math.PI/180*d)%(2*Math.PI),je.default.Body.setAngle(this.body,this.t))}};function Re(B){return{x:360+B.x,y:640-B.y}}var te=20,Ve=class{load(d){var a,c,p,w;for(let[y,S]of[["blueSpawn",d.blueSpawn],["yellowSpawn",d.yellowSpawn]])(Math.abs(S.x)>360||Math.abs(S.y)>480)&&console.warn(`[LevelLoader] ${y} out of bounds: (${S.x}, ${S.y})`);let o=K.default.Engine.create({gravity:{x:0,y:0},positionIterations:10}),e=Re(d.blueSpawn),n=Re(d.yellowSpawn),r=K.default.Bodies.circle(e.x,e.y,28,{frictionAir:.05,restitution:.2,label:"blue"}),i=K.default.Bodies.circle(n.x,n.y,28,{frictionAir:.05,restitution:.2,label:"yellow"}),u=1120,f=[K.default.Bodies.rectangle(360,160-te/2,720,te,{isStatic:!0,label:"wall"}),K.default.Bodies.rectangle(360,u+te/2,720,te,{isStatic:!0,label:"wall"}),K.default.Bodies.rectangle(-te/2,640,te,960+2*te,{isStatic:!0,label:"wall"}),K.default.Bodies.rectangle(720+te/2,640,te,960+2*te,{isStatic:!0,label:"wall"})],v=[],l=[];for(let y of d.obstacles){(Math.abs(y.position.x)>360||Math.abs(y.position.y)>480)&&console.warn(`[LevelLoader] obstacle out of bounds: (${y.position.x}, ${y.position.y})`);let S=Re(y.position),h;if(y.type==="rect"){if(y.width==null||y.height==null){console.error(`[LevelLoader] rect obstacle missing width/height at (${y.position.x}, ${y.position.y})`);continue}h=K.default.Bodies.rectangle(S.x,S.y,y.width,y.height,{isStatic:!0,label:"obstacle"})}else{if(y.radius==null){console.error(`[LevelLoader] circle obstacle missing radius at (${y.position.x}, ${y.position.y})`);continue}h=K.default.Bodies.circle(S.x,S.y,y.radius,{isStatic:!0,label:"obstacle"})}if(v.push(h),y.moving){let g;if(y.moving.mode==="patrol"){let x=(a=y.moving.offsetA)!=null?a:{x:0,y:0},m=(c=y.moving.offsetB)!=null?c:{x:0,y:0};g={mode:"patrol",offsetA:{x:x.x,y:-x.y},offsetB:{x:m.x,y:-m.y},speed:(p=y.moving.speed)!=null?p:100}}else g={mode:"rotate",rotateSpeed:(w=y.moving.rotateSpeed)!=null?w:30};l.push(new Oe(h,g,S))}}K.default.Composite.add(o.world,[r,i,...f,...v]);let t=d.holes.map(y=>new De(y,Re(y.position),d.holeDwellTime,r,i)),s=new Ie(r,i);return{engine:o,blueBody:r,yellowBody:i,wallBodies:f,obstacleBodies:v,detectors:t,movingObstacles:l,ballController:s}}unload(d){K.default.Composite.clear(d.engine.world,!1),K.default.Engine.clear(d.engine)}};var He=class{constructor(d,o,e,n){this.cfg=d;this.detectors=o;this.onComplete=e;this.onTimeout=n;this.state="loading";this.elapsed=0}start(){this.state="playing",this.elapsed=0}update(d){if(this.state==="playing"){if(this.elapsed+=d,this.cfg.timeLimitSeconds>0&&this.elapsed>=this.cfg.timeLimitSeconds){this.state="timeout",this.onTimeout();return}this.detectors.every(o=>o.isSatisfied)&&(this.state="levelComplete",this.onComplete())}}getState(){return this.state}getElapsed(){return this.elapsed}reset(d){this.state="playing",this.elapsed=0,this.detectors=d}};function St(B,d,o){let e=Math.hypot(B.x,B.y),n=d*o;if(e<n)return{x:0,y:0};let i=(Math.min(e,d)-n)/(d-n);return{x:B.x/e*i,y:-(B.y/e)*i||0}}var Ht=1500,kt=.3,ke=class{constructor(d,o,e){this.canvas=d;this.viewport=o;this.onReset=e;this.active=!1;this.visible=!1;this.touchId=null;this.basePos={x:0,y:0};this.handlePos={x:0,y:0};this.direction={x:0,y:0};this.longPressTimer=null;this.boundStart=this.onTouchStart.bind(this);this.boundMove=this.onTouchMove.bind(this);this.boundEnd=this.onTouchEnd.bind(this);d.addEventListener("touchstart",this.boundStart),d.addEventListener("touchmove",this.boundMove),d.addEventListener("touchend",this.boundEnd),d.addEventListener("touchcancel",this.boundEnd)}onTouchStart(d){let o=d.changedTouches[0];if(!o)return;this.clearLongPress();let e=this.viewport.toLogical(o.clientX,o.clientY);this.touchId=o.identifier,this.active=!0,this.visible=!0,this.basePos={x:e.x,y:e.y},this.handlePos={x:e.x,y:e.y},this.direction={x:0,y:0},this.longPressTimer=setTimeout(()=>this.onReset(),Ht)}onTouchMove(d){for(let o of d.changedTouches){if(o.identifier!==this.touchId)continue;let e=this.viewport.toLogical(o.clientX,o.clientY);this.updateHandle(e.x,e.y);let n=e.x-this.basePos.x,r=e.y-this.basePos.y;Math.hypot(n,r)>he*kt&&this.clearLongPress();break}}onTouchEnd(d){for(let o of d.changedTouches)if(o.identifier===this.touchId){this.touchId=null,this.active=!1,this.visible=!1,this.direction={x:0,y:0},this.clearLongPress();break}}updateHandle(d,o){let e={x:d-this.basePos.x,y:o-this.basePos.y},n=Math.hypot(e.x,e.y),r=Math.min(n,he);this.handlePos=n>0?{x:this.basePos.x+e.x/n*r,y:this.basePos.y+e.y/n*r}:{x:this.basePos.x,y:this.basePos.y},this.direction=St(e,he,mt)}clearLongPress(){this.longPressTimer!==null&&(clearTimeout(this.longPressTimer),this.longPressTimer=null)}destroy(){this.canvas.removeEventListener("touchstart",this.boundStart),this.canvas.removeEventListener("touchmove",this.boundMove),this.canvas.removeEventListener("touchend",this.boundEnd),this.canvas.removeEventListener("touchcancel",this.boundEnd),this.clearLongPress()}getDirection(){return{x:this.direction.x,y:this.direction.y}}getHandlePos(){return{x:this.handlePos.x,y:this.handlePos.y}}getBasePos(){return{x:this.basePos.x,y:this.basePos.y}}isActive(){return this.active}isVisible(){return this.visible}};var We=class{constructor(){this.offscreen=null}ensure(){if(this.offscreen)return this.offscreen;let d=(()=>{try{if(typeof OffscreenCanvas!="undefined")return new OffscreenCanvas(720,960)}catch(i){}if(typeof document!="undefined"&&document.createElement){let i=document.createElement("canvas");return i.width=720,i.height=960,i}let r=globalThis.tt;if(r&&typeof r.createCanvas=="function"){let i=r.createCanvas();return i.width=720,i.height=960,i}return null})();if(!d)return this.offscreen=null,null;let o=d.getContext("2d");if(!o)return this.offscreen=null,null;o.fillStyle=J,o.fillRect(0,0,720,960);let e=12345,n=()=>(e=e*1664525+1013904223>>>0,(e&65535)/65535);o.fillStyle=fe;for(let r=0;r<800;r++){let i=n()*720,u=n()*960,f=.6+n()*1.4;o.globalAlpha=.2+n()*.4,o.beginPath(),o.arc(i,u,f,0,Math.PI*2),o.fill()}return o.globalAlpha=1,this.offscreen=d,d}draw(d){let o=this.ensure();o?d.drawImage(o,0,160):(d.fillStyle=J,d.fillRect(0,160,720,960))}};function ae(B,d,o){B.save(),B.translate(Y,Y),B.fillStyle=se,d(),B.fill(),B.restore(),B.save(),B.fillStyle=o,d(),B.fill(),B.strokeStyle=H,B.lineWidth=de,B.lineJoin="round",B.lineCap="round",d(),B.stroke(),B.restore()}function pe(B,d,o,e,n,r="left",i="#ffffff"){B.save(),B.font=`bold ${n}px sans-serif`,B.textAlign=r,B.lineWidth=Math.max(4,n/8),B.lineJoin="round",B.strokeStyle=H,B.strokeText(d,o,e),B.fillStyle=i,B.fillText(d,o,e),B.restore()}var Fe=class{constructor(d){this.ctx=d;this.holeAngle=0;this.paper=new We}render(d,o,e,n){let{ctx:r}=this;this.holeAngle=(this.holeAngle+n*1.5)%(Math.PI*2),r.clearRect(0,0,720,1280),r.fillStyle=J,r.fillRect(0,0,720,1280),this.paper.draw(r),r.strokeStyle=H,r.lineWidth=de,r.lineJoin="round",r.strokeRect(0,160,720,960),d.detectors.forEach((i,u)=>{this.drawHole(i.getScreenPos(),o.holes[u].radius)}),o.obstacles.forEach((i,u)=>{this.drawObstacle(i,d.obstacleBodies[u])}),this.drawBall(d.yellowBody.position.x,d.yellowBody.position.y,re,Qe),this.drawBall(d.blueBody.position.x,d.blueBody.position.y,ee,-Qe),e.isVisible()&&this.drawJoystick(e)}drawBall(d,o,e,n){let{ctx:r}=this;r.save(),r.translate(d,o),r.rotate(n*Math.PI/180),ae(r,()=>{r.beginPath(),r.arc(0,0,28,0,Math.PI*2)},e),r.restore()}drawHole(d,o){let{ctx:e}=this;e.fillStyle=H,e.beginPath(),e.arc(d.x,d.y,o,0,Math.PI*2),e.fill(),e.save(),e.translate(d.x,d.y),e.strokeStyle=H,e.lineWidth=3,e.setLineDash([6,10]),e.lineDashOffset=-this.holeAngle*(o+8),e.beginPath(),e.arc(0,0,o+10,0,Math.PI*2),e.stroke(),e.setLineDash([]),e.restore()}drawObstacle(d,o){if(!o)return;let{ctx:e}=this,{x:n,y:r}=o.position;if(e.save(),e.translate(n,r),e.rotate(o.angle),d.type==="rect"){let i=d.width/2,u=d.height/2;ae(e,()=>{e.beginPath(),e.rect(-i,-u,d.width,d.height)},Ce)}else ae(e,()=>{e.beginPath(),e.arc(0,0,d.radius,0,Math.PI*2)},Ce);e.restore()}drawJoystick(d){let{ctx:o}=this,e=d.getBasePos(),n=d.getHandlePos();o.save(),o.strokeStyle=H,o.fillStyle="rgba(255,254,246,0.55)",o.lineWidth=3,o.setLineDash([6,6]),o.beginPath(),o.arc(e.x,e.y,he,0,Math.PI*2),o.fill(),o.stroke(),o.setLineDash([]),o.restore(),ae(o,()=>{o.beginPath(),o.arc(n.x,n.y,32,0,Math.PI*2)},ee)}};var Ne=class{constructor(d){this.ctx=d}render(d,o,e){let{ctx:n}=this;if(n.save(),n.fillStyle=J,n.fillRect(0,0,720,160),n.strokeStyle=H,n.lineWidth=de,n.beginPath(),n.moveTo(0,160),n.lineTo(720,160),n.stroke(),pe(n,`\u5173\u5361 ${d+1}`,28,64,36,"left"),e>0){let r=Math.max(0,e-o),i=Math.ceil(r),u=`${i}s`;n.font="bold 36px sans-serif",n.textAlign="right",n.lineWidth=5,n.lineJoin="round",n.strokeStyle=H,n.strokeText(u,692,64),n.fillStyle=i<=10?"#e64646":"#ffffff",n.fillText(u,692,64)}n.restore()}};var Wt=[{title:"\u7B2C 1 \u5173",subtitle:"\u5355\u7403\u5165\u6D1E \xB7 \u521D\u8BC6\u955C\u50CF"},{title:"\u7B2C 2 \u5173",subtitle:"\u53CC\u7403\u540C\u5165 \xB7 \u5171\u632F\u65F6\u523B"},{title:"\u7B2C 3 \u5173",subtitle:"\u7A7F\u8D8A\u673A\u5173 \xB7 60 \u79D2\u6311\u6218"}],Ge=class{constructor(d){this.ctx=d;this.nextBtn=null;this.retryBtn=null;this.retryAdBtn=null;this.menuBtn=null;this.sidebarBtn=null;this.levelBtns=[];this.breathPhase=0}renderLevelSelect(){let{ctx:d}=this;this.clearButtons(),this.breathPhase+=.03,d.save(),this.drawPaperBackdrop(),this.drawDualBallLogo(720/2,220,56),pe(d,"\u53CC\u7403\u955C\u50CF",720/2,360,72,"center",ee),d.font="500 22px sans-serif",d.fillStyle="#7a7a7a",d.textAlign="center",d.fillText("DUAL BALL MIRROR",720/2,392),this.drawChapterRibbon(720/2,460,"\u9009 \u62E9 \u5173 \u5361");let o=540,e=130,n=(720-o)/2,r=510,i=160;this.levelBtns=[];for(let u=0;u<3;u++){let f=Math.sin(this.breathPhase+u*1.3)*1.5,v=r+u*i+f;this.levelBtns.push({x:n,y:v,w:o,h:e}),this.drawLevelCard(n,v,o,e,u)}d.font="500 20px sans-serif",d.fillStyle="#9a9a9a",d.textAlign="center",d.fillText("v1.1 \xB7 doodle physics",720/2,1244),d.textAlign="left",d.restore()}renderWin(d,o,e){let{ctx:n}=this;this.clearButtons(),n.save(),n.fillStyle="rgba(0,0,0,0.55)",n.fillRect(0,0,720,1280),this.drawConfetti(23057);let r=580,i=460,u=(720-r)/2,f=(1280-i)/2;this.drawDoodleCard(u,f,r,i,J),this.drawChapterRibbon(720/2,f+60,"\u{1F389}  \u901A  \u5173  \u{1F389}"),pe(n,`\u7B2C ${e+1} \u5173 \u5B8C \u6210`,720/2,f+150,44,"center",H),this.drawStars(720/2,f+210,this.starsForTime(o,e)),n.font="600 28px sans-serif",n.fillStyle="#666",n.textAlign="center",n.fillText(`\u7528\u65F6 ${o.toFixed(1)} \u79D2`,720/2,f+290);let v=f+326,l=220,t=64,s=24,a=l*2+s,c=(720-a)/2;this.retryBtn={x:c,y:v,w:l,h:t},this.drawButton(this.retryBtn,"\u518D\u73A9\u4E00\u6B21",fe,H),this.nextBtn={x:c+l+s,y:v,w:l,h:t},this.drawButton(this.nextBtn,d?"\u8FD4\u56DE\u4E3B\u754C\u9762":"\u4E0B\u4E00\u5173 \u2192",d?ee:re,H);let p=l*2+s,w=52,y=v+t+16;this.sidebarBtn={x:c,y,w:p,h:w},this.drawButton(this.sidebarBtn,"\u2B50 \u52A0\u5165\u4FA7\u8FB9\u680F",fe,H),n.textAlign="left",n.restore()}renderTimeout(){let{ctx:d}=this;this.clearButtons(),d.save(),d.fillStyle="rgba(0,0,0,0.55)",d.fillRect(0,0,720,1280);let o=580,e=420,n=(720-o)/2,r=(1280-e)/2;this.drawDoodleCard(n,r,o,e,J),this.drawHourglass(720/2,r+100,40),pe(d,"\u65F6 \u95F4 \u5230",720/2,r+210,52,"center","#e64646"),d.font="500 22px sans-serif",d.fillStyle="#666",d.textAlign="center",d.fillText("\u770B\u4E2A\u5E7F\u544A\u518D\u8BD5\u4E00\u6B21\uFF1F",720/2,r+250);let i=320,u=64,f=(720-i)/2,v=r+280;this.retryAdBtn={x:f,y:v,w:i,h:u},this.drawButton(this.retryAdBtn,"\u25B6 \u770B\u5E7F\u544A\u518D\u8BD5",ee,"#ffffff");let l=200,t=52,s=(720-l)/2,a=v+u+16;this.menuBtn={x:s,y:a,w:l,h:t},this.drawButton(this.menuBtn,"\u8FD4\u56DE\u4E3B\u754C\u9762",fe,H);let c=280,p=48,w=(720-c)/2,y=a+t+14;this.sidebarBtn={x:w,y,w:c,h:p},this.drawButton(this.sidebarBtn,"\u2B50 \u52A0\u5165\u4FA7\u8FB9\u680F",fe,H),d.textAlign="left",d.restore()}hitTest(d,o){if(this.nextBtn&&this.inside(d,o,this.nextBtn))return"next";if(this.retryBtn&&this.inside(d,o,this.retryBtn))return"retry";if(this.retryAdBtn&&this.inside(d,o,this.retryAdBtn))return"retryAd";if(this.menuBtn&&this.inside(d,o,this.menuBtn))return"menu";if(this.sidebarBtn&&this.inside(d,o,this.sidebarBtn))return"sidebar";for(let e=0;e<this.levelBtns.length;e++)if(this.inside(d,o,this.levelBtns[e]))return`level${e+1}`;return null}clear(){this.clearButtons()}clearButtons(){this.nextBtn=null,this.retryBtn=null,this.retryAdBtn=null,this.menuBtn=null,this.sidebarBtn=null,this.levelBtns=[]}inside(d,o,e){return d>=e.x&&d<=e.x+e.w&&o>=e.y&&o<=e.y+e.h}drawPaperBackdrop(){let{ctx:d}=this;d.fillStyle=J,d.fillRect(0,0,720,1280),d.strokeStyle="rgba(180,170,140,0.18)",d.lineWidth=1;for(let o=60;o<1280;o+=40)d.beginPath(),d.moveTo(40,o),d.lineTo(680,o),d.stroke();d.strokeStyle="rgba(220,80,80,0.25)",d.lineWidth=2,d.beginPath(),d.moveTo(80,0),d.lineTo(80,1280),d.stroke()}drawDualBallLogo(d,o,e){let{ctx:n}=this;ae(n,()=>{n.beginPath(),n.arc(d-e*.55,o+e*.15,e,0,Math.PI*2)},re),ae(n,()=>{n.beginPath(),n.arc(d+e*.55,o-e*.15,e,0,Math.PI*2)},ee),n.save(),n.strokeStyle=H,n.lineWidth=2,n.setLineDash([5,6]),n.beginPath(),n.moveTo(d-e*1.6,o),n.lineTo(d+e*1.6,o),n.stroke(),n.setLineDash([]),n.restore()}drawChapterRibbon(d,o,e){let{ctx:n}=this,r=280,i=52,u=d-r/2,f=o-i/2;n.save(),n.fillStyle=se,this.roundRect(u+Y,f+Y,r,i,i/2),n.fill(),n.fillStyle=H,this.roundRect(u,f,r,i,i/2),n.fill(),n.font="bold 26px sans-serif",n.fillStyle=J,n.textAlign="center",n.textBaseline="middle",n.fillText(e,d,o+1),n.textBaseline="alphabetic",n.restore()}drawLevelCard(d,o,e,n,r){let{ctx:i}=this,u=Wt[r],f=r%2===0?ee:re;i.fillStyle=se,this.roundRect(d+Y,o+Y,e,n,20),i.fill(),i.fillStyle=J,this.roundRect(d,o,e,n,20),i.fill(),i.strokeStyle=H,i.lineWidth=4,i.lineJoin="round",this.roundRect(d,o,e,n,20),i.stroke(),i.fillStyle=f,this.roundRect(d+6,o+6,14,n-12,6),i.fill(),i.strokeStyle=H,i.lineWidth=2,this.roundRect(d+6,o+6,14,n-12,6),i.stroke(),this.drawDualBallLogo(d+80,o+n/2,22),i.font="bold 38px sans-serif",i.fillStyle=H,i.textAlign="left",i.fillText(u.title,d+140,o+n/2-4),i.font="500 20px sans-serif",i.fillStyle="#666",i.fillText(u.subtitle,d+140,o+n/2+28);let v=d+e-50,l=o+n/2;i.fillStyle=f,i.beginPath(),i.arc(v,l,26,0,Math.PI*2),i.fill(),i.strokeStyle=H,i.lineWidth=3,i.stroke(),i.strokeStyle=H,i.lineWidth=4,i.lineCap="round",i.beginPath(),i.moveTo(v-7,l-8),i.lineTo(v+7,l),i.lineTo(v-7,l+8),i.stroke()}drawDoodleCard(d,o,e,n,r){let{ctx:i}=this;i.fillStyle=se,this.roundRect(d+Y,o+Y,e,n,24),i.fill(),i.fillStyle=r,this.roundRect(d,o,e,n,24),i.fill(),i.strokeStyle=H,i.lineWidth=5,i.lineJoin="round",this.roundRect(d,o,e,n,24),i.stroke()}drawButton(d,o,e,n){let{ctx:r}=this;r.fillStyle=se,this.roundRect(d.x+Y,d.y+Y,d.w,d.h,16),r.fill(),r.fillStyle=e,this.roundRect(d.x,d.y,d.w,d.h,16),r.fill(),r.strokeStyle=H,r.lineWidth=4,r.lineJoin="round",this.roundRect(d.x,d.y,d.w,d.h,16),r.stroke(),r.font="bold 26px sans-serif",r.fillStyle=n,r.textAlign="center",r.textBaseline="middle",r.fillText(o,d.x+d.w/2,d.y+d.h/2+2),r.textBaseline="alphabetic"}drawStars(d,o,e){let{ctx:n}=this,r=22,i=60;for(let u=0;u<3;u++){let f=d+(u-1)*i,v=u<e?re:"#e0dac6";n.fillStyle=se,this.starPath(f+Y,o+Y,r),n.fill(),n.fillStyle=v,this.starPath(f,o,r),n.fill(),n.strokeStyle=H,n.lineWidth=3,n.lineJoin="round",this.starPath(f,o,r),n.stroke()}}starPath(d,o,e){let{ctx:n}=this;n.beginPath();for(let r=0;r<10;r++){let i=-Math.PI/2+r*Math.PI/5,u=r%2===0?e:e*.45,f=d+u*Math.cos(i),v=o+u*Math.sin(i);r===0?n.moveTo(f,v):n.lineTo(f,v)}n.closePath()}drawHourglass(d,o,e){let{ctx:n}=this,r=e*.7;n.save(),n.strokeStyle=H,n.fillStyle=Ce,n.lineWidth=4,n.lineJoin="round",n.beginPath(),n.moveTo(d-r,o-e),n.lineTo(d+r,o-e),n.lineTo(d,o),n.lineTo(d+r,o+e),n.lineTo(d-r,o+e),n.lineTo(d,o),n.closePath(),n.fill(),n.stroke(),n.fillStyle=re,n.beginPath(),n.arc(d,o+e*.4,4,0,Math.PI*2),n.fill(),n.restore()}drawConfetti(d){let{ctx:o}=this,e=d>>>0,n=()=>(e=e*1664525+1013904223>>>0,(e&65535)/65535),r=[ee,re,"#e64646","#5cb85c","#9b6dd4"];o.save();for(let i=0;i<70;i++){let u=n()*720,f=n()*1280*.85,v=r[Math.floor(n()*r.length)],l=(n()-.5)*60,t=8+n()*8;o.save(),o.translate(u,f),o.rotate(l*Math.PI/180),o.fillStyle=v,o.fillRect(-t/2,-t/4,t,t/2),o.restore()}o.restore()}starsForTime(d,o){var r;let n=(r=[15,25,40][o])!=null?r:30;return d<=n?3:d<=n*1.6?2:1}roundRect(d,o,e,n,r){let{ctx:i}=this;i.beginPath(),i.moveTo(d+r,o),i.lineTo(d+e-r,o),i.quadraticCurveTo(d+e,o,d+e,o+r),i.lineTo(d+e,o+n-r),i.quadraticCurveTo(d+e,o+n,d+e-r,o+n),i.lineTo(d+r,o+n),i.quadraticCurveTo(d,o+n,d,o+n-r),i.lineTo(d,o+r),i.quadraticCurveTo(d,o,d+r,o),i.closePath()}};function ge(){return typeof tt!="undefined"}var ue={vibrate(){ge()?tt.vibrateShort({type:"light"}):console.log("[Bridge] vibrate stub")},showShare(B){ge()?tt.shareAppMessage({title:B}):console.log("[Bridge] share stub:",B)},showRewardedAd(B,d){if(!ge()){B();return}let o="YOUR_AD_UNIT_ID";o==="YOUR_AD_UNIT_ID"&&console.warn("[Bridge] adUnitId \u5C1A\u672A\u914D\u7F6E\uFF0C\u5E7F\u544A\u4E0D\u4F1A\u5C55\u793A");let e=tt.createRewardedVideoAd({adUnitId:o});e.onClose(n=>{n.isEnded?B():d==null||d()}),e.onError(()=>d==null?void 0:d()),e.show()},onHide(B){ge()?tt.onHide(B):console.log("[Bridge] onHide stub (registered but will not fire)")},onShow(B){ge()?tt.onShow(B):console.log("[Bridge] onShow stub (registered but will not fire)")},canAddToSidebar(){return ge()&&typeof tt.navigateToScene=="function"},addToSidebar(B,d){if(!this.canAddToSidebar()){console.log("[Bridge] addToSidebar stub (host unsupported)"),B==null||B();return}tt.navigateToScene({scene:"sidebar",success:()=>B==null?void 0:B(),fail:o=>d==null?void 0:d(o==null?void 0:o.errMsg)})}};var Ue=class{constructor(d,o,e=1){this.deviceWidth=d;this.deviceHeight=o;this.dpr=e;let n=d/720,r=o/1280;this.scale=Math.min(n,r);let i=720*this.scale,u=1280*this.scale;this.offsetX=(d-i)/2,this.offsetY=(o-u)/2,this.cssWidth=d,this.cssHeight=o}toLogical(d,o){return{x:(d-this.offsetX)/this.scale,y:(o-this.offsetY)/this.scale}}};var Me=tt.getSystemInfoSync(),_={width:Me.windowWidth||Me.screenWidth||720,height:Me.windowHeight||Me.screenHeight||1280,dpr:Me.pixelRatio||1},me=new Ue(_.width,_.height,_.dpr),ve=tt.createCanvas();ve.width=_.width*_.dpr;ve.height=_.height*_.dpr;var Se=ve.getContext("2d");function Pt(){Se.setTransform(me.scale*_.dpr,0,0,me.scale*_.dpr,me.offsetX*_.dpr,me.offsetY*_.dpr)}function Ft(){Se.setTransform(1,0,0,1,0,0),Se.clearRect(0,0,ve.width,ve.height)}Pt();var ye=[dt,pt,gt],et=new Ve,Nt=new Fe(Se),Gt=new Ne(Se),le=new Ge(Se),Q=0,$=null,q=null,oe=null,Ke=!0,rt=!1,xe=0,Ye=0,Be=null,Ut=1500;function ot(){Be!==null&&(clearTimeout(Be),Be=null)}function Je(B){ot(),$&&et.unload($),le.clear(),Q=B,Ke=!1;let d=ye[B];$=et.load(d),oe&&oe.destroy(),oe=new ke(ve,me,()=>it()),q=new He(d,$.detectors,()=>Yt(),()=>Jt()),q.start(),xe=0,Ye=0}function nt(){ot(),$&&(et.unload($),$=null),oe&&(oe.destroy(),oe=null),q=null,Ke=!0,le.clear()}function it(){Je(Q)}function Yt(){ue.vibrate(),ue.showShare(`\u6211\u901A\u8FC7\u4E86\u7B2C ${Q+1} \u5173\uFF01`);let B=Q>=ye.length-1;ot(),Be=setTimeout(()=>{Be=null,B?nt():Je(Q+1)},Ut)}function Jt(){le.renderTimeout()}ve.addEventListener("touchend",B=>{let d=B.changedTouches[0];if(!d)return;let o=me.toLogical(d.clientX,d.clientY),e=le.hitTest(o.x,o.y);if(Ke){(e==="level1"||e==="level2"||e==="level3")&&Je(Number(e.slice(5))-1);return}if(!q)return;let n=q.getState();n!=="levelComplete"&&n!=="timeout"||(e==="next"?Q>=ye.length-1?nt():Je(Q+1):e==="retry"?it():e==="menu"?nt():e==="retryAd"?ue.showRewardedAd(()=>it(),()=>le.renderTimeout()):e==="sidebar"&&ue.addToSidebar())});ue.onHide(()=>{rt=!0});ue.onShow(()=>{rt=!1,xe=0});function Ct(B){if(requestAnimationFrame(Ct),rt)return;if(Ft(),Pt(),Ke){le.renderLevelSelect();return}if(!$||!q||!oe)return;if(xe===0){xe=B;return}let d=(B-xe)/1e3;xe=B;let o=Math.min(d,.05);if(q.getState()==="playing"){for($.ballController.update(oe.getDirection()),Ye+=o*1e3;Ye>=be;)wt.default.Engine.update($.engine,be),Ye-=be;$.movingObstacles.forEach(n=>n.update(o)),$.detectors.forEach(n=>n.update(o)),q.update(o)}Nt.render($,ye[Q],oe,o),Gt.render(Q,q.getElapsed(),ye[Q].timeLimitSeconds);let e=q.getState();e==="levelComplete"?le.renderWin(Q>=ye.length-1,q.getElapsed(),Q):e==="timeout"&&le.renderTimeout()}requestAnimationFrame(Ct);})();
+"use strict";
+(() => {
+  var __create = Object.create;
+  var __defProp = Object.defineProperty;
+  var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+  var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __getProtoOf = Object.getPrototypeOf;
+  var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __commonJS = (cb, mod) => function __require() {
+    return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+  };
+  var __copyProps = (to, from, except, desc) => {
+    if (from && typeof from === "object" || typeof from === "function") {
+      for (let key of __getOwnPropNames(from))
+        if (!__hasOwnProp.call(to, key) && key !== except)
+          __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+    }
+    return to;
+  };
+  var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+    // If the importer is in node compatibility mode or this is not an ESM
+    // file that has been converted to a CommonJS file using a Babel-
+    // compatible transform (i.e. "__esModule" has not been set), then set
+    // "default" to the CommonJS "module.exports" for node compatibility.
+    isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+    mod
+  ));
+
+  // node_modules/matter-js/build/matter.js
+  var require_matter = __commonJS({
+    "node_modules/matter-js/build/matter.js"(exports, module) {
+      (function webpackUniversalModuleDefinition(root, factory) {
+        if (typeof exports === "object" && typeof module === "object")
+          module.exports = factory();
+        else if (typeof define === "function" && define.amd)
+          define("Matter", [], factory);
+        else if (typeof exports === "object")
+          exports["Matter"] = factory();
+        else
+          root["Matter"] = factory();
+      })(exports, function() {
+        return (
+          /******/
+          function(modules) {
+            var installedModules = {};
+            function __webpack_require__(moduleId) {
+              if (installedModules[moduleId]) {
+                return installedModules[moduleId].exports;
+              }
+              var module2 = installedModules[moduleId] = {
+                /******/
+                i: moduleId,
+                /******/
+                l: false,
+                /******/
+                exports: {}
+                /******/
+              };
+              modules[moduleId].call(module2.exports, module2, module2.exports, __webpack_require__);
+              module2.l = true;
+              return module2.exports;
+            }
+            __webpack_require__.m = modules;
+            __webpack_require__.c = installedModules;
+            __webpack_require__.d = function(exports2, name, getter) {
+              if (!__webpack_require__.o(exports2, name)) {
+                Object.defineProperty(exports2, name, { enumerable: true, get: getter });
+              }
+            };
+            __webpack_require__.r = function(exports2) {
+              if (typeof Symbol !== "undefined" && Symbol.toStringTag) {
+                Object.defineProperty(exports2, Symbol.toStringTag, { value: "Module" });
+              }
+              Object.defineProperty(exports2, "__esModule", { value: true });
+            };
+            __webpack_require__.t = function(value, mode) {
+              if (mode & 1) value = __webpack_require__(value);
+              if (mode & 8) return value;
+              if (mode & 4 && typeof value === "object" && value && value.__esModule) return value;
+              var ns = /* @__PURE__ */ Object.create(null);
+              __webpack_require__.r(ns);
+              Object.defineProperty(ns, "default", { enumerable: true, value });
+              if (mode & 2 && typeof value != "string") for (var key in value) __webpack_require__.d(ns, key, function(key2) {
+                return value[key2];
+              }.bind(null, key));
+              return ns;
+            };
+            __webpack_require__.n = function(module2) {
+              var getter = module2 && module2.__esModule ? (
+                /******/
+                function getDefault() {
+                  return module2["default"];
+                }
+              ) : (
+                /******/
+                function getModuleExports() {
+                  return module2;
+                }
+              );
+              __webpack_require__.d(getter, "a", getter);
+              return getter;
+            };
+            __webpack_require__.o = function(object, property) {
+              return Object.prototype.hasOwnProperty.call(object, property);
+            };
+            __webpack_require__.p = "";
+            return __webpack_require__(__webpack_require__.s = 20);
+          }([
+            /* 0 */
+            /***/
+            function(module2, exports2) {
+              var Common = {};
+              module2.exports = Common;
+              (function() {
+                Common._baseDelta = 1e3 / 60;
+                Common._nextId = 0;
+                Common._seed = 0;
+                Common._nowStartTime = +/* @__PURE__ */ new Date();
+                Common._warnedOnce = {};
+                Common._decomp = null;
+                Common.extend = function(obj, deep) {
+                  var argsStart, args, deepClone;
+                  if (typeof deep === "boolean") {
+                    argsStart = 2;
+                    deepClone = deep;
+                  } else {
+                    argsStart = 1;
+                    deepClone = true;
+                  }
+                  for (var i = argsStart; i < arguments.length; i++) {
+                    var source = arguments[i];
+                    if (source) {
+                      for (var prop in source) {
+                        if (deepClone && source[prop] && source[prop].constructor === Object) {
+                          if (!obj[prop] || obj[prop].constructor === Object) {
+                            obj[prop] = obj[prop] || {};
+                            Common.extend(obj[prop], deepClone, source[prop]);
+                          } else {
+                            obj[prop] = source[prop];
+                          }
+                        } else {
+                          obj[prop] = source[prop];
+                        }
+                      }
+                    }
+                  }
+                  return obj;
+                };
+                Common.clone = function(obj, deep) {
+                  return Common.extend({}, deep, obj);
+                };
+                Common.keys = function(obj) {
+                  if (Object.keys)
+                    return Object.keys(obj);
+                  var keys = [];
+                  for (var key in obj)
+                    keys.push(key);
+                  return keys;
+                };
+                Common.values = function(obj) {
+                  var values = [];
+                  if (Object.keys) {
+                    var keys = Object.keys(obj);
+                    for (var i = 0; i < keys.length; i++) {
+                      values.push(obj[keys[i]]);
+                    }
+                    return values;
+                  }
+                  for (var key in obj)
+                    values.push(obj[key]);
+                  return values;
+                };
+                Common.get = function(obj, path, begin, end) {
+                  path = path.split(".").slice(begin, end);
+                  for (var i = 0; i < path.length; i += 1) {
+                    obj = obj[path[i]];
+                  }
+                  return obj;
+                };
+                Common.set = function(obj, path, val, begin, end) {
+                  var parts = path.split(".").slice(begin, end);
+                  Common.get(obj, path, 0, -1)[parts[parts.length - 1]] = val;
+                  return val;
+                };
+                Common.shuffle = function(array) {
+                  for (var i = array.length - 1; i > 0; i--) {
+                    var j = Math.floor(Common.random() * (i + 1));
+                    var temp = array[i];
+                    array[i] = array[j];
+                    array[j] = temp;
+                  }
+                  return array;
+                };
+                Common.choose = function(choices) {
+                  return choices[Math.floor(Common.random() * choices.length)];
+                };
+                Common.isElement = function(obj) {
+                  if (typeof HTMLElement !== "undefined") {
+                    return obj instanceof HTMLElement;
+                  }
+                  return !!(obj && obj.nodeType && obj.nodeName);
+                };
+                Common.isArray = function(obj) {
+                  return Object.prototype.toString.call(obj) === "[object Array]";
+                };
+                Common.isFunction = function(obj) {
+                  return typeof obj === "function";
+                };
+                Common.isPlainObject = function(obj) {
+                  return typeof obj === "object" && obj.constructor === Object;
+                };
+                Common.isString = function(obj) {
+                  return toString.call(obj) === "[object String]";
+                };
+                Common.clamp = function(value, min, max) {
+                  if (value < min)
+                    return min;
+                  if (value > max)
+                    return max;
+                  return value;
+                };
+                Common.sign = function(value) {
+                  return value < 0 ? -1 : 1;
+                };
+                Common.now = function() {
+                  if (typeof window !== "undefined" && window.performance) {
+                    if (window.performance.now) {
+                      return window.performance.now();
+                    } else if (window.performance.webkitNow) {
+                      return window.performance.webkitNow();
+                    }
+                  }
+                  if (Date.now) {
+                    return Date.now();
+                  }
+                  return /* @__PURE__ */ new Date() - Common._nowStartTime;
+                };
+                Common.random = function(min, max) {
+                  min = typeof min !== "undefined" ? min : 0;
+                  max = typeof max !== "undefined" ? max : 1;
+                  return min + _seededRandom() * (max - min);
+                };
+                var _seededRandom = function() {
+                  Common._seed = (Common._seed * 9301 + 49297) % 233280;
+                  return Common._seed / 233280;
+                };
+                Common.colorToNumber = function(colorString) {
+                  colorString = colorString.replace("#", "");
+                  if (colorString.length == 3) {
+                    colorString = colorString.charAt(0) + colorString.charAt(0) + colorString.charAt(1) + colorString.charAt(1) + colorString.charAt(2) + colorString.charAt(2);
+                  }
+                  return parseInt(colorString, 16);
+                };
+                Common.logLevel = 1;
+                Common.log = function() {
+                  if (console && Common.logLevel > 0 && Common.logLevel <= 3) {
+                    console.log.apply(console, ["matter-js:"].concat(Array.prototype.slice.call(arguments)));
+                  }
+                };
+                Common.info = function() {
+                  if (console && Common.logLevel > 0 && Common.logLevel <= 2) {
+                    console.info.apply(console, ["matter-js:"].concat(Array.prototype.slice.call(arguments)));
+                  }
+                };
+                Common.warn = function() {
+                  if (console && Common.logLevel > 0 && Common.logLevel <= 3) {
+                    console.warn.apply(console, ["matter-js:"].concat(Array.prototype.slice.call(arguments)));
+                  }
+                };
+                Common.warnOnce = function() {
+                  var message = Array.prototype.slice.call(arguments).join(" ");
+                  if (!Common._warnedOnce[message]) {
+                    Common.warn(message);
+                    Common._warnedOnce[message] = true;
+                  }
+                };
+                Common.deprecated = function(obj, prop, warning) {
+                  obj[prop] = Common.chain(function() {
+                    Common.warnOnce("\u{1F505} deprecated \u{1F505}", warning);
+                  }, obj[prop]);
+                };
+                Common.nextId = function() {
+                  return Common._nextId++;
+                };
+                Common.indexOf = function(haystack, needle) {
+                  if (haystack.indexOf)
+                    return haystack.indexOf(needle);
+                  for (var i = 0; i < haystack.length; i++) {
+                    if (haystack[i] === needle)
+                      return i;
+                  }
+                  return -1;
+                };
+                Common.map = function(list, func) {
+                  if (list.map) {
+                    return list.map(func);
+                  }
+                  var mapped = [];
+                  for (var i = 0; i < list.length; i += 1) {
+                    mapped.push(func(list[i]));
+                  }
+                  return mapped;
+                };
+                Common.topologicalSort = function(graph) {
+                  var result = [], visited = [], temp = [];
+                  for (var node in graph) {
+                    if (!visited[node] && !temp[node]) {
+                      Common._topologicalSort(node, visited, temp, graph, result);
+                    }
+                  }
+                  return result;
+                };
+                Common._topologicalSort = function(node, visited, temp, graph, result) {
+                  var neighbors = graph[node] || [];
+                  temp[node] = true;
+                  for (var i = 0; i < neighbors.length; i += 1) {
+                    var neighbor = neighbors[i];
+                    if (temp[neighbor]) {
+                      continue;
+                    }
+                    if (!visited[neighbor]) {
+                      Common._topologicalSort(neighbor, visited, temp, graph, result);
+                    }
+                  }
+                  temp[node] = false;
+                  visited[node] = true;
+                  result.push(node);
+                };
+                Common.chain = function() {
+                  var funcs = [];
+                  for (var i = 0; i < arguments.length; i += 1) {
+                    var func = arguments[i];
+                    if (func._chained) {
+                      funcs.push.apply(funcs, func._chained);
+                    } else {
+                      funcs.push(func);
+                    }
+                  }
+                  var chain = function() {
+                    var lastResult, args = new Array(arguments.length);
+                    for (var i2 = 0, l = arguments.length; i2 < l; i2++) {
+                      args[i2] = arguments[i2];
+                    }
+                    for (i2 = 0; i2 < funcs.length; i2 += 1) {
+                      var result = funcs[i2].apply(lastResult, args);
+                      if (typeof result !== "undefined") {
+                        lastResult = result;
+                      }
+                    }
+                    return lastResult;
+                  };
+                  chain._chained = funcs;
+                  return chain;
+                };
+                Common.chainPathBefore = function(base, path, func) {
+                  return Common.set(base, path, Common.chain(
+                    func,
+                    Common.get(base, path)
+                  ));
+                };
+                Common.chainPathAfter = function(base, path, func) {
+                  return Common.set(base, path, Common.chain(
+                    Common.get(base, path),
+                    func
+                  ));
+                };
+                Common.setDecomp = function(decomp) {
+                  Common._decomp = decomp;
+                };
+                Common.getDecomp = function() {
+                  var decomp = Common._decomp;
+                  try {
+                    if (!decomp && typeof window !== "undefined") {
+                      decomp = window.decomp;
+                    }
+                    if (!decomp && typeof global !== "undefined") {
+                      decomp = global.decomp;
+                    }
+                  } catch (e) {
+                    decomp = null;
+                  }
+                  return decomp;
+                };
+              })();
+            },
+            /* 1 */
+            /***/
+            function(module2, exports2) {
+              var Bounds = {};
+              module2.exports = Bounds;
+              (function() {
+                Bounds.create = function(vertices) {
+                  var bounds = {
+                    min: { x: 0, y: 0 },
+                    max: { x: 0, y: 0 }
+                  };
+                  if (vertices)
+                    Bounds.update(bounds, vertices);
+                  return bounds;
+                };
+                Bounds.update = function(bounds, vertices, velocity) {
+                  bounds.min.x = Infinity;
+                  bounds.max.x = -Infinity;
+                  bounds.min.y = Infinity;
+                  bounds.max.y = -Infinity;
+                  for (var i = 0; i < vertices.length; i++) {
+                    var vertex = vertices[i];
+                    if (vertex.x > bounds.max.x) bounds.max.x = vertex.x;
+                    if (vertex.x < bounds.min.x) bounds.min.x = vertex.x;
+                    if (vertex.y > bounds.max.y) bounds.max.y = vertex.y;
+                    if (vertex.y < bounds.min.y) bounds.min.y = vertex.y;
+                  }
+                  if (velocity) {
+                    if (velocity.x > 0) {
+                      bounds.max.x += velocity.x;
+                    } else {
+                      bounds.min.x += velocity.x;
+                    }
+                    if (velocity.y > 0) {
+                      bounds.max.y += velocity.y;
+                    } else {
+                      bounds.min.y += velocity.y;
+                    }
+                  }
+                };
+                Bounds.contains = function(bounds, point) {
+                  return point.x >= bounds.min.x && point.x <= bounds.max.x && point.y >= bounds.min.y && point.y <= bounds.max.y;
+                };
+                Bounds.overlaps = function(boundsA, boundsB) {
+                  return boundsA.min.x <= boundsB.max.x && boundsA.max.x >= boundsB.min.x && boundsA.max.y >= boundsB.min.y && boundsA.min.y <= boundsB.max.y;
+                };
+                Bounds.translate = function(bounds, vector) {
+                  bounds.min.x += vector.x;
+                  bounds.max.x += vector.x;
+                  bounds.min.y += vector.y;
+                  bounds.max.y += vector.y;
+                };
+                Bounds.shift = function(bounds, position) {
+                  var deltaX = bounds.max.x - bounds.min.x, deltaY = bounds.max.y - bounds.min.y;
+                  bounds.min.x = position.x;
+                  bounds.max.x = position.x + deltaX;
+                  bounds.min.y = position.y;
+                  bounds.max.y = position.y + deltaY;
+                };
+              })();
+            },
+            /* 2 */
+            /***/
+            function(module2, exports2) {
+              var Vector = {};
+              module2.exports = Vector;
+              (function() {
+                Vector.create = function(x, y) {
+                  return { x: x || 0, y: y || 0 };
+                };
+                Vector.clone = function(vector) {
+                  return { x: vector.x, y: vector.y };
+                };
+                Vector.magnitude = function(vector) {
+                  return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+                };
+                Vector.magnitudeSquared = function(vector) {
+                  return vector.x * vector.x + vector.y * vector.y;
+                };
+                Vector.rotate = function(vector, angle, output) {
+                  var cos = Math.cos(angle), sin = Math.sin(angle);
+                  if (!output) output = {};
+                  var x = vector.x * cos - vector.y * sin;
+                  output.y = vector.x * sin + vector.y * cos;
+                  output.x = x;
+                  return output;
+                };
+                Vector.rotateAbout = function(vector, angle, point, output) {
+                  var cos = Math.cos(angle), sin = Math.sin(angle);
+                  if (!output) output = {};
+                  var x = point.x + ((vector.x - point.x) * cos - (vector.y - point.y) * sin);
+                  output.y = point.y + ((vector.x - point.x) * sin + (vector.y - point.y) * cos);
+                  output.x = x;
+                  return output;
+                };
+                Vector.normalise = function(vector) {
+                  var magnitude = Vector.magnitude(vector);
+                  if (magnitude === 0)
+                    return { x: 0, y: 0 };
+                  return { x: vector.x / magnitude, y: vector.y / magnitude };
+                };
+                Vector.dot = function(vectorA, vectorB) {
+                  return vectorA.x * vectorB.x + vectorA.y * vectorB.y;
+                };
+                Vector.cross = function(vectorA, vectorB) {
+                  return vectorA.x * vectorB.y - vectorA.y * vectorB.x;
+                };
+                Vector.cross3 = function(vectorA, vectorB, vectorC) {
+                  return (vectorB.x - vectorA.x) * (vectorC.y - vectorA.y) - (vectorB.y - vectorA.y) * (vectorC.x - vectorA.x);
+                };
+                Vector.add = function(vectorA, vectorB, output) {
+                  if (!output) output = {};
+                  output.x = vectorA.x + vectorB.x;
+                  output.y = vectorA.y + vectorB.y;
+                  return output;
+                };
+                Vector.sub = function(vectorA, vectorB, output) {
+                  if (!output) output = {};
+                  output.x = vectorA.x - vectorB.x;
+                  output.y = vectorA.y - vectorB.y;
+                  return output;
+                };
+                Vector.mult = function(vector, scalar) {
+                  return { x: vector.x * scalar, y: vector.y * scalar };
+                };
+                Vector.div = function(vector, scalar) {
+                  return { x: vector.x / scalar, y: vector.y / scalar };
+                };
+                Vector.perp = function(vector, negate) {
+                  negate = negate === true ? -1 : 1;
+                  return { x: negate * -vector.y, y: negate * vector.x };
+                };
+                Vector.neg = function(vector) {
+                  return { x: -vector.x, y: -vector.y };
+                };
+                Vector.angle = function(vectorA, vectorB) {
+                  return Math.atan2(vectorB.y - vectorA.y, vectorB.x - vectorA.x);
+                };
+                Vector._temp = [
+                  Vector.create(),
+                  Vector.create(),
+                  Vector.create(),
+                  Vector.create(),
+                  Vector.create(),
+                  Vector.create()
+                ];
+              })();
+            },
+            /* 3 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Vertices = {};
+              module2.exports = Vertices;
+              var Vector = __webpack_require__(2);
+              var Common = __webpack_require__(0);
+              (function() {
+                Vertices.create = function(points, body) {
+                  var vertices = [];
+                  for (var i = 0; i < points.length; i++) {
+                    var point = points[i], vertex = {
+                      x: point.x,
+                      y: point.y,
+                      index: i,
+                      body,
+                      isInternal: false
+                    };
+                    vertices.push(vertex);
+                  }
+                  return vertices;
+                };
+                Vertices.fromPath = function(path, body) {
+                  var pathPattern = /L?\s*([-\d.e]+)[\s,]*([-\d.e]+)*/ig, points = [];
+                  path.replace(pathPattern, function(match, x, y) {
+                    points.push({ x: parseFloat(x), y: parseFloat(y) });
+                  });
+                  return Vertices.create(points, body);
+                };
+                Vertices.centre = function(vertices) {
+                  var area = Vertices.area(vertices, true), centre = { x: 0, y: 0 }, cross, temp, j;
+                  for (var i = 0; i < vertices.length; i++) {
+                    j = (i + 1) % vertices.length;
+                    cross = Vector.cross(vertices[i], vertices[j]);
+                    temp = Vector.mult(Vector.add(vertices[i], vertices[j]), cross);
+                    centre = Vector.add(centre, temp);
+                  }
+                  return Vector.div(centre, 6 * area);
+                };
+                Vertices.mean = function(vertices) {
+                  var average = { x: 0, y: 0 };
+                  for (var i = 0; i < vertices.length; i++) {
+                    average.x += vertices[i].x;
+                    average.y += vertices[i].y;
+                  }
+                  return Vector.div(average, vertices.length);
+                };
+                Vertices.area = function(vertices, signed) {
+                  var area = 0, j = vertices.length - 1;
+                  for (var i = 0; i < vertices.length; i++) {
+                    area += (vertices[j].x - vertices[i].x) * (vertices[j].y + vertices[i].y);
+                    j = i;
+                  }
+                  if (signed)
+                    return area / 2;
+                  return Math.abs(area) / 2;
+                };
+                Vertices.inertia = function(vertices, mass) {
+                  var numerator = 0, denominator = 0, v = vertices, cross, j;
+                  for (var n = 0; n < v.length; n++) {
+                    j = (n + 1) % v.length;
+                    cross = Math.abs(Vector.cross(v[j], v[n]));
+                    numerator += cross * (Vector.dot(v[j], v[j]) + Vector.dot(v[j], v[n]) + Vector.dot(v[n], v[n]));
+                    denominator += cross;
+                  }
+                  return mass / 6 * (numerator / denominator);
+                };
+                Vertices.translate = function(vertices, vector, scalar) {
+                  scalar = typeof scalar !== "undefined" ? scalar : 1;
+                  var verticesLength = vertices.length, translateX = vector.x * scalar, translateY = vector.y * scalar, i;
+                  for (i = 0; i < verticesLength; i++) {
+                    vertices[i].x += translateX;
+                    vertices[i].y += translateY;
+                  }
+                  return vertices;
+                };
+                Vertices.rotate = function(vertices, angle, point) {
+                  if (angle === 0)
+                    return;
+                  var cos = Math.cos(angle), sin = Math.sin(angle), pointX = point.x, pointY = point.y, verticesLength = vertices.length, vertex, dx, dy, i;
+                  for (i = 0; i < verticesLength; i++) {
+                    vertex = vertices[i];
+                    dx = vertex.x - pointX;
+                    dy = vertex.y - pointY;
+                    vertex.x = pointX + (dx * cos - dy * sin);
+                    vertex.y = pointY + (dx * sin + dy * cos);
+                  }
+                  return vertices;
+                };
+                Vertices.contains = function(vertices, point) {
+                  var pointX = point.x, pointY = point.y, verticesLength = vertices.length, vertex = vertices[verticesLength - 1], nextVertex;
+                  for (var i = 0; i < verticesLength; i++) {
+                    nextVertex = vertices[i];
+                    if ((pointX - vertex.x) * (nextVertex.y - vertex.y) + (pointY - vertex.y) * (vertex.x - nextVertex.x) > 0) {
+                      return false;
+                    }
+                    vertex = nextVertex;
+                  }
+                  return true;
+                };
+                Vertices.scale = function(vertices, scaleX, scaleY, point) {
+                  if (scaleX === 1 && scaleY === 1)
+                    return vertices;
+                  point = point || Vertices.centre(vertices);
+                  var vertex, delta;
+                  for (var i = 0; i < vertices.length; i++) {
+                    vertex = vertices[i];
+                    delta = Vector.sub(vertex, point);
+                    vertices[i].x = point.x + delta.x * scaleX;
+                    vertices[i].y = point.y + delta.y * scaleY;
+                  }
+                  return vertices;
+                };
+                Vertices.chamfer = function(vertices, radius, quality, qualityMin, qualityMax) {
+                  if (typeof radius === "number") {
+                    radius = [radius];
+                  } else {
+                    radius = radius || [8];
+                  }
+                  quality = typeof quality !== "undefined" ? quality : -1;
+                  qualityMin = qualityMin || 2;
+                  qualityMax = qualityMax || 14;
+                  var newVertices = [];
+                  for (var i = 0; i < vertices.length; i++) {
+                    var prevVertex = vertices[i - 1 >= 0 ? i - 1 : vertices.length - 1], vertex = vertices[i], nextVertex = vertices[(i + 1) % vertices.length], currentRadius = radius[i < radius.length ? i : radius.length - 1];
+                    if (currentRadius === 0) {
+                      newVertices.push(vertex);
+                      continue;
+                    }
+                    var prevNormal = Vector.normalise({
+                      x: vertex.y - prevVertex.y,
+                      y: prevVertex.x - vertex.x
+                    });
+                    var nextNormal = Vector.normalise({
+                      x: nextVertex.y - vertex.y,
+                      y: vertex.x - nextVertex.x
+                    });
+                    var diagonalRadius = Math.sqrt(2 * Math.pow(currentRadius, 2)), radiusVector = Vector.mult(Common.clone(prevNormal), currentRadius), midNormal = Vector.normalise(Vector.mult(Vector.add(prevNormal, nextNormal), 0.5)), scaledVertex = Vector.sub(vertex, Vector.mult(midNormal, diagonalRadius));
+                    var precision = quality;
+                    if (quality === -1) {
+                      precision = Math.pow(currentRadius, 0.32) * 1.75;
+                    }
+                    precision = Common.clamp(precision, qualityMin, qualityMax);
+                    if (precision % 2 === 1)
+                      precision += 1;
+                    var alpha = Math.acos(Vector.dot(prevNormal, nextNormal)), theta = alpha / precision;
+                    for (var j = 0; j < precision; j++) {
+                      newVertices.push(Vector.add(Vector.rotate(radiusVector, theta * j), scaledVertex));
+                    }
+                  }
+                  return newVertices;
+                };
+                Vertices.clockwiseSort = function(vertices) {
+                  var centre = Vertices.mean(vertices);
+                  vertices.sort(function(vertexA, vertexB) {
+                    return Vector.angle(centre, vertexA) - Vector.angle(centre, vertexB);
+                  });
+                  return vertices;
+                };
+                Vertices.isConvex = function(vertices) {
+                  var flag = 0, n = vertices.length, i, j, k, z;
+                  if (n < 3)
+                    return null;
+                  for (i = 0; i < n; i++) {
+                    j = (i + 1) % n;
+                    k = (i + 2) % n;
+                    z = (vertices[j].x - vertices[i].x) * (vertices[k].y - vertices[j].y);
+                    z -= (vertices[j].y - vertices[i].y) * (vertices[k].x - vertices[j].x);
+                    if (z < 0) {
+                      flag |= 1;
+                    } else if (z > 0) {
+                      flag |= 2;
+                    }
+                    if (flag === 3) {
+                      return false;
+                    }
+                  }
+                  if (flag !== 0) {
+                    return true;
+                  } else {
+                    return null;
+                  }
+                };
+                Vertices.hull = function(vertices) {
+                  var upper = [], lower = [], vertex, i;
+                  vertices = vertices.slice(0);
+                  vertices.sort(function(vertexA, vertexB) {
+                    var dx = vertexA.x - vertexB.x;
+                    return dx !== 0 ? dx : vertexA.y - vertexB.y;
+                  });
+                  for (i = 0; i < vertices.length; i += 1) {
+                    vertex = vertices[i];
+                    while (lower.length >= 2 && Vector.cross3(lower[lower.length - 2], lower[lower.length - 1], vertex) <= 0) {
+                      lower.pop();
+                    }
+                    lower.push(vertex);
+                  }
+                  for (i = vertices.length - 1; i >= 0; i -= 1) {
+                    vertex = vertices[i];
+                    while (upper.length >= 2 && Vector.cross3(upper[upper.length - 2], upper[upper.length - 1], vertex) <= 0) {
+                      upper.pop();
+                    }
+                    upper.push(vertex);
+                  }
+                  upper.pop();
+                  lower.pop();
+                  return upper.concat(lower);
+                };
+              })();
+            },
+            /* 4 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Body = {};
+              module2.exports = Body;
+              var Vertices = __webpack_require__(3);
+              var Vector = __webpack_require__(2);
+              var Sleeping = __webpack_require__(7);
+              var Common = __webpack_require__(0);
+              var Bounds = __webpack_require__(1);
+              var Axes = __webpack_require__(11);
+              (function() {
+                Body._timeCorrection = true;
+                Body._inertiaScale = 4;
+                Body._nextCollidingGroupId = 1;
+                Body._nextNonCollidingGroupId = -1;
+                Body._nextCategory = 1;
+                Body._baseDelta = 1e3 / 60;
+                Body.create = function(options) {
+                  var defaults = {
+                    id: Common.nextId(),
+                    type: "body",
+                    label: "Body",
+                    parts: [],
+                    plugin: {},
+                    angle: 0,
+                    vertices: Vertices.fromPath("L 0 0 L 40 0 L 40 40 L 0 40"),
+                    position: { x: 0, y: 0 },
+                    force: { x: 0, y: 0 },
+                    torque: 0,
+                    positionImpulse: { x: 0, y: 0 },
+                    constraintImpulse: { x: 0, y: 0, angle: 0 },
+                    totalContacts: 0,
+                    speed: 0,
+                    angularSpeed: 0,
+                    velocity: { x: 0, y: 0 },
+                    angularVelocity: 0,
+                    isSensor: false,
+                    isStatic: false,
+                    isSleeping: false,
+                    motion: 0,
+                    sleepThreshold: 60,
+                    density: 1e-3,
+                    restitution: 0,
+                    friction: 0.1,
+                    frictionStatic: 0.5,
+                    frictionAir: 0.01,
+                    collisionFilter: {
+                      category: 1,
+                      mask: 4294967295,
+                      group: 0
+                    },
+                    slop: 0.05,
+                    timeScale: 1,
+                    render: {
+                      visible: true,
+                      opacity: 1,
+                      strokeStyle: null,
+                      fillStyle: null,
+                      lineWidth: null,
+                      sprite: {
+                        xScale: 1,
+                        yScale: 1,
+                        xOffset: 0,
+                        yOffset: 0
+                      }
+                    },
+                    events: null,
+                    bounds: null,
+                    chamfer: null,
+                    circleRadius: 0,
+                    positionPrev: null,
+                    anglePrev: 0,
+                    parent: null,
+                    axes: null,
+                    area: 0,
+                    mass: 0,
+                    inertia: 0,
+                    deltaTime: 1e3 / 60,
+                    _original: null
+                  };
+                  var body = Common.extend(defaults, options);
+                  _initProperties(body, options);
+                  return body;
+                };
+                Body.nextGroup = function(isNonColliding) {
+                  if (isNonColliding)
+                    return Body._nextNonCollidingGroupId--;
+                  return Body._nextCollidingGroupId++;
+                };
+                Body.nextCategory = function() {
+                  Body._nextCategory = Body._nextCategory << 1;
+                  return Body._nextCategory;
+                };
+                var _initProperties = function(body, options) {
+                  options = options || {};
+                  Body.set(body, {
+                    bounds: body.bounds || Bounds.create(body.vertices),
+                    positionPrev: body.positionPrev || Vector.clone(body.position),
+                    anglePrev: body.anglePrev || body.angle,
+                    vertices: body.vertices,
+                    parts: body.parts || [body],
+                    isStatic: body.isStatic,
+                    isSleeping: body.isSleeping,
+                    parent: body.parent || body
+                  });
+                  Vertices.rotate(body.vertices, body.angle, body.position);
+                  Axes.rotate(body.axes, body.angle);
+                  Bounds.update(body.bounds, body.vertices, body.velocity);
+                  Body.set(body, {
+                    axes: options.axes || body.axes,
+                    area: options.area || body.area,
+                    mass: options.mass || body.mass,
+                    inertia: options.inertia || body.inertia
+                  });
+                  var defaultFillStyle = body.isStatic ? "#14151f" : Common.choose(["#f19648", "#f5d259", "#f55a3c", "#063e7b", "#ececd1"]), defaultStrokeStyle = body.isStatic ? "#555" : "#ccc", defaultLineWidth = body.isStatic && body.render.fillStyle === null ? 1 : 0;
+                  body.render.fillStyle = body.render.fillStyle || defaultFillStyle;
+                  body.render.strokeStyle = body.render.strokeStyle || defaultStrokeStyle;
+                  body.render.lineWidth = body.render.lineWidth || defaultLineWidth;
+                  body.render.sprite.xOffset += -(body.bounds.min.x - body.position.x) / (body.bounds.max.x - body.bounds.min.x);
+                  body.render.sprite.yOffset += -(body.bounds.min.y - body.position.y) / (body.bounds.max.y - body.bounds.min.y);
+                };
+                Body.set = function(body, settings, value) {
+                  var property;
+                  if (typeof settings === "string") {
+                    property = settings;
+                    settings = {};
+                    settings[property] = value;
+                  }
+                  for (property in settings) {
+                    if (!Object.prototype.hasOwnProperty.call(settings, property))
+                      continue;
+                    value = settings[property];
+                    switch (property) {
+                      case "isStatic":
+                        Body.setStatic(body, value);
+                        break;
+                      case "isSleeping":
+                        Sleeping.set(body, value);
+                        break;
+                      case "mass":
+                        Body.setMass(body, value);
+                        break;
+                      case "density":
+                        Body.setDensity(body, value);
+                        break;
+                      case "inertia":
+                        Body.setInertia(body, value);
+                        break;
+                      case "vertices":
+                        Body.setVertices(body, value);
+                        break;
+                      case "position":
+                        Body.setPosition(body, value);
+                        break;
+                      case "angle":
+                        Body.setAngle(body, value);
+                        break;
+                      case "velocity":
+                        Body.setVelocity(body, value);
+                        break;
+                      case "angularVelocity":
+                        Body.setAngularVelocity(body, value);
+                        break;
+                      case "speed":
+                        Body.setSpeed(body, value);
+                        break;
+                      case "angularSpeed":
+                        Body.setAngularSpeed(body, value);
+                        break;
+                      case "parts":
+                        Body.setParts(body, value);
+                        break;
+                      case "centre":
+                        Body.setCentre(body, value);
+                        break;
+                      default:
+                        body[property] = value;
+                    }
+                  }
+                };
+                Body.setStatic = function(body, isStatic) {
+                  for (var i = 0; i < body.parts.length; i++) {
+                    var part = body.parts[i];
+                    part.isStatic = isStatic;
+                    if (isStatic) {
+                      part._original = {
+                        restitution: part.restitution,
+                        friction: part.friction,
+                        mass: part.mass,
+                        inertia: part.inertia,
+                        density: part.density,
+                        inverseMass: part.inverseMass,
+                        inverseInertia: part.inverseInertia
+                      };
+                      part.restitution = 0;
+                      part.friction = 1;
+                      part.mass = part.inertia = part.density = Infinity;
+                      part.inverseMass = part.inverseInertia = 0;
+                      part.positionPrev.x = part.position.x;
+                      part.positionPrev.y = part.position.y;
+                      part.anglePrev = part.angle;
+                      part.angularVelocity = 0;
+                      part.speed = 0;
+                      part.angularSpeed = 0;
+                      part.motion = 0;
+                    } else if (part._original) {
+                      part.restitution = part._original.restitution;
+                      part.friction = part._original.friction;
+                      part.mass = part._original.mass;
+                      part.inertia = part._original.inertia;
+                      part.density = part._original.density;
+                      part.inverseMass = part._original.inverseMass;
+                      part.inverseInertia = part._original.inverseInertia;
+                      part._original = null;
+                    }
+                  }
+                };
+                Body.setMass = function(body, mass) {
+                  var moment = body.inertia / (body.mass / 6);
+                  body.inertia = moment * (mass / 6);
+                  body.inverseInertia = 1 / body.inertia;
+                  body.mass = mass;
+                  body.inverseMass = 1 / body.mass;
+                  body.density = body.mass / body.area;
+                };
+                Body.setDensity = function(body, density) {
+                  Body.setMass(body, density * body.area);
+                  body.density = density;
+                };
+                Body.setInertia = function(body, inertia) {
+                  body.inertia = inertia;
+                  body.inverseInertia = 1 / body.inertia;
+                };
+                Body.setVertices = function(body, vertices) {
+                  if (vertices[0].body === body) {
+                    body.vertices = vertices;
+                  } else {
+                    body.vertices = Vertices.create(vertices, body);
+                  }
+                  body.axes = Axes.fromVertices(body.vertices);
+                  body.area = Vertices.area(body.vertices);
+                  Body.setMass(body, body.density * body.area);
+                  var centre = Vertices.centre(body.vertices);
+                  Vertices.translate(body.vertices, centre, -1);
+                  Body.setInertia(body, Body._inertiaScale * Vertices.inertia(body.vertices, body.mass));
+                  Vertices.translate(body.vertices, body.position);
+                  Bounds.update(body.bounds, body.vertices, body.velocity);
+                };
+                Body.setParts = function(body, parts, autoHull) {
+                  var i;
+                  parts = parts.slice(0);
+                  body.parts.length = 0;
+                  body.parts.push(body);
+                  body.parent = body;
+                  for (i = 0; i < parts.length; i++) {
+                    var part = parts[i];
+                    if (part !== body) {
+                      part.parent = body;
+                      body.parts.push(part);
+                    }
+                  }
+                  if (body.parts.length === 1)
+                    return;
+                  autoHull = typeof autoHull !== "undefined" ? autoHull : true;
+                  if (autoHull) {
+                    var vertices = [];
+                    for (i = 0; i < parts.length; i++) {
+                      vertices = vertices.concat(parts[i].vertices);
+                    }
+                    Vertices.clockwiseSort(vertices);
+                    var hull = Vertices.hull(vertices), hullCentre = Vertices.centre(hull);
+                    Body.setVertices(body, hull);
+                    Vertices.translate(body.vertices, hullCentre);
+                  }
+                  var total = Body._totalProperties(body);
+                  body.area = total.area;
+                  body.parent = body;
+                  body.position.x = total.centre.x;
+                  body.position.y = total.centre.y;
+                  body.positionPrev.x = total.centre.x;
+                  body.positionPrev.y = total.centre.y;
+                  Body.setMass(body, total.mass);
+                  Body.setInertia(body, total.inertia);
+                  Body.setPosition(body, total.centre);
+                };
+                Body.setCentre = function(body, centre, relative) {
+                  if (!relative) {
+                    body.positionPrev.x = centre.x - (body.position.x - body.positionPrev.x);
+                    body.positionPrev.y = centre.y - (body.position.y - body.positionPrev.y);
+                    body.position.x = centre.x;
+                    body.position.y = centre.y;
+                  } else {
+                    body.positionPrev.x += centre.x;
+                    body.positionPrev.y += centre.y;
+                    body.position.x += centre.x;
+                    body.position.y += centre.y;
+                  }
+                };
+                Body.setPosition = function(body, position, updateVelocity) {
+                  var delta = Vector.sub(position, body.position);
+                  if (updateVelocity) {
+                    body.positionPrev.x = body.position.x;
+                    body.positionPrev.y = body.position.y;
+                    body.velocity.x = delta.x;
+                    body.velocity.y = delta.y;
+                    body.speed = Vector.magnitude(delta);
+                  } else {
+                    body.positionPrev.x += delta.x;
+                    body.positionPrev.y += delta.y;
+                  }
+                  for (var i = 0; i < body.parts.length; i++) {
+                    var part = body.parts[i];
+                    part.position.x += delta.x;
+                    part.position.y += delta.y;
+                    Vertices.translate(part.vertices, delta);
+                    Bounds.update(part.bounds, part.vertices, body.velocity);
+                  }
+                };
+                Body.setAngle = function(body, angle, updateVelocity) {
+                  var delta = angle - body.angle;
+                  if (updateVelocity) {
+                    body.anglePrev = body.angle;
+                    body.angularVelocity = delta;
+                    body.angularSpeed = Math.abs(delta);
+                  } else {
+                    body.anglePrev += delta;
+                  }
+                  for (var i = 0; i < body.parts.length; i++) {
+                    var part = body.parts[i];
+                    part.angle += delta;
+                    Vertices.rotate(part.vertices, delta, body.position);
+                    Axes.rotate(part.axes, delta);
+                    Bounds.update(part.bounds, part.vertices, body.velocity);
+                    if (i > 0) {
+                      Vector.rotateAbout(part.position, delta, body.position, part.position);
+                    }
+                  }
+                };
+                Body.setVelocity = function(body, velocity) {
+                  var timeScale = body.deltaTime / Body._baseDelta;
+                  body.positionPrev.x = body.position.x - velocity.x * timeScale;
+                  body.positionPrev.y = body.position.y - velocity.y * timeScale;
+                  body.velocity.x = (body.position.x - body.positionPrev.x) / timeScale;
+                  body.velocity.y = (body.position.y - body.positionPrev.y) / timeScale;
+                  body.speed = Vector.magnitude(body.velocity);
+                };
+                Body.getVelocity = function(body) {
+                  var timeScale = Body._baseDelta / body.deltaTime;
+                  return {
+                    x: (body.position.x - body.positionPrev.x) * timeScale,
+                    y: (body.position.y - body.positionPrev.y) * timeScale
+                  };
+                };
+                Body.getSpeed = function(body) {
+                  return Vector.magnitude(Body.getVelocity(body));
+                };
+                Body.setSpeed = function(body, speed) {
+                  Body.setVelocity(body, Vector.mult(Vector.normalise(Body.getVelocity(body)), speed));
+                };
+                Body.setAngularVelocity = function(body, velocity) {
+                  var timeScale = body.deltaTime / Body._baseDelta;
+                  body.anglePrev = body.angle - velocity * timeScale;
+                  body.angularVelocity = (body.angle - body.anglePrev) / timeScale;
+                  body.angularSpeed = Math.abs(body.angularVelocity);
+                };
+                Body.getAngularVelocity = function(body) {
+                  return (body.angle - body.anglePrev) * Body._baseDelta / body.deltaTime;
+                };
+                Body.getAngularSpeed = function(body) {
+                  return Math.abs(Body.getAngularVelocity(body));
+                };
+                Body.setAngularSpeed = function(body, speed) {
+                  Body.setAngularVelocity(body, Common.sign(Body.getAngularVelocity(body)) * speed);
+                };
+                Body.translate = function(body, translation, updateVelocity) {
+                  Body.setPosition(body, Vector.add(body.position, translation), updateVelocity);
+                };
+                Body.rotate = function(body, rotation, point, updateVelocity) {
+                  if (!point) {
+                    Body.setAngle(body, body.angle + rotation, updateVelocity);
+                  } else {
+                    var cos = Math.cos(rotation), sin = Math.sin(rotation), dx = body.position.x - point.x, dy = body.position.y - point.y;
+                    Body.setPosition(body, {
+                      x: point.x + (dx * cos - dy * sin),
+                      y: point.y + (dx * sin + dy * cos)
+                    }, updateVelocity);
+                    Body.setAngle(body, body.angle + rotation, updateVelocity);
+                  }
+                };
+                Body.scale = function(body, scaleX, scaleY, point) {
+                  var totalArea = 0, totalInertia = 0;
+                  point = point || body.position;
+                  for (var i = 0; i < body.parts.length; i++) {
+                    var part = body.parts[i];
+                    Vertices.scale(part.vertices, scaleX, scaleY, point);
+                    part.axes = Axes.fromVertices(part.vertices);
+                    part.area = Vertices.area(part.vertices);
+                    Body.setMass(part, body.density * part.area);
+                    Vertices.translate(part.vertices, { x: -part.position.x, y: -part.position.y });
+                    Body.setInertia(part, Body._inertiaScale * Vertices.inertia(part.vertices, part.mass));
+                    Vertices.translate(part.vertices, { x: part.position.x, y: part.position.y });
+                    if (i > 0) {
+                      totalArea += part.area;
+                      totalInertia += part.inertia;
+                    }
+                    part.position.x = point.x + (part.position.x - point.x) * scaleX;
+                    part.position.y = point.y + (part.position.y - point.y) * scaleY;
+                    Bounds.update(part.bounds, part.vertices, body.velocity);
+                  }
+                  if (body.parts.length > 1) {
+                    body.area = totalArea;
+                    if (!body.isStatic) {
+                      Body.setMass(body, body.density * totalArea);
+                      Body.setInertia(body, totalInertia);
+                    }
+                  }
+                  if (body.circleRadius) {
+                    if (scaleX === scaleY) {
+                      body.circleRadius *= scaleX;
+                    } else {
+                      body.circleRadius = null;
+                    }
+                  }
+                };
+                Body.update = function(body, deltaTime) {
+                  deltaTime = (typeof deltaTime !== "undefined" ? deltaTime : 1e3 / 60) * body.timeScale;
+                  var deltaTimeSquared = deltaTime * deltaTime, correction = Body._timeCorrection ? deltaTime / (body.deltaTime || deltaTime) : 1;
+                  var frictionAir = 1 - body.frictionAir * (deltaTime / Common._baseDelta), velocityPrevX = (body.position.x - body.positionPrev.x) * correction, velocityPrevY = (body.position.y - body.positionPrev.y) * correction;
+                  body.velocity.x = velocityPrevX * frictionAir + body.force.x / body.mass * deltaTimeSquared;
+                  body.velocity.y = velocityPrevY * frictionAir + body.force.y / body.mass * deltaTimeSquared;
+                  body.positionPrev.x = body.position.x;
+                  body.positionPrev.y = body.position.y;
+                  body.position.x += body.velocity.x;
+                  body.position.y += body.velocity.y;
+                  body.deltaTime = deltaTime;
+                  body.angularVelocity = (body.angle - body.anglePrev) * frictionAir * correction + body.torque / body.inertia * deltaTimeSquared;
+                  body.anglePrev = body.angle;
+                  body.angle += body.angularVelocity;
+                  for (var i = 0; i < body.parts.length; i++) {
+                    var part = body.parts[i];
+                    Vertices.translate(part.vertices, body.velocity);
+                    if (i > 0) {
+                      part.position.x += body.velocity.x;
+                      part.position.y += body.velocity.y;
+                    }
+                    if (body.angularVelocity !== 0) {
+                      Vertices.rotate(part.vertices, body.angularVelocity, body.position);
+                      Axes.rotate(part.axes, body.angularVelocity);
+                      if (i > 0) {
+                        Vector.rotateAbout(part.position, body.angularVelocity, body.position, part.position);
+                      }
+                    }
+                    Bounds.update(part.bounds, part.vertices, body.velocity);
+                  }
+                };
+                Body.updateVelocities = function(body) {
+                  var timeScale = Body._baseDelta / body.deltaTime, bodyVelocity = body.velocity;
+                  bodyVelocity.x = (body.position.x - body.positionPrev.x) * timeScale;
+                  bodyVelocity.y = (body.position.y - body.positionPrev.y) * timeScale;
+                  body.speed = Math.sqrt(bodyVelocity.x * bodyVelocity.x + bodyVelocity.y * bodyVelocity.y);
+                  body.angularVelocity = (body.angle - body.anglePrev) * timeScale;
+                  body.angularSpeed = Math.abs(body.angularVelocity);
+                };
+                Body.applyForce = function(body, position, force) {
+                  var offset = { x: position.x - body.position.x, y: position.y - body.position.y };
+                  body.force.x += force.x;
+                  body.force.y += force.y;
+                  body.torque += offset.x * force.y - offset.y * force.x;
+                };
+                Body._totalProperties = function(body) {
+                  var properties = {
+                    mass: 0,
+                    area: 0,
+                    inertia: 0,
+                    centre: { x: 0, y: 0 }
+                  };
+                  for (var i = body.parts.length === 1 ? 0 : 1; i < body.parts.length; i++) {
+                    var part = body.parts[i], mass = part.mass !== Infinity ? part.mass : 1;
+                    properties.mass += mass;
+                    properties.area += part.area;
+                    properties.inertia += part.inertia;
+                    properties.centre = Vector.add(properties.centre, Vector.mult(part.position, mass));
+                  }
+                  properties.centre = Vector.div(properties.centre, properties.mass);
+                  return properties;
+                };
+              })();
+            },
+            /* 5 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Events = {};
+              module2.exports = Events;
+              var Common = __webpack_require__(0);
+              (function() {
+                Events.on = function(object, eventNames, callback) {
+                  var names = eventNames.split(" "), name;
+                  for (var i = 0; i < names.length; i++) {
+                    name = names[i];
+                    object.events = object.events || {};
+                    object.events[name] = object.events[name] || [];
+                    object.events[name].push(callback);
+                  }
+                  return callback;
+                };
+                Events.off = function(object, eventNames, callback) {
+                  if (!eventNames) {
+                    object.events = {};
+                    return;
+                  }
+                  if (typeof eventNames === "function") {
+                    callback = eventNames;
+                    eventNames = Common.keys(object.events).join(" ");
+                  }
+                  var names = eventNames.split(" ");
+                  for (var i = 0; i < names.length; i++) {
+                    var callbacks = object.events[names[i]], newCallbacks = [];
+                    if (callback && callbacks) {
+                      for (var j = 0; j < callbacks.length; j++) {
+                        if (callbacks[j] !== callback)
+                          newCallbacks.push(callbacks[j]);
+                      }
+                    }
+                    object.events[names[i]] = newCallbacks;
+                  }
+                };
+                Events.trigger = function(object, eventNames, event) {
+                  var names, name, callbacks, eventClone;
+                  var events = object.events;
+                  if (events && Common.keys(events).length > 0) {
+                    if (!event)
+                      event = {};
+                    names = eventNames.split(" ");
+                    for (var i = 0; i < names.length; i++) {
+                      name = names[i];
+                      callbacks = events[name];
+                      if (callbacks) {
+                        eventClone = Common.clone(event, false);
+                        eventClone.name = name;
+                        eventClone.source = object;
+                        for (var j = 0; j < callbacks.length; j++) {
+                          callbacks[j].apply(object, [eventClone]);
+                        }
+                      }
+                    }
+                  }
+                };
+              })();
+            },
+            /* 6 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Composite = {};
+              module2.exports = Composite;
+              var Events = __webpack_require__(5);
+              var Common = __webpack_require__(0);
+              var Bounds = __webpack_require__(1);
+              var Body = __webpack_require__(4);
+              (function() {
+                Composite.create = function(options) {
+                  return Common.extend({
+                    id: Common.nextId(),
+                    type: "composite",
+                    parent: null,
+                    isModified: false,
+                    bodies: [],
+                    constraints: [],
+                    composites: [],
+                    label: "Composite",
+                    plugin: {},
+                    cache: {
+                      allBodies: null,
+                      allConstraints: null,
+                      allComposites: null
+                    }
+                  }, options);
+                };
+                Composite.setModified = function(composite, isModified, updateParents, updateChildren) {
+                  composite.isModified = isModified;
+                  if (isModified && composite.cache) {
+                    composite.cache.allBodies = null;
+                    composite.cache.allConstraints = null;
+                    composite.cache.allComposites = null;
+                  }
+                  if (updateParents && composite.parent) {
+                    Composite.setModified(composite.parent, isModified, updateParents, updateChildren);
+                  }
+                  if (updateChildren) {
+                    for (var i = 0; i < composite.composites.length; i++) {
+                      var childComposite = composite.composites[i];
+                      Composite.setModified(childComposite, isModified, updateParents, updateChildren);
+                    }
+                  }
+                };
+                Composite.add = function(composite, object) {
+                  var objects = [].concat(object);
+                  Events.trigger(composite, "beforeAdd", { object });
+                  for (var i = 0; i < objects.length; i++) {
+                    var obj = objects[i];
+                    switch (obj.type) {
+                      case "body":
+                        if (obj.parent !== obj) {
+                          Common.warn("Composite.add: skipped adding a compound body part (you must add its parent instead)");
+                          break;
+                        }
+                        Composite.addBody(composite, obj);
+                        break;
+                      case "constraint":
+                        Composite.addConstraint(composite, obj);
+                        break;
+                      case "composite":
+                        Composite.addComposite(composite, obj);
+                        break;
+                      case "mouseConstraint":
+                        Composite.addConstraint(composite, obj.constraint);
+                        break;
+                    }
+                  }
+                  Events.trigger(composite, "afterAdd", { object });
+                  return composite;
+                };
+                Composite.remove = function(composite, object, deep) {
+                  var objects = [].concat(object);
+                  Events.trigger(composite, "beforeRemove", { object });
+                  for (var i = 0; i < objects.length; i++) {
+                    var obj = objects[i];
+                    switch (obj.type) {
+                      case "body":
+                        Composite.removeBody(composite, obj, deep);
+                        break;
+                      case "constraint":
+                        Composite.removeConstraint(composite, obj, deep);
+                        break;
+                      case "composite":
+                        Composite.removeComposite(composite, obj, deep);
+                        break;
+                      case "mouseConstraint":
+                        Composite.removeConstraint(composite, obj.constraint);
+                        break;
+                    }
+                  }
+                  Events.trigger(composite, "afterRemove", { object });
+                  return composite;
+                };
+                Composite.addComposite = function(compositeA, compositeB) {
+                  compositeA.composites.push(compositeB);
+                  compositeB.parent = compositeA;
+                  Composite.setModified(compositeA, true, true, false);
+                  return compositeA;
+                };
+                Composite.removeComposite = function(compositeA, compositeB, deep) {
+                  var position = Common.indexOf(compositeA.composites, compositeB);
+                  if (position !== -1) {
+                    Composite.removeCompositeAt(compositeA, position);
+                  }
+                  if (deep) {
+                    for (var i = 0; i < compositeA.composites.length; i++) {
+                      Composite.removeComposite(compositeA.composites[i], compositeB, true);
+                    }
+                  }
+                  return compositeA;
+                };
+                Composite.removeCompositeAt = function(composite, position) {
+                  composite.composites.splice(position, 1);
+                  Composite.setModified(composite, true, true, false);
+                  return composite;
+                };
+                Composite.addBody = function(composite, body) {
+                  composite.bodies.push(body);
+                  Composite.setModified(composite, true, true, false);
+                  return composite;
+                };
+                Composite.removeBody = function(composite, body, deep) {
+                  var position = Common.indexOf(composite.bodies, body);
+                  if (position !== -1) {
+                    Composite.removeBodyAt(composite, position);
+                  }
+                  if (deep) {
+                    for (var i = 0; i < composite.composites.length; i++) {
+                      Composite.removeBody(composite.composites[i], body, true);
+                    }
+                  }
+                  return composite;
+                };
+                Composite.removeBodyAt = function(composite, position) {
+                  composite.bodies.splice(position, 1);
+                  Composite.setModified(composite, true, true, false);
+                  return composite;
+                };
+                Composite.addConstraint = function(composite, constraint) {
+                  composite.constraints.push(constraint);
+                  Composite.setModified(composite, true, true, false);
+                  return composite;
+                };
+                Composite.removeConstraint = function(composite, constraint, deep) {
+                  var position = Common.indexOf(composite.constraints, constraint);
+                  if (position !== -1) {
+                    Composite.removeConstraintAt(composite, position);
+                  }
+                  if (deep) {
+                    for (var i = 0; i < composite.composites.length; i++) {
+                      Composite.removeConstraint(composite.composites[i], constraint, true);
+                    }
+                  }
+                  return composite;
+                };
+                Composite.removeConstraintAt = function(composite, position) {
+                  composite.constraints.splice(position, 1);
+                  Composite.setModified(composite, true, true, false);
+                  return composite;
+                };
+                Composite.clear = function(composite, keepStatic, deep) {
+                  if (deep) {
+                    for (var i = 0; i < composite.composites.length; i++) {
+                      Composite.clear(composite.composites[i], keepStatic, true);
+                    }
+                  }
+                  if (keepStatic) {
+                    composite.bodies = composite.bodies.filter(function(body) {
+                      return body.isStatic;
+                    });
+                  } else {
+                    composite.bodies.length = 0;
+                  }
+                  composite.constraints.length = 0;
+                  composite.composites.length = 0;
+                  Composite.setModified(composite, true, true, false);
+                  return composite;
+                };
+                Composite.allBodies = function(composite) {
+                  if (composite.cache && composite.cache.allBodies) {
+                    return composite.cache.allBodies;
+                  }
+                  var bodies = [].concat(composite.bodies);
+                  for (var i = 0; i < composite.composites.length; i++)
+                    bodies = bodies.concat(Composite.allBodies(composite.composites[i]));
+                  if (composite.cache) {
+                    composite.cache.allBodies = bodies;
+                  }
+                  return bodies;
+                };
+                Composite.allConstraints = function(composite) {
+                  if (composite.cache && composite.cache.allConstraints) {
+                    return composite.cache.allConstraints;
+                  }
+                  var constraints = [].concat(composite.constraints);
+                  for (var i = 0; i < composite.composites.length; i++)
+                    constraints = constraints.concat(Composite.allConstraints(composite.composites[i]));
+                  if (composite.cache) {
+                    composite.cache.allConstraints = constraints;
+                  }
+                  return constraints;
+                };
+                Composite.allComposites = function(composite) {
+                  if (composite.cache && composite.cache.allComposites) {
+                    return composite.cache.allComposites;
+                  }
+                  var composites = [].concat(composite.composites);
+                  for (var i = 0; i < composite.composites.length; i++)
+                    composites = composites.concat(Composite.allComposites(composite.composites[i]));
+                  if (composite.cache) {
+                    composite.cache.allComposites = composites;
+                  }
+                  return composites;
+                };
+                Composite.get = function(composite, id, type) {
+                  var objects, object;
+                  switch (type) {
+                    case "body":
+                      objects = Composite.allBodies(composite);
+                      break;
+                    case "constraint":
+                      objects = Composite.allConstraints(composite);
+                      break;
+                    case "composite":
+                      objects = Composite.allComposites(composite).concat(composite);
+                      break;
+                  }
+                  if (!objects)
+                    return null;
+                  object = objects.filter(function(object2) {
+                    return object2.id.toString() === id.toString();
+                  });
+                  return object.length === 0 ? null : object[0];
+                };
+                Composite.move = function(compositeA, objects, compositeB) {
+                  Composite.remove(compositeA, objects);
+                  Composite.add(compositeB, objects);
+                  return compositeA;
+                };
+                Composite.rebase = function(composite) {
+                  var objects = Composite.allBodies(composite).concat(Composite.allConstraints(composite)).concat(Composite.allComposites(composite));
+                  for (var i = 0; i < objects.length; i++) {
+                    objects[i].id = Common.nextId();
+                  }
+                  return composite;
+                };
+                Composite.translate = function(composite, translation, recursive) {
+                  var bodies = recursive ? Composite.allBodies(composite) : composite.bodies;
+                  for (var i = 0; i < bodies.length; i++) {
+                    Body.translate(bodies[i], translation);
+                  }
+                  return composite;
+                };
+                Composite.rotate = function(composite, rotation, point, recursive) {
+                  var cos = Math.cos(rotation), sin = Math.sin(rotation), bodies = recursive ? Composite.allBodies(composite) : composite.bodies;
+                  for (var i = 0; i < bodies.length; i++) {
+                    var body = bodies[i], dx = body.position.x - point.x, dy = body.position.y - point.y;
+                    Body.setPosition(body, {
+                      x: point.x + (dx * cos - dy * sin),
+                      y: point.y + (dx * sin + dy * cos)
+                    });
+                    Body.rotate(body, rotation);
+                  }
+                  return composite;
+                };
+                Composite.scale = function(composite, scaleX, scaleY, point, recursive) {
+                  var bodies = recursive ? Composite.allBodies(composite) : composite.bodies;
+                  for (var i = 0; i < bodies.length; i++) {
+                    var body = bodies[i], dx = body.position.x - point.x, dy = body.position.y - point.y;
+                    Body.setPosition(body, {
+                      x: point.x + dx * scaleX,
+                      y: point.y + dy * scaleY
+                    });
+                    Body.scale(body, scaleX, scaleY);
+                  }
+                  return composite;
+                };
+                Composite.bounds = function(composite) {
+                  var bodies = Composite.allBodies(composite), vertices = [];
+                  for (var i = 0; i < bodies.length; i += 1) {
+                    var body = bodies[i];
+                    vertices.push(body.bounds.min, body.bounds.max);
+                  }
+                  return Bounds.create(vertices);
+                };
+              })();
+            },
+            /* 7 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Sleeping = {};
+              module2.exports = Sleeping;
+              var Body = __webpack_require__(4);
+              var Events = __webpack_require__(5);
+              var Common = __webpack_require__(0);
+              (function() {
+                Sleeping._motionWakeThreshold = 0.18;
+                Sleeping._motionSleepThreshold = 0.08;
+                Sleeping._minBias = 0.9;
+                Sleeping.update = function(bodies, delta) {
+                  var timeScale = delta / Common._baseDelta, motionSleepThreshold = Sleeping._motionSleepThreshold;
+                  for (var i = 0; i < bodies.length; i++) {
+                    var body = bodies[i], speed = Body.getSpeed(body), angularSpeed = Body.getAngularSpeed(body), motion = speed * speed + angularSpeed * angularSpeed;
+                    if (body.force.x !== 0 || body.force.y !== 0) {
+                      Sleeping.set(body, false);
+                      continue;
+                    }
+                    var minMotion = Math.min(body.motion, motion), maxMotion = Math.max(body.motion, motion);
+                    body.motion = Sleeping._minBias * minMotion + (1 - Sleeping._minBias) * maxMotion;
+                    if (body.sleepThreshold > 0 && body.motion < motionSleepThreshold) {
+                      body.sleepCounter += 1;
+                      if (body.sleepCounter >= body.sleepThreshold / timeScale) {
+                        Sleeping.set(body, true);
+                      }
+                    } else if (body.sleepCounter > 0) {
+                      body.sleepCounter -= 1;
+                    }
+                  }
+                };
+                Sleeping.afterCollisions = function(pairs) {
+                  var motionSleepThreshold = Sleeping._motionSleepThreshold;
+                  for (var i = 0; i < pairs.length; i++) {
+                    var pair = pairs[i];
+                    if (!pair.isActive)
+                      continue;
+                    var collision = pair.collision, bodyA = collision.bodyA.parent, bodyB = collision.bodyB.parent;
+                    if (bodyA.isSleeping && bodyB.isSleeping || bodyA.isStatic || bodyB.isStatic)
+                      continue;
+                    if (bodyA.isSleeping || bodyB.isSleeping) {
+                      var sleepingBody = bodyA.isSleeping && !bodyA.isStatic ? bodyA : bodyB, movingBody = sleepingBody === bodyA ? bodyB : bodyA;
+                      if (!sleepingBody.isStatic && movingBody.motion > motionSleepThreshold) {
+                        Sleeping.set(sleepingBody, false);
+                      }
+                    }
+                  }
+                };
+                Sleeping.set = function(body, isSleeping) {
+                  var wasSleeping = body.isSleeping;
+                  if (isSleeping) {
+                    body.isSleeping = true;
+                    body.sleepCounter = body.sleepThreshold;
+                    body.positionImpulse.x = 0;
+                    body.positionImpulse.y = 0;
+                    body.positionPrev.x = body.position.x;
+                    body.positionPrev.y = body.position.y;
+                    body.anglePrev = body.angle;
+                    body.speed = 0;
+                    body.angularSpeed = 0;
+                    body.motion = 0;
+                    if (!wasSleeping) {
+                      Events.trigger(body, "sleepStart");
+                    }
+                  } else {
+                    body.isSleeping = false;
+                    body.sleepCounter = 0;
+                    if (wasSleeping) {
+                      Events.trigger(body, "sleepEnd");
+                    }
+                  }
+                };
+              })();
+            },
+            /* 8 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Collision = {};
+              module2.exports = Collision;
+              var Vertices = __webpack_require__(3);
+              var Pair = __webpack_require__(9);
+              (function() {
+                var _supports = [];
+                var _overlapAB = {
+                  overlap: 0,
+                  axis: null
+                };
+                var _overlapBA = {
+                  overlap: 0,
+                  axis: null
+                };
+                Collision.create = function(bodyA, bodyB) {
+                  return {
+                    pair: null,
+                    collided: false,
+                    bodyA,
+                    bodyB,
+                    parentA: bodyA.parent,
+                    parentB: bodyB.parent,
+                    depth: 0,
+                    normal: { x: 0, y: 0 },
+                    tangent: { x: 0, y: 0 },
+                    penetration: { x: 0, y: 0 },
+                    supports: []
+                  };
+                };
+                Collision.collides = function(bodyA, bodyB, pairs) {
+                  Collision._overlapAxes(_overlapAB, bodyA.vertices, bodyB.vertices, bodyA.axes);
+                  if (_overlapAB.overlap <= 0) {
+                    return null;
+                  }
+                  Collision._overlapAxes(_overlapBA, bodyB.vertices, bodyA.vertices, bodyB.axes);
+                  if (_overlapBA.overlap <= 0) {
+                    return null;
+                  }
+                  var pair = pairs && pairs.table[Pair.id(bodyA, bodyB)], collision;
+                  if (!pair) {
+                    collision = Collision.create(bodyA, bodyB);
+                    collision.collided = true;
+                    collision.bodyA = bodyA.id < bodyB.id ? bodyA : bodyB;
+                    collision.bodyB = bodyA.id < bodyB.id ? bodyB : bodyA;
+                    collision.parentA = collision.bodyA.parent;
+                    collision.parentB = collision.bodyB.parent;
+                  } else {
+                    collision = pair.collision;
+                  }
+                  bodyA = collision.bodyA;
+                  bodyB = collision.bodyB;
+                  var minOverlap;
+                  if (_overlapAB.overlap < _overlapBA.overlap) {
+                    minOverlap = _overlapAB;
+                  } else {
+                    minOverlap = _overlapBA;
+                  }
+                  var normal = collision.normal, supports = collision.supports, minAxis = minOverlap.axis, minAxisX = minAxis.x, minAxisY = minAxis.y;
+                  if (minAxisX * (bodyB.position.x - bodyA.position.x) + minAxisY * (bodyB.position.y - bodyA.position.y) < 0) {
+                    normal.x = minAxisX;
+                    normal.y = minAxisY;
+                  } else {
+                    normal.x = -minAxisX;
+                    normal.y = -minAxisY;
+                  }
+                  collision.tangent.x = -normal.y;
+                  collision.tangent.y = normal.x;
+                  collision.depth = minOverlap.overlap;
+                  collision.penetration.x = normal.x * collision.depth;
+                  collision.penetration.y = normal.y * collision.depth;
+                  var supportsB = Collision._findSupports(bodyA, bodyB, normal, 1), supportCount = 0;
+                  if (Vertices.contains(bodyA.vertices, supportsB[0])) {
+                    supports[supportCount++] = supportsB[0];
+                  }
+                  if (Vertices.contains(bodyA.vertices, supportsB[1])) {
+                    supports[supportCount++] = supportsB[1];
+                  }
+                  if (supportCount < 2) {
+                    var supportsA = Collision._findSupports(bodyB, bodyA, normal, -1);
+                    if (Vertices.contains(bodyB.vertices, supportsA[0])) {
+                      supports[supportCount++] = supportsA[0];
+                    }
+                    if (supportCount < 2 && Vertices.contains(bodyB.vertices, supportsA[1])) {
+                      supports[supportCount++] = supportsA[1];
+                    }
+                  }
+                  if (supportCount === 0) {
+                    supports[supportCount++] = supportsB[0];
+                  }
+                  supports.length = supportCount;
+                  return collision;
+                };
+                Collision._overlapAxes = function(result, verticesA, verticesB, axes) {
+                  var verticesALength = verticesA.length, verticesBLength = verticesB.length, verticesAX = verticesA[0].x, verticesAY = verticesA[0].y, verticesBX = verticesB[0].x, verticesBY = verticesB[0].y, axesLength = axes.length, overlapMin = Number.MAX_VALUE, overlapAxisNumber = 0, overlap, overlapAB, overlapBA, dot, i, j;
+                  for (i = 0; i < axesLength; i++) {
+                    var axis = axes[i], axisX = axis.x, axisY = axis.y, minA = verticesAX * axisX + verticesAY * axisY, minB = verticesBX * axisX + verticesBY * axisY, maxA = minA, maxB = minB;
+                    for (j = 1; j < verticesALength; j += 1) {
+                      dot = verticesA[j].x * axisX + verticesA[j].y * axisY;
+                      if (dot > maxA) {
+                        maxA = dot;
+                      } else if (dot < minA) {
+                        minA = dot;
+                      }
+                    }
+                    for (j = 1; j < verticesBLength; j += 1) {
+                      dot = verticesB[j].x * axisX + verticesB[j].y * axisY;
+                      if (dot > maxB) {
+                        maxB = dot;
+                      } else if (dot < minB) {
+                        minB = dot;
+                      }
+                    }
+                    overlapAB = maxA - minB;
+                    overlapBA = maxB - minA;
+                    overlap = overlapAB < overlapBA ? overlapAB : overlapBA;
+                    if (overlap < overlapMin) {
+                      overlapMin = overlap;
+                      overlapAxisNumber = i;
+                      if (overlap <= 0) {
+                        break;
+                      }
+                    }
+                  }
+                  result.axis = axes[overlapAxisNumber];
+                  result.overlap = overlapMin;
+                };
+                Collision._projectToAxis = function(projection, vertices, axis) {
+                  var min = vertices[0].x * axis.x + vertices[0].y * axis.y, max = min;
+                  for (var i = 1; i < vertices.length; i += 1) {
+                    var dot = vertices[i].x * axis.x + vertices[i].y * axis.y;
+                    if (dot > max) {
+                      max = dot;
+                    } else if (dot < min) {
+                      min = dot;
+                    }
+                  }
+                  projection.min = min;
+                  projection.max = max;
+                };
+                Collision._findSupports = function(bodyA, bodyB, normal, direction) {
+                  var vertices = bodyB.vertices, verticesLength = vertices.length, bodyAPositionX = bodyA.position.x, bodyAPositionY = bodyA.position.y, normalX = normal.x * direction, normalY = normal.y * direction, nearestDistance = Number.MAX_VALUE, vertexA, vertexB, vertexC, distance, j;
+                  for (j = 0; j < verticesLength; j += 1) {
+                    vertexB = vertices[j];
+                    distance = normalX * (bodyAPositionX - vertexB.x) + normalY * (bodyAPositionY - vertexB.y);
+                    if (distance < nearestDistance) {
+                      nearestDistance = distance;
+                      vertexA = vertexB;
+                    }
+                  }
+                  vertexC = vertices[(verticesLength + vertexA.index - 1) % verticesLength];
+                  nearestDistance = normalX * (bodyAPositionX - vertexC.x) + normalY * (bodyAPositionY - vertexC.y);
+                  vertexB = vertices[(vertexA.index + 1) % verticesLength];
+                  if (normalX * (bodyAPositionX - vertexB.x) + normalY * (bodyAPositionY - vertexB.y) < nearestDistance) {
+                    _supports[0] = vertexA;
+                    _supports[1] = vertexB;
+                    return _supports;
+                  }
+                  _supports[0] = vertexA;
+                  _supports[1] = vertexC;
+                  return _supports;
+                };
+              })();
+            },
+            /* 9 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Pair = {};
+              module2.exports = Pair;
+              var Contact = __webpack_require__(16);
+              (function() {
+                Pair.create = function(collision, timestamp) {
+                  var bodyA = collision.bodyA, bodyB = collision.bodyB;
+                  var pair = {
+                    id: Pair.id(bodyA, bodyB),
+                    bodyA,
+                    bodyB,
+                    collision,
+                    contacts: [],
+                    activeContacts: [],
+                    separation: 0,
+                    isActive: true,
+                    confirmedActive: true,
+                    isSensor: bodyA.isSensor || bodyB.isSensor,
+                    timeCreated: timestamp,
+                    timeUpdated: timestamp,
+                    inverseMass: 0,
+                    friction: 0,
+                    frictionStatic: 0,
+                    restitution: 0,
+                    slop: 0
+                  };
+                  Pair.update(pair, collision, timestamp);
+                  return pair;
+                };
+                Pair.update = function(pair, collision, timestamp) {
+                  var contacts = pair.contacts, supports = collision.supports, activeContacts = pair.activeContacts, parentA = collision.parentA, parentB = collision.parentB, parentAVerticesLength = parentA.vertices.length;
+                  pair.isActive = true;
+                  pair.timeUpdated = timestamp;
+                  pair.collision = collision;
+                  pair.separation = collision.depth;
+                  pair.inverseMass = parentA.inverseMass + parentB.inverseMass;
+                  pair.friction = parentA.friction < parentB.friction ? parentA.friction : parentB.friction;
+                  pair.frictionStatic = parentA.frictionStatic > parentB.frictionStatic ? parentA.frictionStatic : parentB.frictionStatic;
+                  pair.restitution = parentA.restitution > parentB.restitution ? parentA.restitution : parentB.restitution;
+                  pair.slop = parentA.slop > parentB.slop ? parentA.slop : parentB.slop;
+                  collision.pair = pair;
+                  activeContacts.length = 0;
+                  for (var i = 0; i < supports.length; i++) {
+                    var support = supports[i], contactId = support.body === parentA ? support.index : parentAVerticesLength + support.index, contact = contacts[contactId];
+                    if (contact) {
+                      activeContacts.push(contact);
+                    } else {
+                      activeContacts.push(contacts[contactId] = Contact.create(support));
+                    }
+                  }
+                };
+                Pair.setActive = function(pair, isActive, timestamp) {
+                  if (isActive) {
+                    pair.isActive = true;
+                    pair.timeUpdated = timestamp;
+                  } else {
+                    pair.isActive = false;
+                    pair.activeContacts.length = 0;
+                  }
+                };
+                Pair.id = function(bodyA, bodyB) {
+                  if (bodyA.id < bodyB.id) {
+                    return "A" + bodyA.id + "B" + bodyB.id;
+                  } else {
+                    return "A" + bodyB.id + "B" + bodyA.id;
+                  }
+                };
+              })();
+            },
+            /* 10 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Constraint = {};
+              module2.exports = Constraint;
+              var Vertices = __webpack_require__(3);
+              var Vector = __webpack_require__(2);
+              var Sleeping = __webpack_require__(7);
+              var Bounds = __webpack_require__(1);
+              var Axes = __webpack_require__(11);
+              var Common = __webpack_require__(0);
+              (function() {
+                Constraint._warming = 0.4;
+                Constraint._torqueDampen = 1;
+                Constraint._minLength = 1e-6;
+                Constraint.create = function(options) {
+                  var constraint = options;
+                  if (constraint.bodyA && !constraint.pointA)
+                    constraint.pointA = { x: 0, y: 0 };
+                  if (constraint.bodyB && !constraint.pointB)
+                    constraint.pointB = { x: 0, y: 0 };
+                  var initialPointA = constraint.bodyA ? Vector.add(constraint.bodyA.position, constraint.pointA) : constraint.pointA, initialPointB = constraint.bodyB ? Vector.add(constraint.bodyB.position, constraint.pointB) : constraint.pointB, length = Vector.magnitude(Vector.sub(initialPointA, initialPointB));
+                  constraint.length = typeof constraint.length !== "undefined" ? constraint.length : length;
+                  constraint.id = constraint.id || Common.nextId();
+                  constraint.label = constraint.label || "Constraint";
+                  constraint.type = "constraint";
+                  constraint.stiffness = constraint.stiffness || (constraint.length > 0 ? 1 : 0.7);
+                  constraint.damping = constraint.damping || 0;
+                  constraint.angularStiffness = constraint.angularStiffness || 0;
+                  constraint.angleA = constraint.bodyA ? constraint.bodyA.angle : constraint.angleA;
+                  constraint.angleB = constraint.bodyB ? constraint.bodyB.angle : constraint.angleB;
+                  constraint.plugin = {};
+                  var render = {
+                    visible: true,
+                    lineWidth: 2,
+                    strokeStyle: "#ffffff",
+                    type: "line",
+                    anchors: true
+                  };
+                  if (constraint.length === 0 && constraint.stiffness > 0.1) {
+                    render.type = "pin";
+                    render.anchors = false;
+                  } else if (constraint.stiffness < 0.9) {
+                    render.type = "spring";
+                  }
+                  constraint.render = Common.extend(render, constraint.render);
+                  return constraint;
+                };
+                Constraint.preSolveAll = function(bodies) {
+                  for (var i = 0; i < bodies.length; i += 1) {
+                    var body = bodies[i], impulse = body.constraintImpulse;
+                    if (body.isStatic || impulse.x === 0 && impulse.y === 0 && impulse.angle === 0) {
+                      continue;
+                    }
+                    body.position.x += impulse.x;
+                    body.position.y += impulse.y;
+                    body.angle += impulse.angle;
+                  }
+                };
+                Constraint.solveAll = function(constraints, delta) {
+                  var timeScale = Common.clamp(delta / Common._baseDelta, 0, 1);
+                  for (var i = 0; i < constraints.length; i += 1) {
+                    var constraint = constraints[i], fixedA = !constraint.bodyA || constraint.bodyA && constraint.bodyA.isStatic, fixedB = !constraint.bodyB || constraint.bodyB && constraint.bodyB.isStatic;
+                    if (fixedA || fixedB) {
+                      Constraint.solve(constraints[i], timeScale);
+                    }
+                  }
+                  for (i = 0; i < constraints.length; i += 1) {
+                    constraint = constraints[i];
+                    fixedA = !constraint.bodyA || constraint.bodyA && constraint.bodyA.isStatic;
+                    fixedB = !constraint.bodyB || constraint.bodyB && constraint.bodyB.isStatic;
+                    if (!fixedA && !fixedB) {
+                      Constraint.solve(constraints[i], timeScale);
+                    }
+                  }
+                };
+                Constraint.solve = function(constraint, timeScale) {
+                  var bodyA = constraint.bodyA, bodyB = constraint.bodyB, pointA = constraint.pointA, pointB = constraint.pointB;
+                  if (!bodyA && !bodyB)
+                    return;
+                  if (bodyA && !bodyA.isStatic) {
+                    Vector.rotate(pointA, bodyA.angle - constraint.angleA, pointA);
+                    constraint.angleA = bodyA.angle;
+                  }
+                  if (bodyB && !bodyB.isStatic) {
+                    Vector.rotate(pointB, bodyB.angle - constraint.angleB, pointB);
+                    constraint.angleB = bodyB.angle;
+                  }
+                  var pointAWorld = pointA, pointBWorld = pointB;
+                  if (bodyA) pointAWorld = Vector.add(bodyA.position, pointA);
+                  if (bodyB) pointBWorld = Vector.add(bodyB.position, pointB);
+                  if (!pointAWorld || !pointBWorld)
+                    return;
+                  var delta = Vector.sub(pointAWorld, pointBWorld), currentLength = Vector.magnitude(delta);
+                  if (currentLength < Constraint._minLength) {
+                    currentLength = Constraint._minLength;
+                  }
+                  var difference = (currentLength - constraint.length) / currentLength, isRigid = constraint.stiffness >= 1 || constraint.length === 0, stiffness = isRigid ? constraint.stiffness * timeScale : constraint.stiffness * timeScale * timeScale, damping = constraint.damping * timeScale, force = Vector.mult(delta, difference * stiffness), massTotal = (bodyA ? bodyA.inverseMass : 0) + (bodyB ? bodyB.inverseMass : 0), inertiaTotal = (bodyA ? bodyA.inverseInertia : 0) + (bodyB ? bodyB.inverseInertia : 0), resistanceTotal = massTotal + inertiaTotal, torque, share, normal, normalVelocity, relativeVelocity;
+                  if (damping > 0) {
+                    var zero = Vector.create();
+                    normal = Vector.div(delta, currentLength);
+                    relativeVelocity = Vector.sub(
+                      bodyB && Vector.sub(bodyB.position, bodyB.positionPrev) || zero,
+                      bodyA && Vector.sub(bodyA.position, bodyA.positionPrev) || zero
+                    );
+                    normalVelocity = Vector.dot(normal, relativeVelocity);
+                  }
+                  if (bodyA && !bodyA.isStatic) {
+                    share = bodyA.inverseMass / massTotal;
+                    bodyA.constraintImpulse.x -= force.x * share;
+                    bodyA.constraintImpulse.y -= force.y * share;
+                    bodyA.position.x -= force.x * share;
+                    bodyA.position.y -= force.y * share;
+                    if (damping > 0) {
+                      bodyA.positionPrev.x -= damping * normal.x * normalVelocity * share;
+                      bodyA.positionPrev.y -= damping * normal.y * normalVelocity * share;
+                    }
+                    torque = Vector.cross(pointA, force) / resistanceTotal * Constraint._torqueDampen * bodyA.inverseInertia * (1 - constraint.angularStiffness);
+                    bodyA.constraintImpulse.angle -= torque;
+                    bodyA.angle -= torque;
+                  }
+                  if (bodyB && !bodyB.isStatic) {
+                    share = bodyB.inverseMass / massTotal;
+                    bodyB.constraintImpulse.x += force.x * share;
+                    bodyB.constraintImpulse.y += force.y * share;
+                    bodyB.position.x += force.x * share;
+                    bodyB.position.y += force.y * share;
+                    if (damping > 0) {
+                      bodyB.positionPrev.x += damping * normal.x * normalVelocity * share;
+                      bodyB.positionPrev.y += damping * normal.y * normalVelocity * share;
+                    }
+                    torque = Vector.cross(pointB, force) / resistanceTotal * Constraint._torqueDampen * bodyB.inverseInertia * (1 - constraint.angularStiffness);
+                    bodyB.constraintImpulse.angle += torque;
+                    bodyB.angle += torque;
+                  }
+                };
+                Constraint.postSolveAll = function(bodies) {
+                  for (var i = 0; i < bodies.length; i++) {
+                    var body = bodies[i], impulse = body.constraintImpulse;
+                    if (body.isStatic || impulse.x === 0 && impulse.y === 0 && impulse.angle === 0) {
+                      continue;
+                    }
+                    Sleeping.set(body, false);
+                    for (var j = 0; j < body.parts.length; j++) {
+                      var part = body.parts[j];
+                      Vertices.translate(part.vertices, impulse);
+                      if (j > 0) {
+                        part.position.x += impulse.x;
+                        part.position.y += impulse.y;
+                      }
+                      if (impulse.angle !== 0) {
+                        Vertices.rotate(part.vertices, impulse.angle, body.position);
+                        Axes.rotate(part.axes, impulse.angle);
+                        if (j > 0) {
+                          Vector.rotateAbout(part.position, impulse.angle, body.position, part.position);
+                        }
+                      }
+                      Bounds.update(part.bounds, part.vertices, body.velocity);
+                    }
+                    impulse.angle *= Constraint._warming;
+                    impulse.x *= Constraint._warming;
+                    impulse.y *= Constraint._warming;
+                  }
+                };
+                Constraint.pointAWorld = function(constraint) {
+                  return {
+                    x: (constraint.bodyA ? constraint.bodyA.position.x : 0) + (constraint.pointA ? constraint.pointA.x : 0),
+                    y: (constraint.bodyA ? constraint.bodyA.position.y : 0) + (constraint.pointA ? constraint.pointA.y : 0)
+                  };
+                };
+                Constraint.pointBWorld = function(constraint) {
+                  return {
+                    x: (constraint.bodyB ? constraint.bodyB.position.x : 0) + (constraint.pointB ? constraint.pointB.x : 0),
+                    y: (constraint.bodyB ? constraint.bodyB.position.y : 0) + (constraint.pointB ? constraint.pointB.y : 0)
+                  };
+                };
+              })();
+            },
+            /* 11 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Axes = {};
+              module2.exports = Axes;
+              var Vector = __webpack_require__(2);
+              var Common = __webpack_require__(0);
+              (function() {
+                Axes.fromVertices = function(vertices) {
+                  var axes = {};
+                  for (var i = 0; i < vertices.length; i++) {
+                    var j = (i + 1) % vertices.length, normal = Vector.normalise({
+                      x: vertices[j].y - vertices[i].y,
+                      y: vertices[i].x - vertices[j].x
+                    }), gradient = normal.y === 0 ? Infinity : normal.x / normal.y;
+                    gradient = gradient.toFixed(3).toString();
+                    axes[gradient] = normal;
+                  }
+                  return Common.values(axes);
+                };
+                Axes.rotate = function(axes, angle) {
+                  if (angle === 0)
+                    return;
+                  var cos = Math.cos(angle), sin = Math.sin(angle);
+                  for (var i = 0; i < axes.length; i++) {
+                    var axis = axes[i], xx;
+                    xx = axis.x * cos - axis.y * sin;
+                    axis.y = axis.x * sin + axis.y * cos;
+                    axis.x = xx;
+                  }
+                };
+              })();
+            },
+            /* 12 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Bodies = {};
+              module2.exports = Bodies;
+              var Vertices = __webpack_require__(3);
+              var Common = __webpack_require__(0);
+              var Body = __webpack_require__(4);
+              var Bounds = __webpack_require__(1);
+              var Vector = __webpack_require__(2);
+              (function() {
+                Bodies.rectangle = function(x, y, width, height, options) {
+                  options = options || {};
+                  var rectangle = {
+                    label: "Rectangle Body",
+                    position: { x, y },
+                    vertices: Vertices.fromPath("L 0 0 L " + width + " 0 L " + width + " " + height + " L 0 " + height)
+                  };
+                  if (options.chamfer) {
+                    var chamfer = options.chamfer;
+                    rectangle.vertices = Vertices.chamfer(
+                      rectangle.vertices,
+                      chamfer.radius,
+                      chamfer.quality,
+                      chamfer.qualityMin,
+                      chamfer.qualityMax
+                    );
+                    delete options.chamfer;
+                  }
+                  return Body.create(Common.extend({}, rectangle, options));
+                };
+                Bodies.trapezoid = function(x, y, width, height, slope, options) {
+                  options = options || {};
+                  slope *= 0.5;
+                  var roof = (1 - slope * 2) * width;
+                  var x1 = width * slope, x2 = x1 + roof, x3 = x2 + x1, verticesPath;
+                  if (slope < 0.5) {
+                    verticesPath = "L 0 0 L " + x1 + " " + -height + " L " + x2 + " " + -height + " L " + x3 + " 0";
+                  } else {
+                    verticesPath = "L 0 0 L " + x2 + " " + -height + " L " + x3 + " 0";
+                  }
+                  var trapezoid = {
+                    label: "Trapezoid Body",
+                    position: { x, y },
+                    vertices: Vertices.fromPath(verticesPath)
+                  };
+                  if (options.chamfer) {
+                    var chamfer = options.chamfer;
+                    trapezoid.vertices = Vertices.chamfer(
+                      trapezoid.vertices,
+                      chamfer.radius,
+                      chamfer.quality,
+                      chamfer.qualityMin,
+                      chamfer.qualityMax
+                    );
+                    delete options.chamfer;
+                  }
+                  return Body.create(Common.extend({}, trapezoid, options));
+                };
+                Bodies.circle = function(x, y, radius, options, maxSides) {
+                  options = options || {};
+                  var circle = {
+                    label: "Circle Body",
+                    circleRadius: radius
+                  };
+                  maxSides = maxSides || 25;
+                  var sides = Math.ceil(Math.max(10, Math.min(maxSides, radius)));
+                  if (sides % 2 === 1)
+                    sides += 1;
+                  return Bodies.polygon(x, y, sides, radius, Common.extend({}, circle, options));
+                };
+                Bodies.polygon = function(x, y, sides, radius, options) {
+                  options = options || {};
+                  if (sides < 3)
+                    return Bodies.circle(x, y, radius, options);
+                  var theta = 2 * Math.PI / sides, path = "", offset = theta * 0.5;
+                  for (var i = 0; i < sides; i += 1) {
+                    var angle = offset + i * theta, xx = Math.cos(angle) * radius, yy = Math.sin(angle) * radius;
+                    path += "L " + xx.toFixed(3) + " " + yy.toFixed(3) + " ";
+                  }
+                  var polygon = {
+                    label: "Polygon Body",
+                    position: { x, y },
+                    vertices: Vertices.fromPath(path)
+                  };
+                  if (options.chamfer) {
+                    var chamfer = options.chamfer;
+                    polygon.vertices = Vertices.chamfer(
+                      polygon.vertices,
+                      chamfer.radius,
+                      chamfer.quality,
+                      chamfer.qualityMin,
+                      chamfer.qualityMax
+                    );
+                    delete options.chamfer;
+                  }
+                  return Body.create(Common.extend({}, polygon, options));
+                };
+                Bodies.fromVertices = function(x, y, vertexSets, options, flagInternal, removeCollinear, minimumArea, removeDuplicatePoints) {
+                  var decomp = Common.getDecomp(), canDecomp, body, parts, isConvex, isConcave, vertices, i, j, k, v, z;
+                  canDecomp = Boolean(decomp && decomp.quickDecomp);
+                  options = options || {};
+                  parts = [];
+                  flagInternal = typeof flagInternal !== "undefined" ? flagInternal : false;
+                  removeCollinear = typeof removeCollinear !== "undefined" ? removeCollinear : 0.01;
+                  minimumArea = typeof minimumArea !== "undefined" ? minimumArea : 10;
+                  removeDuplicatePoints = typeof removeDuplicatePoints !== "undefined" ? removeDuplicatePoints : 0.01;
+                  if (!Common.isArray(vertexSets[0])) {
+                    vertexSets = [vertexSets];
+                  }
+                  for (v = 0; v < vertexSets.length; v += 1) {
+                    vertices = vertexSets[v];
+                    isConvex = Vertices.isConvex(vertices);
+                    isConcave = !isConvex;
+                    if (isConcave && !canDecomp) {
+                      Common.warnOnce(
+                        "Bodies.fromVertices: Install the 'poly-decomp' library and use Common.setDecomp or provide 'decomp' as a global to decompose concave vertices."
+                      );
+                    }
+                    if (isConvex || !canDecomp) {
+                      if (isConvex) {
+                        vertices = Vertices.clockwiseSort(vertices);
+                      } else {
+                        vertices = Vertices.hull(vertices);
+                      }
+                      parts.push({
+                        position: { x, y },
+                        vertices
+                      });
+                    } else {
+                      var concave = vertices.map(function(vertex) {
+                        return [vertex.x, vertex.y];
+                      });
+                      decomp.makeCCW(concave);
+                      if (removeCollinear !== false)
+                        decomp.removeCollinearPoints(concave, removeCollinear);
+                      if (removeDuplicatePoints !== false && decomp.removeDuplicatePoints)
+                        decomp.removeDuplicatePoints(concave, removeDuplicatePoints);
+                      var decomposed = decomp.quickDecomp(concave);
+                      for (i = 0; i < decomposed.length; i++) {
+                        var chunk = decomposed[i];
+                        var chunkVertices = chunk.map(function(vertices2) {
+                          return {
+                            x: vertices2[0],
+                            y: vertices2[1]
+                          };
+                        });
+                        if (minimumArea > 0 && Vertices.area(chunkVertices) < minimumArea)
+                          continue;
+                        parts.push({
+                          position: Vertices.centre(chunkVertices),
+                          vertices: chunkVertices
+                        });
+                      }
+                    }
+                  }
+                  for (i = 0; i < parts.length; i++) {
+                    parts[i] = Body.create(Common.extend(parts[i], options));
+                  }
+                  if (flagInternal) {
+                    var coincident_max_dist = 5;
+                    for (i = 0; i < parts.length; i++) {
+                      var partA = parts[i];
+                      for (j = i + 1; j < parts.length; j++) {
+                        var partB = parts[j];
+                        if (Bounds.overlaps(partA.bounds, partB.bounds)) {
+                          var pav = partA.vertices, pbv = partB.vertices;
+                          for (k = 0; k < partA.vertices.length; k++) {
+                            for (z = 0; z < partB.vertices.length; z++) {
+                              var da = Vector.magnitudeSquared(Vector.sub(pav[(k + 1) % pav.length], pbv[z])), db = Vector.magnitudeSquared(Vector.sub(pav[k], pbv[(z + 1) % pbv.length]));
+                              if (da < coincident_max_dist && db < coincident_max_dist) {
+                                pav[k].isInternal = true;
+                                pbv[z].isInternal = true;
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                  if (parts.length > 1) {
+                    body = Body.create(Common.extend({ parts: parts.slice(0) }, options));
+                    Body.setPosition(body, { x, y });
+                    return body;
+                  } else {
+                    return parts[0];
+                  }
+                };
+              })();
+            },
+            /* 13 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Detector = {};
+              module2.exports = Detector;
+              var Common = __webpack_require__(0);
+              var Collision = __webpack_require__(8);
+              (function() {
+                Detector.create = function(options) {
+                  var defaults = {
+                    bodies: [],
+                    pairs: null
+                  };
+                  return Common.extend(defaults, options);
+                };
+                Detector.setBodies = function(detector, bodies) {
+                  detector.bodies = bodies.slice(0);
+                };
+                Detector.clear = function(detector) {
+                  detector.bodies = [];
+                };
+                Detector.collisions = function(detector) {
+                  var collisions = [], pairs = detector.pairs, bodies = detector.bodies, bodiesLength = bodies.length, canCollide = Detector.canCollide, collides = Collision.collides, i, j;
+                  bodies.sort(Detector._compareBoundsX);
+                  for (i = 0; i < bodiesLength; i++) {
+                    var bodyA = bodies[i], boundsA = bodyA.bounds, boundXMax = bodyA.bounds.max.x, boundYMax = bodyA.bounds.max.y, boundYMin = bodyA.bounds.min.y, bodyAStatic = bodyA.isStatic || bodyA.isSleeping, partsALength = bodyA.parts.length, partsASingle = partsALength === 1;
+                    for (j = i + 1; j < bodiesLength; j++) {
+                      var bodyB = bodies[j], boundsB = bodyB.bounds;
+                      if (boundsB.min.x > boundXMax) {
+                        break;
+                      }
+                      if (boundYMax < boundsB.min.y || boundYMin > boundsB.max.y) {
+                        continue;
+                      }
+                      if (bodyAStatic && (bodyB.isStatic || bodyB.isSleeping)) {
+                        continue;
+                      }
+                      if (!canCollide(bodyA.collisionFilter, bodyB.collisionFilter)) {
+                        continue;
+                      }
+                      var partsBLength = bodyB.parts.length;
+                      if (partsASingle && partsBLength === 1) {
+                        var collision = collides(bodyA, bodyB, pairs);
+                        if (collision) {
+                          collisions.push(collision);
+                        }
+                      } else {
+                        var partsAStart = partsALength > 1 ? 1 : 0, partsBStart = partsBLength > 1 ? 1 : 0;
+                        for (var k = partsAStart; k < partsALength; k++) {
+                          var partA = bodyA.parts[k], boundsA = partA.bounds;
+                          for (var z = partsBStart; z < partsBLength; z++) {
+                            var partB = bodyB.parts[z], boundsB = partB.bounds;
+                            if (boundsA.min.x > boundsB.max.x || boundsA.max.x < boundsB.min.x || boundsA.max.y < boundsB.min.y || boundsA.min.y > boundsB.max.y) {
+                              continue;
+                            }
+                            var collision = collides(partA, partB, pairs);
+                            if (collision) {
+                              collisions.push(collision);
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                  return collisions;
+                };
+                Detector.canCollide = function(filterA, filterB) {
+                  if (filterA.group === filterB.group && filterA.group !== 0)
+                    return filterA.group > 0;
+                  return (filterA.mask & filterB.category) !== 0 && (filterB.mask & filterA.category) !== 0;
+                };
+                Detector._compareBoundsX = function(bodyA, bodyB) {
+                  return bodyA.bounds.min.x - bodyB.bounds.min.x;
+                };
+              })();
+            },
+            /* 14 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Mouse = {};
+              module2.exports = Mouse;
+              var Common = __webpack_require__(0);
+              (function() {
+                Mouse.create = function(element) {
+                  var mouse = {};
+                  if (!element) {
+                    Common.log("Mouse.create: element was undefined, defaulting to document.body", "warn");
+                  }
+                  mouse.element = element || document.body;
+                  mouse.absolute = { x: 0, y: 0 };
+                  mouse.position = { x: 0, y: 0 };
+                  mouse.mousedownPosition = { x: 0, y: 0 };
+                  mouse.mouseupPosition = { x: 0, y: 0 };
+                  mouse.offset = { x: 0, y: 0 };
+                  mouse.scale = { x: 1, y: 1 };
+                  mouse.wheelDelta = 0;
+                  mouse.button = -1;
+                  mouse.pixelRatio = parseInt(mouse.element.getAttribute("data-pixel-ratio"), 10) || 1;
+                  mouse.sourceEvents = {
+                    mousemove: null,
+                    mousedown: null,
+                    mouseup: null,
+                    mousewheel: null
+                  };
+                  mouse.mousemove = function(event) {
+                    var position = Mouse._getRelativeMousePosition(event, mouse.element, mouse.pixelRatio), touches = event.changedTouches;
+                    if (touches) {
+                      mouse.button = 0;
+                      event.preventDefault();
+                    }
+                    mouse.absolute.x = position.x;
+                    mouse.absolute.y = position.y;
+                    mouse.position.x = mouse.absolute.x * mouse.scale.x + mouse.offset.x;
+                    mouse.position.y = mouse.absolute.y * mouse.scale.y + mouse.offset.y;
+                    mouse.sourceEvents.mousemove = event;
+                  };
+                  mouse.mousedown = function(event) {
+                    var position = Mouse._getRelativeMousePosition(event, mouse.element, mouse.pixelRatio), touches = event.changedTouches;
+                    if (touches) {
+                      mouse.button = 0;
+                      event.preventDefault();
+                    } else {
+                      mouse.button = event.button;
+                    }
+                    mouse.absolute.x = position.x;
+                    mouse.absolute.y = position.y;
+                    mouse.position.x = mouse.absolute.x * mouse.scale.x + mouse.offset.x;
+                    mouse.position.y = mouse.absolute.y * mouse.scale.y + mouse.offset.y;
+                    mouse.mousedownPosition.x = mouse.position.x;
+                    mouse.mousedownPosition.y = mouse.position.y;
+                    mouse.sourceEvents.mousedown = event;
+                  };
+                  mouse.mouseup = function(event) {
+                    var position = Mouse._getRelativeMousePosition(event, mouse.element, mouse.pixelRatio), touches = event.changedTouches;
+                    if (touches) {
+                      event.preventDefault();
+                    }
+                    mouse.button = -1;
+                    mouse.absolute.x = position.x;
+                    mouse.absolute.y = position.y;
+                    mouse.position.x = mouse.absolute.x * mouse.scale.x + mouse.offset.x;
+                    mouse.position.y = mouse.absolute.y * mouse.scale.y + mouse.offset.y;
+                    mouse.mouseupPosition.x = mouse.position.x;
+                    mouse.mouseupPosition.y = mouse.position.y;
+                    mouse.sourceEvents.mouseup = event;
+                  };
+                  mouse.mousewheel = function(event) {
+                    mouse.wheelDelta = Math.max(-1, Math.min(1, event.wheelDelta || -event.detail));
+                    event.preventDefault();
+                  };
+                  Mouse.setElement(mouse, mouse.element);
+                  return mouse;
+                };
+                Mouse.setElement = function(mouse, element) {
+                  mouse.element = element;
+                  element.addEventListener("mousemove", mouse.mousemove);
+                  element.addEventListener("mousedown", mouse.mousedown);
+                  element.addEventListener("mouseup", mouse.mouseup);
+                  element.addEventListener("mousewheel", mouse.mousewheel);
+                  element.addEventListener("DOMMouseScroll", mouse.mousewheel);
+                  element.addEventListener("touchmove", mouse.mousemove);
+                  element.addEventListener("touchstart", mouse.mousedown);
+                  element.addEventListener("touchend", mouse.mouseup);
+                };
+                Mouse.clearSourceEvents = function(mouse) {
+                  mouse.sourceEvents.mousemove = null;
+                  mouse.sourceEvents.mousedown = null;
+                  mouse.sourceEvents.mouseup = null;
+                  mouse.sourceEvents.mousewheel = null;
+                  mouse.wheelDelta = 0;
+                };
+                Mouse.setOffset = function(mouse, offset) {
+                  mouse.offset.x = offset.x;
+                  mouse.offset.y = offset.y;
+                  mouse.position.x = mouse.absolute.x * mouse.scale.x + mouse.offset.x;
+                  mouse.position.y = mouse.absolute.y * mouse.scale.y + mouse.offset.y;
+                };
+                Mouse.setScale = function(mouse, scale) {
+                  mouse.scale.x = scale.x;
+                  mouse.scale.y = scale.y;
+                  mouse.position.x = mouse.absolute.x * mouse.scale.x + mouse.offset.x;
+                  mouse.position.y = mouse.absolute.y * mouse.scale.y + mouse.offset.y;
+                };
+                Mouse._getRelativeMousePosition = function(event, element, pixelRatio) {
+                  var elementBounds = element.getBoundingClientRect(), rootNode = document.documentElement || document.body.parentNode || document.body, scrollX = window.pageXOffset !== void 0 ? window.pageXOffset : rootNode.scrollLeft, scrollY = window.pageYOffset !== void 0 ? window.pageYOffset : rootNode.scrollTop, touches = event.changedTouches, x, y;
+                  if (touches) {
+                    x = touches[0].pageX - elementBounds.left - scrollX;
+                    y = touches[0].pageY - elementBounds.top - scrollY;
+                  } else {
+                    x = event.pageX - elementBounds.left - scrollX;
+                    y = event.pageY - elementBounds.top - scrollY;
+                  }
+                  return {
+                    x: x / (element.clientWidth / (element.width || element.clientWidth) * pixelRatio),
+                    y: y / (element.clientHeight / (element.height || element.clientHeight) * pixelRatio)
+                  };
+                };
+              })();
+            },
+            /* 15 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Plugin = {};
+              module2.exports = Plugin;
+              var Common = __webpack_require__(0);
+              (function() {
+                Plugin._registry = {};
+                Plugin.register = function(plugin) {
+                  if (!Plugin.isPlugin(plugin)) {
+                    Common.warn("Plugin.register:", Plugin.toString(plugin), "does not implement all required fields.");
+                  }
+                  if (plugin.name in Plugin._registry) {
+                    var registered = Plugin._registry[plugin.name], pluginVersion = Plugin.versionParse(plugin.version).number, registeredVersion = Plugin.versionParse(registered.version).number;
+                    if (pluginVersion > registeredVersion) {
+                      Common.warn("Plugin.register:", Plugin.toString(registered), "was upgraded to", Plugin.toString(plugin));
+                      Plugin._registry[plugin.name] = plugin;
+                    } else if (pluginVersion < registeredVersion) {
+                      Common.warn("Plugin.register:", Plugin.toString(registered), "can not be downgraded to", Plugin.toString(plugin));
+                    } else if (plugin !== registered) {
+                      Common.warn("Plugin.register:", Plugin.toString(plugin), "is already registered to different plugin object");
+                    }
+                  } else {
+                    Plugin._registry[plugin.name] = plugin;
+                  }
+                  return plugin;
+                };
+                Plugin.resolve = function(dependency) {
+                  return Plugin._registry[Plugin.dependencyParse(dependency).name];
+                };
+                Plugin.toString = function(plugin) {
+                  return typeof plugin === "string" ? plugin : (plugin.name || "anonymous") + "@" + (plugin.version || plugin.range || "0.0.0");
+                };
+                Plugin.isPlugin = function(obj) {
+                  return obj && obj.name && obj.version && obj.install;
+                };
+                Plugin.isUsed = function(module3, name) {
+                  return module3.used.indexOf(name) > -1;
+                };
+                Plugin.isFor = function(plugin, module3) {
+                  var parsed = plugin.for && Plugin.dependencyParse(plugin.for);
+                  return !plugin.for || module3.name === parsed.name && Plugin.versionSatisfies(module3.version, parsed.range);
+                };
+                Plugin.use = function(module3, plugins) {
+                  module3.uses = (module3.uses || []).concat(plugins || []);
+                  if (module3.uses.length === 0) {
+                    Common.warn("Plugin.use:", Plugin.toString(module3), "does not specify any dependencies to install.");
+                    return;
+                  }
+                  var dependencies = Plugin.dependencies(module3), sortedDependencies = Common.topologicalSort(dependencies), status = [];
+                  for (var i = 0; i < sortedDependencies.length; i += 1) {
+                    if (sortedDependencies[i] === module3.name) {
+                      continue;
+                    }
+                    var plugin = Plugin.resolve(sortedDependencies[i]);
+                    if (!plugin) {
+                      status.push("\u274C " + sortedDependencies[i]);
+                      continue;
+                    }
+                    if (Plugin.isUsed(module3, plugin.name)) {
+                      continue;
+                    }
+                    if (!Plugin.isFor(plugin, module3)) {
+                      Common.warn("Plugin.use:", Plugin.toString(plugin), "is for", plugin.for, "but installed on", Plugin.toString(module3) + ".");
+                      plugin._warned = true;
+                    }
+                    if (plugin.install) {
+                      plugin.install(module3);
+                    } else {
+                      Common.warn("Plugin.use:", Plugin.toString(plugin), "does not specify an install function.");
+                      plugin._warned = true;
+                    }
+                    if (plugin._warned) {
+                      status.push("\u{1F536} " + Plugin.toString(plugin));
+                      delete plugin._warned;
+                    } else {
+                      status.push("\u2705 " + Plugin.toString(plugin));
+                    }
+                    module3.used.push(plugin.name);
+                  }
+                  if (status.length > 0) {
+                    Common.info(status.join("  "));
+                  }
+                };
+                Plugin.dependencies = function(module3, tracked) {
+                  var parsedBase = Plugin.dependencyParse(module3), name = parsedBase.name;
+                  tracked = tracked || {};
+                  if (name in tracked) {
+                    return;
+                  }
+                  module3 = Plugin.resolve(module3) || module3;
+                  tracked[name] = Common.map(module3.uses || [], function(dependency) {
+                    if (Plugin.isPlugin(dependency)) {
+                      Plugin.register(dependency);
+                    }
+                    var parsed = Plugin.dependencyParse(dependency), resolved = Plugin.resolve(dependency);
+                    if (resolved && !Plugin.versionSatisfies(resolved.version, parsed.range)) {
+                      Common.warn(
+                        "Plugin.dependencies:",
+                        Plugin.toString(resolved),
+                        "does not satisfy",
+                        Plugin.toString(parsed),
+                        "used by",
+                        Plugin.toString(parsedBase) + "."
+                      );
+                      resolved._warned = true;
+                      module3._warned = true;
+                    } else if (!resolved) {
+                      Common.warn(
+                        "Plugin.dependencies:",
+                        Plugin.toString(dependency),
+                        "used by",
+                        Plugin.toString(parsedBase),
+                        "could not be resolved."
+                      );
+                      module3._warned = true;
+                    }
+                    return parsed.name;
+                  });
+                  for (var i = 0; i < tracked[name].length; i += 1) {
+                    Plugin.dependencies(tracked[name][i], tracked);
+                  }
+                  return tracked;
+                };
+                Plugin.dependencyParse = function(dependency) {
+                  if (Common.isString(dependency)) {
+                    var pattern = /^[\w-]+(@(\*|[\^~]?\d+\.\d+\.\d+(-[0-9A-Za-z-+]+)?))?$/;
+                    if (!pattern.test(dependency)) {
+                      Common.warn("Plugin.dependencyParse:", dependency, "is not a valid dependency string.");
+                    }
+                    return {
+                      name: dependency.split("@")[0],
+                      range: dependency.split("@")[1] || "*"
+                    };
+                  }
+                  return {
+                    name: dependency.name,
+                    range: dependency.range || dependency.version
+                  };
+                };
+                Plugin.versionParse = function(range) {
+                  var pattern = /^(\*)|(\^|~|>=|>)?\s*((\d+)\.(\d+)\.(\d+))(-[0-9A-Za-z-+]+)?$/;
+                  if (!pattern.test(range)) {
+                    Common.warn("Plugin.versionParse:", range, "is not a valid version or range.");
+                  }
+                  var parts = pattern.exec(range);
+                  var major = Number(parts[4]);
+                  var minor = Number(parts[5]);
+                  var patch = Number(parts[6]);
+                  return {
+                    isRange: Boolean(parts[1] || parts[2]),
+                    version: parts[3],
+                    range,
+                    operator: parts[1] || parts[2] || "",
+                    major,
+                    minor,
+                    patch,
+                    parts: [major, minor, patch],
+                    prerelease: parts[7],
+                    number: major * 1e8 + minor * 1e4 + patch
+                  };
+                };
+                Plugin.versionSatisfies = function(version, range) {
+                  range = range || "*";
+                  var r = Plugin.versionParse(range), v = Plugin.versionParse(version);
+                  if (r.isRange) {
+                    if (r.operator === "*" || version === "*") {
+                      return true;
+                    }
+                    if (r.operator === ">") {
+                      return v.number > r.number;
+                    }
+                    if (r.operator === ">=") {
+                      return v.number >= r.number;
+                    }
+                    if (r.operator === "~") {
+                      return v.major === r.major && v.minor === r.minor && v.patch >= r.patch;
+                    }
+                    if (r.operator === "^") {
+                      if (r.major > 0) {
+                        return v.major === r.major && v.number >= r.number;
+                      }
+                      if (r.minor > 0) {
+                        return v.minor === r.minor && v.patch >= r.patch;
+                      }
+                      return v.patch === r.patch;
+                    }
+                  }
+                  return version === range || version === "*";
+                };
+              })();
+            },
+            /* 16 */
+            /***/
+            function(module2, exports2) {
+              var Contact = {};
+              module2.exports = Contact;
+              (function() {
+                Contact.create = function(vertex) {
+                  return {
+                    vertex,
+                    normalImpulse: 0,
+                    tangentImpulse: 0
+                  };
+                };
+              })();
+            },
+            /* 17 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Engine = {};
+              module2.exports = Engine;
+              var Sleeping = __webpack_require__(7);
+              var Resolver = __webpack_require__(18);
+              var Detector = __webpack_require__(13);
+              var Pairs = __webpack_require__(19);
+              var Events = __webpack_require__(5);
+              var Composite = __webpack_require__(6);
+              var Constraint = __webpack_require__(10);
+              var Common = __webpack_require__(0);
+              var Body = __webpack_require__(4);
+              (function() {
+                Engine.create = function(options) {
+                  options = options || {};
+                  var defaults = {
+                    positionIterations: 6,
+                    velocityIterations: 4,
+                    constraintIterations: 2,
+                    enableSleeping: false,
+                    events: [],
+                    plugin: {},
+                    gravity: {
+                      x: 0,
+                      y: 1,
+                      scale: 1e-3
+                    },
+                    timing: {
+                      timestamp: 0,
+                      timeScale: 1,
+                      lastDelta: 0,
+                      lastElapsed: 0
+                    }
+                  };
+                  var engine = Common.extend(defaults, options);
+                  engine.world = options.world || Composite.create({ label: "World" });
+                  engine.pairs = options.pairs || Pairs.create();
+                  engine.detector = options.detector || Detector.create();
+                  engine.grid = { buckets: [] };
+                  engine.world.gravity = engine.gravity;
+                  engine.broadphase = engine.grid;
+                  engine.metrics = {};
+                  return engine;
+                };
+                Engine.update = function(engine, delta) {
+                  var startTime = Common.now();
+                  var world = engine.world, detector = engine.detector, pairs = engine.pairs, timing = engine.timing, timestamp = timing.timestamp, i;
+                  delta = typeof delta !== "undefined" ? delta : Common._baseDelta;
+                  delta *= timing.timeScale;
+                  timing.timestamp += delta;
+                  timing.lastDelta = delta;
+                  var event = {
+                    timestamp: timing.timestamp,
+                    delta
+                  };
+                  Events.trigger(engine, "beforeUpdate", event);
+                  var allBodies = Composite.allBodies(world), allConstraints = Composite.allConstraints(world);
+                  if (world.isModified) {
+                    Detector.setBodies(detector, allBodies);
+                    Composite.setModified(world, false, false, true);
+                  }
+                  if (engine.enableSleeping)
+                    Sleeping.update(allBodies, delta);
+                  Engine._bodiesApplyGravity(allBodies, engine.gravity);
+                  if (delta > 0) {
+                    Engine._bodiesUpdate(allBodies, delta);
+                  }
+                  Constraint.preSolveAll(allBodies);
+                  for (i = 0; i < engine.constraintIterations; i++) {
+                    Constraint.solveAll(allConstraints, delta);
+                  }
+                  Constraint.postSolveAll(allBodies);
+                  detector.pairs = engine.pairs;
+                  var collisions = Detector.collisions(detector);
+                  Pairs.update(pairs, collisions, timestamp);
+                  if (engine.enableSleeping)
+                    Sleeping.afterCollisions(pairs.list);
+                  if (pairs.collisionStart.length > 0)
+                    Events.trigger(engine, "collisionStart", { pairs: pairs.collisionStart });
+                  var positionDamping = Common.clamp(20 / engine.positionIterations, 0, 1);
+                  Resolver.preSolvePosition(pairs.list);
+                  for (i = 0; i < engine.positionIterations; i++) {
+                    Resolver.solvePosition(pairs.list, delta, positionDamping);
+                  }
+                  Resolver.postSolvePosition(allBodies);
+                  Constraint.preSolveAll(allBodies);
+                  for (i = 0; i < engine.constraintIterations; i++) {
+                    Constraint.solveAll(allConstraints, delta);
+                  }
+                  Constraint.postSolveAll(allBodies);
+                  Resolver.preSolveVelocity(pairs.list);
+                  for (i = 0; i < engine.velocityIterations; i++) {
+                    Resolver.solveVelocity(pairs.list, delta);
+                  }
+                  Engine._bodiesUpdateVelocities(allBodies);
+                  if (pairs.collisionActive.length > 0)
+                    Events.trigger(engine, "collisionActive", { pairs: pairs.collisionActive });
+                  if (pairs.collisionEnd.length > 0)
+                    Events.trigger(engine, "collisionEnd", { pairs: pairs.collisionEnd });
+                  Engine._bodiesClearForces(allBodies);
+                  Events.trigger(engine, "afterUpdate", event);
+                  engine.timing.lastElapsed = Common.now() - startTime;
+                  return engine;
+                };
+                Engine.merge = function(engineA, engineB) {
+                  Common.extend(engineA, engineB);
+                  if (engineB.world) {
+                    engineA.world = engineB.world;
+                    Engine.clear(engineA);
+                    var bodies = Composite.allBodies(engineA.world);
+                    for (var i = 0; i < bodies.length; i++) {
+                      var body = bodies[i];
+                      Sleeping.set(body, false);
+                      body.id = Common.nextId();
+                    }
+                  }
+                };
+                Engine.clear = function(engine) {
+                  Pairs.clear(engine.pairs);
+                  Detector.clear(engine.detector);
+                };
+                Engine._bodiesClearForces = function(bodies) {
+                  var bodiesLength = bodies.length;
+                  for (var i = 0; i < bodiesLength; i++) {
+                    var body = bodies[i];
+                    body.force.x = 0;
+                    body.force.y = 0;
+                    body.torque = 0;
+                  }
+                };
+                Engine._bodiesApplyGravity = function(bodies, gravity) {
+                  var gravityScale = typeof gravity.scale !== "undefined" ? gravity.scale : 1e-3, bodiesLength = bodies.length;
+                  if (gravity.x === 0 && gravity.y === 0 || gravityScale === 0) {
+                    return;
+                  }
+                  for (var i = 0; i < bodiesLength; i++) {
+                    var body = bodies[i];
+                    if (body.isStatic || body.isSleeping)
+                      continue;
+                    body.force.y += body.mass * gravity.y * gravityScale;
+                    body.force.x += body.mass * gravity.x * gravityScale;
+                  }
+                };
+                Engine._bodiesUpdate = function(bodies, delta) {
+                  var bodiesLength = bodies.length;
+                  for (var i = 0; i < bodiesLength; i++) {
+                    var body = bodies[i];
+                    if (body.isStatic || body.isSleeping)
+                      continue;
+                    Body.update(body, delta);
+                  }
+                };
+                Engine._bodiesUpdateVelocities = function(bodies) {
+                  var bodiesLength = bodies.length;
+                  for (var i = 0; i < bodiesLength; i++) {
+                    Body.updateVelocities(bodies[i]);
+                  }
+                };
+              })();
+            },
+            /* 18 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Resolver = {};
+              module2.exports = Resolver;
+              var Vertices = __webpack_require__(3);
+              var Common = __webpack_require__(0);
+              var Bounds = __webpack_require__(1);
+              (function() {
+                Resolver._restingThresh = 2;
+                Resolver._restingThreshTangent = Math.sqrt(6);
+                Resolver._positionDampen = 0.9;
+                Resolver._positionWarming = 0.8;
+                Resolver._frictionNormalMultiplier = 5;
+                Resolver._frictionMaxStatic = Number.MAX_VALUE;
+                Resolver.preSolvePosition = function(pairs) {
+                  var i, pair, activeCount, pairsLength = pairs.length;
+                  for (i = 0; i < pairsLength; i++) {
+                    pair = pairs[i];
+                    if (!pair.isActive)
+                      continue;
+                    activeCount = pair.activeContacts.length;
+                    pair.collision.parentA.totalContacts += activeCount;
+                    pair.collision.parentB.totalContacts += activeCount;
+                  }
+                };
+                Resolver.solvePosition = function(pairs, delta, damping) {
+                  var i, pair, collision, bodyA, bodyB, normal, contactShare, positionImpulse, positionDampen = Resolver._positionDampen * (damping || 1), slopDampen = Common.clamp(delta / Common._baseDelta, 0, 1), pairsLength = pairs.length;
+                  for (i = 0; i < pairsLength; i++) {
+                    pair = pairs[i];
+                    if (!pair.isActive || pair.isSensor)
+                      continue;
+                    collision = pair.collision;
+                    bodyA = collision.parentA;
+                    bodyB = collision.parentB;
+                    normal = collision.normal;
+                    pair.separation = normal.x * (bodyB.positionImpulse.x + collision.penetration.x - bodyA.positionImpulse.x) + normal.y * (bodyB.positionImpulse.y + collision.penetration.y - bodyA.positionImpulse.y);
+                  }
+                  for (i = 0; i < pairsLength; i++) {
+                    pair = pairs[i];
+                    if (!pair.isActive || pair.isSensor)
+                      continue;
+                    collision = pair.collision;
+                    bodyA = collision.parentA;
+                    bodyB = collision.parentB;
+                    normal = collision.normal;
+                    positionImpulse = pair.separation - pair.slop * slopDampen;
+                    if (bodyA.isStatic || bodyB.isStatic)
+                      positionImpulse *= 2;
+                    if (!(bodyA.isStatic || bodyA.isSleeping)) {
+                      contactShare = positionDampen / bodyA.totalContacts;
+                      bodyA.positionImpulse.x += normal.x * positionImpulse * contactShare;
+                      bodyA.positionImpulse.y += normal.y * positionImpulse * contactShare;
+                    }
+                    if (!(bodyB.isStatic || bodyB.isSleeping)) {
+                      contactShare = positionDampen / bodyB.totalContacts;
+                      bodyB.positionImpulse.x -= normal.x * positionImpulse * contactShare;
+                      bodyB.positionImpulse.y -= normal.y * positionImpulse * contactShare;
+                    }
+                  }
+                };
+                Resolver.postSolvePosition = function(bodies) {
+                  var positionWarming = Resolver._positionWarming, bodiesLength = bodies.length, verticesTranslate = Vertices.translate, boundsUpdate = Bounds.update;
+                  for (var i = 0; i < bodiesLength; i++) {
+                    var body = bodies[i], positionImpulse = body.positionImpulse, positionImpulseX = positionImpulse.x, positionImpulseY = positionImpulse.y, velocity = body.velocity;
+                    body.totalContacts = 0;
+                    if (positionImpulseX !== 0 || positionImpulseY !== 0) {
+                      for (var j = 0; j < body.parts.length; j++) {
+                        var part = body.parts[j];
+                        verticesTranslate(part.vertices, positionImpulse);
+                        boundsUpdate(part.bounds, part.vertices, velocity);
+                        part.position.x += positionImpulseX;
+                        part.position.y += positionImpulseY;
+                      }
+                      body.positionPrev.x += positionImpulseX;
+                      body.positionPrev.y += positionImpulseY;
+                      if (positionImpulseX * velocity.x + positionImpulseY * velocity.y < 0) {
+                        positionImpulse.x = 0;
+                        positionImpulse.y = 0;
+                      } else {
+                        positionImpulse.x *= positionWarming;
+                        positionImpulse.y *= positionWarming;
+                      }
+                    }
+                  }
+                };
+                Resolver.preSolveVelocity = function(pairs) {
+                  var pairsLength = pairs.length, i, j;
+                  for (i = 0; i < pairsLength; i++) {
+                    var pair = pairs[i];
+                    if (!pair.isActive || pair.isSensor)
+                      continue;
+                    var contacts = pair.activeContacts, contactsLength = contacts.length, collision = pair.collision, bodyA = collision.parentA, bodyB = collision.parentB, normal = collision.normal, tangent = collision.tangent;
+                    for (j = 0; j < contactsLength; j++) {
+                      var contact = contacts[j], contactVertex = contact.vertex, normalImpulse = contact.normalImpulse, tangentImpulse = contact.tangentImpulse;
+                      if (normalImpulse !== 0 || tangentImpulse !== 0) {
+                        var impulseX = normal.x * normalImpulse + tangent.x * tangentImpulse, impulseY = normal.y * normalImpulse + tangent.y * tangentImpulse;
+                        if (!(bodyA.isStatic || bodyA.isSleeping)) {
+                          bodyA.positionPrev.x += impulseX * bodyA.inverseMass;
+                          bodyA.positionPrev.y += impulseY * bodyA.inverseMass;
+                          bodyA.anglePrev += bodyA.inverseInertia * ((contactVertex.x - bodyA.position.x) * impulseY - (contactVertex.y - bodyA.position.y) * impulseX);
+                        }
+                        if (!(bodyB.isStatic || bodyB.isSleeping)) {
+                          bodyB.positionPrev.x -= impulseX * bodyB.inverseMass;
+                          bodyB.positionPrev.y -= impulseY * bodyB.inverseMass;
+                          bodyB.anglePrev -= bodyB.inverseInertia * ((contactVertex.x - bodyB.position.x) * impulseY - (contactVertex.y - bodyB.position.y) * impulseX);
+                        }
+                      }
+                    }
+                  }
+                };
+                Resolver.solveVelocity = function(pairs, delta) {
+                  var timeScale = delta / Common._baseDelta, timeScaleSquared = timeScale * timeScale, timeScaleCubed = timeScaleSquared * timeScale, restingThresh = -Resolver._restingThresh * timeScale, restingThreshTangent = Resolver._restingThreshTangent, frictionNormalMultiplier = Resolver._frictionNormalMultiplier * timeScale, frictionMaxStatic = Resolver._frictionMaxStatic, pairsLength = pairs.length, tangentImpulse, maxFriction, i, j;
+                  for (i = 0; i < pairsLength; i++) {
+                    var pair = pairs[i];
+                    if (!pair.isActive || pair.isSensor)
+                      continue;
+                    var collision = pair.collision, bodyA = collision.parentA, bodyB = collision.parentB, bodyAVelocity = bodyA.velocity, bodyBVelocity = bodyB.velocity, normalX = collision.normal.x, normalY = collision.normal.y, tangentX = collision.tangent.x, tangentY = collision.tangent.y, contacts = pair.activeContacts, contactsLength = contacts.length, contactShare = 1 / contactsLength, inverseMassTotal = bodyA.inverseMass + bodyB.inverseMass, friction = pair.friction * pair.frictionStatic * frictionNormalMultiplier;
+                    bodyAVelocity.x = bodyA.position.x - bodyA.positionPrev.x;
+                    bodyAVelocity.y = bodyA.position.y - bodyA.positionPrev.y;
+                    bodyBVelocity.x = bodyB.position.x - bodyB.positionPrev.x;
+                    bodyBVelocity.y = bodyB.position.y - bodyB.positionPrev.y;
+                    bodyA.angularVelocity = bodyA.angle - bodyA.anglePrev;
+                    bodyB.angularVelocity = bodyB.angle - bodyB.anglePrev;
+                    for (j = 0; j < contactsLength; j++) {
+                      var contact = contacts[j], contactVertex = contact.vertex;
+                      var offsetAX = contactVertex.x - bodyA.position.x, offsetAY = contactVertex.y - bodyA.position.y, offsetBX = contactVertex.x - bodyB.position.x, offsetBY = contactVertex.y - bodyB.position.y;
+                      var velocityPointAX = bodyAVelocity.x - offsetAY * bodyA.angularVelocity, velocityPointAY = bodyAVelocity.y + offsetAX * bodyA.angularVelocity, velocityPointBX = bodyBVelocity.x - offsetBY * bodyB.angularVelocity, velocityPointBY = bodyBVelocity.y + offsetBX * bodyB.angularVelocity;
+                      var relativeVelocityX = velocityPointAX - velocityPointBX, relativeVelocityY = velocityPointAY - velocityPointBY;
+                      var normalVelocity = normalX * relativeVelocityX + normalY * relativeVelocityY, tangentVelocity = tangentX * relativeVelocityX + tangentY * relativeVelocityY;
+                      var normalOverlap = pair.separation + normalVelocity;
+                      var normalForce = Math.min(normalOverlap, 1);
+                      normalForce = normalOverlap < 0 ? 0 : normalForce;
+                      var frictionLimit = normalForce * friction;
+                      if (tangentVelocity < -frictionLimit || tangentVelocity > frictionLimit) {
+                        maxFriction = tangentVelocity > 0 ? tangentVelocity : -tangentVelocity;
+                        tangentImpulse = pair.friction * (tangentVelocity > 0 ? 1 : -1) * timeScaleCubed;
+                        if (tangentImpulse < -maxFriction) {
+                          tangentImpulse = -maxFriction;
+                        } else if (tangentImpulse > maxFriction) {
+                          tangentImpulse = maxFriction;
+                        }
+                      } else {
+                        tangentImpulse = tangentVelocity;
+                        maxFriction = frictionMaxStatic;
+                      }
+                      var oAcN = offsetAX * normalY - offsetAY * normalX, oBcN = offsetBX * normalY - offsetBY * normalX, share = contactShare / (inverseMassTotal + bodyA.inverseInertia * oAcN * oAcN + bodyB.inverseInertia * oBcN * oBcN);
+                      var normalImpulse = (1 + pair.restitution) * normalVelocity * share;
+                      tangentImpulse *= share;
+                      if (normalVelocity < restingThresh) {
+                        contact.normalImpulse = 0;
+                      } else {
+                        var contactNormalImpulse = contact.normalImpulse;
+                        contact.normalImpulse += normalImpulse;
+                        if (contact.normalImpulse > 0) contact.normalImpulse = 0;
+                        normalImpulse = contact.normalImpulse - contactNormalImpulse;
+                      }
+                      if (tangentVelocity < -restingThreshTangent || tangentVelocity > restingThreshTangent) {
+                        contact.tangentImpulse = 0;
+                      } else {
+                        var contactTangentImpulse = contact.tangentImpulse;
+                        contact.tangentImpulse += tangentImpulse;
+                        if (contact.tangentImpulse < -maxFriction) contact.tangentImpulse = -maxFriction;
+                        if (contact.tangentImpulse > maxFriction) contact.tangentImpulse = maxFriction;
+                        tangentImpulse = contact.tangentImpulse - contactTangentImpulse;
+                      }
+                      var impulseX = normalX * normalImpulse + tangentX * tangentImpulse, impulseY = normalY * normalImpulse + tangentY * tangentImpulse;
+                      if (!(bodyA.isStatic || bodyA.isSleeping)) {
+                        bodyA.positionPrev.x += impulseX * bodyA.inverseMass;
+                        bodyA.positionPrev.y += impulseY * bodyA.inverseMass;
+                        bodyA.anglePrev += (offsetAX * impulseY - offsetAY * impulseX) * bodyA.inverseInertia;
+                      }
+                      if (!(bodyB.isStatic || bodyB.isSleeping)) {
+                        bodyB.positionPrev.x -= impulseX * bodyB.inverseMass;
+                        bodyB.positionPrev.y -= impulseY * bodyB.inverseMass;
+                        bodyB.anglePrev -= (offsetBX * impulseY - offsetBY * impulseX) * bodyB.inverseInertia;
+                      }
+                    }
+                  }
+                };
+              })();
+            },
+            /* 19 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Pairs = {};
+              module2.exports = Pairs;
+              var Pair = __webpack_require__(9);
+              var Common = __webpack_require__(0);
+              (function() {
+                Pairs.create = function(options) {
+                  return Common.extend({
+                    table: {},
+                    list: [],
+                    collisionStart: [],
+                    collisionActive: [],
+                    collisionEnd: []
+                  }, options);
+                };
+                Pairs.update = function(pairs, collisions, timestamp) {
+                  var pairsList = pairs.list, pairsListLength = pairsList.length, pairsTable = pairs.table, collisionsLength = collisions.length, collisionStart = pairs.collisionStart, collisionEnd = pairs.collisionEnd, collisionActive = pairs.collisionActive, collision, pairIndex, pair, i;
+                  collisionStart.length = 0;
+                  collisionEnd.length = 0;
+                  collisionActive.length = 0;
+                  for (i = 0; i < pairsListLength; i++) {
+                    pairsList[i].confirmedActive = false;
+                  }
+                  for (i = 0; i < collisionsLength; i++) {
+                    collision = collisions[i];
+                    pair = collision.pair;
+                    if (pair) {
+                      if (pair.isActive) {
+                        collisionActive.push(pair);
+                      } else {
+                        collisionStart.push(pair);
+                      }
+                      Pair.update(pair, collision, timestamp);
+                      pair.confirmedActive = true;
+                    } else {
+                      pair = Pair.create(collision, timestamp);
+                      pairsTable[pair.id] = pair;
+                      collisionStart.push(pair);
+                      pairsList.push(pair);
+                    }
+                  }
+                  var removePairIndex = [];
+                  pairsListLength = pairsList.length;
+                  for (i = 0; i < pairsListLength; i++) {
+                    pair = pairsList[i];
+                    if (!pair.confirmedActive) {
+                      Pair.setActive(pair, false, timestamp);
+                      collisionEnd.push(pair);
+                      if (!pair.collision.bodyA.isSleeping && !pair.collision.bodyB.isSleeping) {
+                        removePairIndex.push(i);
+                      }
+                    }
+                  }
+                  for (i = 0; i < removePairIndex.length; i++) {
+                    pairIndex = removePairIndex[i] - i;
+                    pair = pairsList[pairIndex];
+                    pairsList.splice(pairIndex, 1);
+                    delete pairsTable[pair.id];
+                  }
+                };
+                Pairs.clear = function(pairs) {
+                  pairs.table = {};
+                  pairs.list.length = 0;
+                  pairs.collisionStart.length = 0;
+                  pairs.collisionActive.length = 0;
+                  pairs.collisionEnd.length = 0;
+                  return pairs;
+                };
+              })();
+            },
+            /* 20 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Matter5 = module2.exports = __webpack_require__(21);
+              Matter5.Axes = __webpack_require__(11);
+              Matter5.Bodies = __webpack_require__(12);
+              Matter5.Body = __webpack_require__(4);
+              Matter5.Bounds = __webpack_require__(1);
+              Matter5.Collision = __webpack_require__(8);
+              Matter5.Common = __webpack_require__(0);
+              Matter5.Composite = __webpack_require__(6);
+              Matter5.Composites = __webpack_require__(22);
+              Matter5.Constraint = __webpack_require__(10);
+              Matter5.Contact = __webpack_require__(16);
+              Matter5.Detector = __webpack_require__(13);
+              Matter5.Engine = __webpack_require__(17);
+              Matter5.Events = __webpack_require__(5);
+              Matter5.Grid = __webpack_require__(23);
+              Matter5.Mouse = __webpack_require__(14);
+              Matter5.MouseConstraint = __webpack_require__(24);
+              Matter5.Pair = __webpack_require__(9);
+              Matter5.Pairs = __webpack_require__(19);
+              Matter5.Plugin = __webpack_require__(15);
+              Matter5.Query = __webpack_require__(25);
+              Matter5.Render = __webpack_require__(26);
+              Matter5.Resolver = __webpack_require__(18);
+              Matter5.Runner = __webpack_require__(27);
+              Matter5.SAT = __webpack_require__(28);
+              Matter5.Sleeping = __webpack_require__(7);
+              Matter5.Svg = __webpack_require__(29);
+              Matter5.Vector = __webpack_require__(2);
+              Matter5.Vertices = __webpack_require__(3);
+              Matter5.World = __webpack_require__(30);
+              Matter5.Engine.run = Matter5.Runner.run;
+              Matter5.Common.deprecated(Matter5.Engine, "run", "Engine.run \u27A4 use Matter.Runner.run(engine) instead");
+            },
+            /* 21 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Matter5 = {};
+              module2.exports = Matter5;
+              var Plugin = __webpack_require__(15);
+              var Common = __webpack_require__(0);
+              (function() {
+                Matter5.name = "matter-js";
+                Matter5.version = true ? "0.19.0" : void 0;
+                Matter5.uses = [];
+                Matter5.used = [];
+                Matter5.use = function() {
+                  Plugin.use(Matter5, Array.prototype.slice.call(arguments));
+                };
+                Matter5.before = function(path, func) {
+                  path = path.replace(/^Matter./, "");
+                  return Common.chainPathBefore(Matter5, path, func);
+                };
+                Matter5.after = function(path, func) {
+                  path = path.replace(/^Matter./, "");
+                  return Common.chainPathAfter(Matter5, path, func);
+                };
+              })();
+            },
+            /* 22 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Composites = {};
+              module2.exports = Composites;
+              var Composite = __webpack_require__(6);
+              var Constraint = __webpack_require__(10);
+              var Common = __webpack_require__(0);
+              var Body = __webpack_require__(4);
+              var Bodies = __webpack_require__(12);
+              var deprecated = Common.deprecated;
+              (function() {
+                Composites.stack = function(xx, yy, columns, rows, columnGap, rowGap, callback) {
+                  var stack = Composite.create({ label: "Stack" }), x = xx, y = yy, lastBody, i = 0;
+                  for (var row = 0; row < rows; row++) {
+                    var maxHeight = 0;
+                    for (var column = 0; column < columns; column++) {
+                      var body = callback(x, y, column, row, lastBody, i);
+                      if (body) {
+                        var bodyHeight = body.bounds.max.y - body.bounds.min.y, bodyWidth = body.bounds.max.x - body.bounds.min.x;
+                        if (bodyHeight > maxHeight)
+                          maxHeight = bodyHeight;
+                        Body.translate(body, { x: bodyWidth * 0.5, y: bodyHeight * 0.5 });
+                        x = body.bounds.max.x + columnGap;
+                        Composite.addBody(stack, body);
+                        lastBody = body;
+                        i += 1;
+                      } else {
+                        x += columnGap;
+                      }
+                    }
+                    y += maxHeight + rowGap;
+                    x = xx;
+                  }
+                  return stack;
+                };
+                Composites.chain = function(composite, xOffsetA, yOffsetA, xOffsetB, yOffsetB, options) {
+                  var bodies = composite.bodies;
+                  for (var i = 1; i < bodies.length; i++) {
+                    var bodyA = bodies[i - 1], bodyB = bodies[i], bodyAHeight = bodyA.bounds.max.y - bodyA.bounds.min.y, bodyAWidth = bodyA.bounds.max.x - bodyA.bounds.min.x, bodyBHeight = bodyB.bounds.max.y - bodyB.bounds.min.y, bodyBWidth = bodyB.bounds.max.x - bodyB.bounds.min.x;
+                    var defaults = {
+                      bodyA,
+                      pointA: { x: bodyAWidth * xOffsetA, y: bodyAHeight * yOffsetA },
+                      bodyB,
+                      pointB: { x: bodyBWidth * xOffsetB, y: bodyBHeight * yOffsetB }
+                    };
+                    var constraint = Common.extend(defaults, options);
+                    Composite.addConstraint(composite, Constraint.create(constraint));
+                  }
+                  composite.label += " Chain";
+                  return composite;
+                };
+                Composites.mesh = function(composite, columns, rows, crossBrace, options) {
+                  var bodies = composite.bodies, row, col, bodyA, bodyB, bodyC;
+                  for (row = 0; row < rows; row++) {
+                    for (col = 1; col < columns; col++) {
+                      bodyA = bodies[col - 1 + row * columns];
+                      bodyB = bodies[col + row * columns];
+                      Composite.addConstraint(composite, Constraint.create(Common.extend({ bodyA, bodyB }, options)));
+                    }
+                    if (row > 0) {
+                      for (col = 0; col < columns; col++) {
+                        bodyA = bodies[col + (row - 1) * columns];
+                        bodyB = bodies[col + row * columns];
+                        Composite.addConstraint(composite, Constraint.create(Common.extend({ bodyA, bodyB }, options)));
+                        if (crossBrace && col > 0) {
+                          bodyC = bodies[col - 1 + (row - 1) * columns];
+                          Composite.addConstraint(composite, Constraint.create(Common.extend({ bodyA: bodyC, bodyB }, options)));
+                        }
+                        if (crossBrace && col < columns - 1) {
+                          bodyC = bodies[col + 1 + (row - 1) * columns];
+                          Composite.addConstraint(composite, Constraint.create(Common.extend({ bodyA: bodyC, bodyB }, options)));
+                        }
+                      }
+                    }
+                  }
+                  composite.label += " Mesh";
+                  return composite;
+                };
+                Composites.pyramid = function(xx, yy, columns, rows, columnGap, rowGap, callback) {
+                  return Composites.stack(xx, yy, columns, rows, columnGap, rowGap, function(x, y, column, row, lastBody, i) {
+                    var actualRows = Math.min(rows, Math.ceil(columns / 2)), lastBodyWidth = lastBody ? lastBody.bounds.max.x - lastBody.bounds.min.x : 0;
+                    if (row > actualRows)
+                      return;
+                    row = actualRows - row;
+                    var start = row, end = columns - 1 - row;
+                    if (column < start || column > end)
+                      return;
+                    if (i === 1) {
+                      Body.translate(lastBody, { x: (column + (columns % 2 === 1 ? 1 : -1)) * lastBodyWidth, y: 0 });
+                    }
+                    var xOffset = lastBody ? column * lastBodyWidth : 0;
+                    return callback(xx + xOffset + column * columnGap, y, column, row, lastBody, i);
+                  });
+                };
+                Composites.newtonsCradle = function(xx, yy, number, size, length) {
+                  var newtonsCradle = Composite.create({ label: "Newtons Cradle" });
+                  for (var i = 0; i < number; i++) {
+                    var separation = 1.9, circle = Bodies.circle(
+                      xx + i * (size * separation),
+                      yy + length,
+                      size,
+                      { inertia: Infinity, restitution: 1, friction: 0, frictionAir: 1e-4, slop: 1 }
+                    ), constraint = Constraint.create({ pointA: { x: xx + i * (size * separation), y: yy }, bodyB: circle });
+                    Composite.addBody(newtonsCradle, circle);
+                    Composite.addConstraint(newtonsCradle, constraint);
+                  }
+                  return newtonsCradle;
+                };
+                deprecated(Composites, "newtonsCradle", "Composites.newtonsCradle \u27A4 moved to newtonsCradle example");
+                Composites.car = function(xx, yy, width, height, wheelSize) {
+                  var group = Body.nextGroup(true), wheelBase = 20, wheelAOffset = -width * 0.5 + wheelBase, wheelBOffset = width * 0.5 - wheelBase, wheelYOffset = 0;
+                  var car = Composite.create({ label: "Car" }), body = Bodies.rectangle(xx, yy, width, height, {
+                    collisionFilter: {
+                      group
+                    },
+                    chamfer: {
+                      radius: height * 0.5
+                    },
+                    density: 2e-4
+                  });
+                  var wheelA = Bodies.circle(xx + wheelAOffset, yy + wheelYOffset, wheelSize, {
+                    collisionFilter: {
+                      group
+                    },
+                    friction: 0.8
+                  });
+                  var wheelB = Bodies.circle(xx + wheelBOffset, yy + wheelYOffset, wheelSize, {
+                    collisionFilter: {
+                      group
+                    },
+                    friction: 0.8
+                  });
+                  var axelA = Constraint.create({
+                    bodyB: body,
+                    pointB: { x: wheelAOffset, y: wheelYOffset },
+                    bodyA: wheelA,
+                    stiffness: 1,
+                    length: 0
+                  });
+                  var axelB = Constraint.create({
+                    bodyB: body,
+                    pointB: { x: wheelBOffset, y: wheelYOffset },
+                    bodyA: wheelB,
+                    stiffness: 1,
+                    length: 0
+                  });
+                  Composite.addBody(car, body);
+                  Composite.addBody(car, wheelA);
+                  Composite.addBody(car, wheelB);
+                  Composite.addConstraint(car, axelA);
+                  Composite.addConstraint(car, axelB);
+                  return car;
+                };
+                deprecated(Composites, "car", "Composites.car \u27A4 moved to car example");
+                Composites.softBody = function(xx, yy, columns, rows, columnGap, rowGap, crossBrace, particleRadius, particleOptions, constraintOptions) {
+                  particleOptions = Common.extend({ inertia: Infinity }, particleOptions);
+                  constraintOptions = Common.extend({ stiffness: 0.2, render: { type: "line", anchors: false } }, constraintOptions);
+                  var softBody = Composites.stack(xx, yy, columns, rows, columnGap, rowGap, function(x, y) {
+                    return Bodies.circle(x, y, particleRadius, particleOptions);
+                  });
+                  Composites.mesh(softBody, columns, rows, crossBrace, constraintOptions);
+                  softBody.label = "Soft Body";
+                  return softBody;
+                };
+                deprecated(Composites, "softBody", "Composites.softBody \u27A4 moved to softBody and cloth examples");
+              })();
+            },
+            /* 23 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Grid = {};
+              module2.exports = Grid;
+              var Pair = __webpack_require__(9);
+              var Common = __webpack_require__(0);
+              var deprecated = Common.deprecated;
+              (function() {
+                Grid.create = function(options) {
+                  var defaults = {
+                    buckets: {},
+                    pairs: {},
+                    pairsList: [],
+                    bucketWidth: 48,
+                    bucketHeight: 48
+                  };
+                  return Common.extend(defaults, options);
+                };
+                Grid.update = function(grid, bodies, engine, forceUpdate) {
+                  var i, col, row, world = engine.world, buckets = grid.buckets, bucket, bucketId, gridChanged = false;
+                  for (i = 0; i < bodies.length; i++) {
+                    var body = bodies[i];
+                    if (body.isSleeping && !forceUpdate)
+                      continue;
+                    if (world.bounds && (body.bounds.max.x < world.bounds.min.x || body.bounds.min.x > world.bounds.max.x || body.bounds.max.y < world.bounds.min.y || body.bounds.min.y > world.bounds.max.y))
+                      continue;
+                    var newRegion = Grid._getRegion(grid, body);
+                    if (!body.region || newRegion.id !== body.region.id || forceUpdate) {
+                      if (!body.region || forceUpdate)
+                        body.region = newRegion;
+                      var union = Grid._regionUnion(newRegion, body.region);
+                      for (col = union.startCol; col <= union.endCol; col++) {
+                        for (row = union.startRow; row <= union.endRow; row++) {
+                          bucketId = Grid._getBucketId(col, row);
+                          bucket = buckets[bucketId];
+                          var isInsideNewRegion = col >= newRegion.startCol && col <= newRegion.endCol && row >= newRegion.startRow && row <= newRegion.endRow;
+                          var isInsideOldRegion = col >= body.region.startCol && col <= body.region.endCol && row >= body.region.startRow && row <= body.region.endRow;
+                          if (!isInsideNewRegion && isInsideOldRegion) {
+                            if (isInsideOldRegion) {
+                              if (bucket)
+                                Grid._bucketRemoveBody(grid, bucket, body);
+                            }
+                          }
+                          if (body.region === newRegion || isInsideNewRegion && !isInsideOldRegion || forceUpdate) {
+                            if (!bucket)
+                              bucket = Grid._createBucket(buckets, bucketId);
+                            Grid._bucketAddBody(grid, bucket, body);
+                          }
+                        }
+                      }
+                      body.region = newRegion;
+                      gridChanged = true;
+                    }
+                  }
+                  if (gridChanged)
+                    grid.pairsList = Grid._createActivePairsList(grid);
+                };
+                deprecated(Grid, "update", "Grid.update \u27A4 replaced by Matter.Detector");
+                Grid.clear = function(grid) {
+                  grid.buckets = {};
+                  grid.pairs = {};
+                  grid.pairsList = [];
+                };
+                deprecated(Grid, "clear", "Grid.clear \u27A4 replaced by Matter.Detector");
+                Grid._regionUnion = function(regionA, regionB) {
+                  var startCol = Math.min(regionA.startCol, regionB.startCol), endCol = Math.max(regionA.endCol, regionB.endCol), startRow = Math.min(regionA.startRow, regionB.startRow), endRow = Math.max(regionA.endRow, regionB.endRow);
+                  return Grid._createRegion(startCol, endCol, startRow, endRow);
+                };
+                Grid._getRegion = function(grid, body) {
+                  var bounds = body.bounds, startCol = Math.floor(bounds.min.x / grid.bucketWidth), endCol = Math.floor(bounds.max.x / grid.bucketWidth), startRow = Math.floor(bounds.min.y / grid.bucketHeight), endRow = Math.floor(bounds.max.y / grid.bucketHeight);
+                  return Grid._createRegion(startCol, endCol, startRow, endRow);
+                };
+                Grid._createRegion = function(startCol, endCol, startRow, endRow) {
+                  return {
+                    id: startCol + "," + endCol + "," + startRow + "," + endRow,
+                    startCol,
+                    endCol,
+                    startRow,
+                    endRow
+                  };
+                };
+                Grid._getBucketId = function(column, row) {
+                  return "C" + column + "R" + row;
+                };
+                Grid._createBucket = function(buckets, bucketId) {
+                  var bucket = buckets[bucketId] = [];
+                  return bucket;
+                };
+                Grid._bucketAddBody = function(grid, bucket, body) {
+                  var gridPairs = grid.pairs, pairId = Pair.id, bucketLength = bucket.length, i;
+                  for (i = 0; i < bucketLength; i++) {
+                    var bodyB = bucket[i];
+                    if (body.id === bodyB.id || body.isStatic && bodyB.isStatic)
+                      continue;
+                    var id = pairId(body, bodyB), pair = gridPairs[id];
+                    if (pair) {
+                      pair[2] += 1;
+                    } else {
+                      gridPairs[id] = [body, bodyB, 1];
+                    }
+                  }
+                  bucket.push(body);
+                };
+                Grid._bucketRemoveBody = function(grid, bucket, body) {
+                  var gridPairs = grid.pairs, pairId = Pair.id, i;
+                  bucket.splice(Common.indexOf(bucket, body), 1);
+                  var bucketLength = bucket.length;
+                  for (i = 0; i < bucketLength; i++) {
+                    var pair = gridPairs[pairId(body, bucket[i])];
+                    if (pair)
+                      pair[2] -= 1;
+                  }
+                };
+                Grid._createActivePairsList = function(grid) {
+                  var pair, gridPairs = grid.pairs, pairKeys = Common.keys(gridPairs), pairKeysLength = pairKeys.length, pairs = [], k;
+                  for (k = 0; k < pairKeysLength; k++) {
+                    pair = gridPairs[pairKeys[k]];
+                    if (pair[2] > 0) {
+                      pairs.push(pair);
+                    } else {
+                      delete gridPairs[pairKeys[k]];
+                    }
+                  }
+                  return pairs;
+                };
+              })();
+            },
+            /* 24 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var MouseConstraint = {};
+              module2.exports = MouseConstraint;
+              var Vertices = __webpack_require__(3);
+              var Sleeping = __webpack_require__(7);
+              var Mouse = __webpack_require__(14);
+              var Events = __webpack_require__(5);
+              var Detector = __webpack_require__(13);
+              var Constraint = __webpack_require__(10);
+              var Composite = __webpack_require__(6);
+              var Common = __webpack_require__(0);
+              var Bounds = __webpack_require__(1);
+              (function() {
+                MouseConstraint.create = function(engine, options) {
+                  var mouse = (engine ? engine.mouse : null) || (options ? options.mouse : null);
+                  if (!mouse) {
+                    if (engine && engine.render && engine.render.canvas) {
+                      mouse = Mouse.create(engine.render.canvas);
+                    } else if (options && options.element) {
+                      mouse = Mouse.create(options.element);
+                    } else {
+                      mouse = Mouse.create();
+                      Common.warn("MouseConstraint.create: options.mouse was undefined, options.element was undefined, may not function as expected");
+                    }
+                  }
+                  var constraint = Constraint.create({
+                    label: "Mouse Constraint",
+                    pointA: mouse.position,
+                    pointB: { x: 0, y: 0 },
+                    length: 0.01,
+                    stiffness: 0.1,
+                    angularStiffness: 1,
+                    render: {
+                      strokeStyle: "#90EE90",
+                      lineWidth: 3
+                    }
+                  });
+                  var defaults = {
+                    type: "mouseConstraint",
+                    mouse,
+                    element: null,
+                    body: null,
+                    constraint,
+                    collisionFilter: {
+                      category: 1,
+                      mask: 4294967295,
+                      group: 0
+                    }
+                  };
+                  var mouseConstraint = Common.extend(defaults, options);
+                  Events.on(engine, "beforeUpdate", function() {
+                    var allBodies = Composite.allBodies(engine.world);
+                    MouseConstraint.update(mouseConstraint, allBodies);
+                    MouseConstraint._triggerEvents(mouseConstraint);
+                  });
+                  return mouseConstraint;
+                };
+                MouseConstraint.update = function(mouseConstraint, bodies) {
+                  var mouse = mouseConstraint.mouse, constraint = mouseConstraint.constraint, body = mouseConstraint.body;
+                  if (mouse.button === 0) {
+                    if (!constraint.bodyB) {
+                      for (var i = 0; i < bodies.length; i++) {
+                        body = bodies[i];
+                        if (Bounds.contains(body.bounds, mouse.position) && Detector.canCollide(body.collisionFilter, mouseConstraint.collisionFilter)) {
+                          for (var j = body.parts.length > 1 ? 1 : 0; j < body.parts.length; j++) {
+                            var part = body.parts[j];
+                            if (Vertices.contains(part.vertices, mouse.position)) {
+                              constraint.pointA = mouse.position;
+                              constraint.bodyB = mouseConstraint.body = body;
+                              constraint.pointB = { x: mouse.position.x - body.position.x, y: mouse.position.y - body.position.y };
+                              constraint.angleB = body.angle;
+                              Sleeping.set(body, false);
+                              Events.trigger(mouseConstraint, "startdrag", { mouse, body });
+                              break;
+                            }
+                          }
+                        }
+                      }
+                    } else {
+                      Sleeping.set(constraint.bodyB, false);
+                      constraint.pointA = mouse.position;
+                    }
+                  } else {
+                    constraint.bodyB = mouseConstraint.body = null;
+                    constraint.pointB = null;
+                    if (body)
+                      Events.trigger(mouseConstraint, "enddrag", { mouse, body });
+                  }
+                };
+                MouseConstraint._triggerEvents = function(mouseConstraint) {
+                  var mouse = mouseConstraint.mouse, mouseEvents = mouse.sourceEvents;
+                  if (mouseEvents.mousemove)
+                    Events.trigger(mouseConstraint, "mousemove", { mouse });
+                  if (mouseEvents.mousedown)
+                    Events.trigger(mouseConstraint, "mousedown", { mouse });
+                  if (mouseEvents.mouseup)
+                    Events.trigger(mouseConstraint, "mouseup", { mouse });
+                  Mouse.clearSourceEvents(mouse);
+                };
+              })();
+            },
+            /* 25 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Query = {};
+              module2.exports = Query;
+              var Vector = __webpack_require__(2);
+              var Collision = __webpack_require__(8);
+              var Bounds = __webpack_require__(1);
+              var Bodies = __webpack_require__(12);
+              var Vertices = __webpack_require__(3);
+              (function() {
+                Query.collides = function(body, bodies) {
+                  var collisions = [], bodiesLength = bodies.length, bounds = body.bounds, collides = Collision.collides, overlaps = Bounds.overlaps;
+                  for (var i = 0; i < bodiesLength; i++) {
+                    var bodyA = bodies[i], partsALength = bodyA.parts.length, partsAStart = partsALength === 1 ? 0 : 1;
+                    if (overlaps(bodyA.bounds, bounds)) {
+                      for (var j = partsAStart; j < partsALength; j++) {
+                        var part = bodyA.parts[j];
+                        if (overlaps(part.bounds, bounds)) {
+                          var collision = collides(part, body);
+                          if (collision) {
+                            collisions.push(collision);
+                            break;
+                          }
+                        }
+                      }
+                    }
+                  }
+                  return collisions;
+                };
+                Query.ray = function(bodies, startPoint, endPoint, rayWidth) {
+                  rayWidth = rayWidth || 1e-100;
+                  var rayAngle = Vector.angle(startPoint, endPoint), rayLength = Vector.magnitude(Vector.sub(startPoint, endPoint)), rayX = (endPoint.x + startPoint.x) * 0.5, rayY = (endPoint.y + startPoint.y) * 0.5, ray = Bodies.rectangle(rayX, rayY, rayLength, rayWidth, { angle: rayAngle }), collisions = Query.collides(ray, bodies);
+                  for (var i = 0; i < collisions.length; i += 1) {
+                    var collision = collisions[i];
+                    collision.body = collision.bodyB = collision.bodyA;
+                  }
+                  return collisions;
+                };
+                Query.region = function(bodies, bounds, outside) {
+                  var result = [];
+                  for (var i = 0; i < bodies.length; i++) {
+                    var body = bodies[i], overlaps = Bounds.overlaps(body.bounds, bounds);
+                    if (overlaps && !outside || !overlaps && outside)
+                      result.push(body);
+                  }
+                  return result;
+                };
+                Query.point = function(bodies, point) {
+                  var result = [];
+                  for (var i = 0; i < bodies.length; i++) {
+                    var body = bodies[i];
+                    if (Bounds.contains(body.bounds, point)) {
+                      for (var j = body.parts.length === 1 ? 0 : 1; j < body.parts.length; j++) {
+                        var part = body.parts[j];
+                        if (Bounds.contains(part.bounds, point) && Vertices.contains(part.vertices, point)) {
+                          result.push(body);
+                          break;
+                        }
+                      }
+                    }
+                  }
+                  return result;
+                };
+              })();
+            },
+            /* 26 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Render = {};
+              module2.exports = Render;
+              var Body = __webpack_require__(4);
+              var Common = __webpack_require__(0);
+              var Composite = __webpack_require__(6);
+              var Bounds = __webpack_require__(1);
+              var Events = __webpack_require__(5);
+              var Vector = __webpack_require__(2);
+              var Mouse = __webpack_require__(14);
+              (function() {
+                var _requestAnimationFrame, _cancelAnimationFrame;
+                if (typeof window !== "undefined") {
+                  _requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
+                    window.setTimeout(function() {
+                      callback(Common.now());
+                    }, 1e3 / 60);
+                  };
+                  _cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.msCancelAnimationFrame;
+                }
+                Render._goodFps = 30;
+                Render._goodDelta = 1e3 / 60;
+                Render.create = function(options) {
+                  var defaults = {
+                    engine: null,
+                    element: null,
+                    canvas: null,
+                    mouse: null,
+                    frameRequestId: null,
+                    timing: {
+                      historySize: 60,
+                      delta: 0,
+                      deltaHistory: [],
+                      lastTime: 0,
+                      lastTimestamp: 0,
+                      lastElapsed: 0,
+                      timestampElapsed: 0,
+                      timestampElapsedHistory: [],
+                      engineDeltaHistory: [],
+                      engineElapsedHistory: [],
+                      elapsedHistory: []
+                    },
+                    options: {
+                      width: 800,
+                      height: 600,
+                      pixelRatio: 1,
+                      background: "#14151f",
+                      wireframeBackground: "#14151f",
+                      hasBounds: !!options.bounds,
+                      enabled: true,
+                      wireframes: true,
+                      showSleeping: true,
+                      showDebug: false,
+                      showStats: false,
+                      showPerformance: false,
+                      showBounds: false,
+                      showVelocity: false,
+                      showCollisions: false,
+                      showSeparations: false,
+                      showAxes: false,
+                      showPositions: false,
+                      showAngleIndicator: false,
+                      showIds: false,
+                      showVertexNumbers: false,
+                      showConvexHulls: false,
+                      showInternalEdges: false,
+                      showMousePosition: false
+                    }
+                  };
+                  var render = Common.extend(defaults, options);
+                  if (render.canvas) {
+                    render.canvas.width = render.options.width || render.canvas.width;
+                    render.canvas.height = render.options.height || render.canvas.height;
+                  }
+                  render.mouse = options.mouse;
+                  render.engine = options.engine;
+                  render.canvas = render.canvas || _createCanvas(render.options.width, render.options.height);
+                  render.context = render.canvas.getContext("2d");
+                  render.textures = {};
+                  render.bounds = render.bounds || {
+                    min: {
+                      x: 0,
+                      y: 0
+                    },
+                    max: {
+                      x: render.canvas.width,
+                      y: render.canvas.height
+                    }
+                  };
+                  render.controller = Render;
+                  render.options.showBroadphase = false;
+                  if (render.options.pixelRatio !== 1) {
+                    Render.setPixelRatio(render, render.options.pixelRatio);
+                  }
+                  if (Common.isElement(render.element)) {
+                    render.element.appendChild(render.canvas);
+                  }
+                  return render;
+                };
+                Render.run = function(render) {
+                  (function loop(time) {
+                    render.frameRequestId = _requestAnimationFrame(loop);
+                    _updateTiming(render, time);
+                    Render.world(render, time);
+                    if (render.options.showStats || render.options.showDebug) {
+                      Render.stats(render, render.context, time);
+                    }
+                    if (render.options.showPerformance || render.options.showDebug) {
+                      Render.performance(render, render.context, time);
+                    }
+                  })();
+                };
+                Render.stop = function(render) {
+                  _cancelAnimationFrame(render.frameRequestId);
+                };
+                Render.setPixelRatio = function(render, pixelRatio) {
+                  var options = render.options, canvas2 = render.canvas;
+                  if (pixelRatio === "auto") {
+                    pixelRatio = _getPixelRatio(canvas2);
+                  }
+                  options.pixelRatio = pixelRatio;
+                  canvas2.setAttribute("data-pixel-ratio", pixelRatio);
+                  canvas2.width = options.width * pixelRatio;
+                  canvas2.height = options.height * pixelRatio;
+                  canvas2.style.width = options.width + "px";
+                  canvas2.style.height = options.height + "px";
+                };
+                Render.lookAt = function(render, objects, padding, center) {
+                  center = typeof center !== "undefined" ? center : true;
+                  objects = Common.isArray(objects) ? objects : [objects];
+                  padding = padding || {
+                    x: 0,
+                    y: 0
+                  };
+                  var bounds = {
+                    min: { x: Infinity, y: Infinity },
+                    max: { x: -Infinity, y: -Infinity }
+                  };
+                  for (var i = 0; i < objects.length; i += 1) {
+                    var object = objects[i], min = object.bounds ? object.bounds.min : object.min || object.position || object, max = object.bounds ? object.bounds.max : object.max || object.position || object;
+                    if (min && max) {
+                      if (min.x < bounds.min.x)
+                        bounds.min.x = min.x;
+                      if (max.x > bounds.max.x)
+                        bounds.max.x = max.x;
+                      if (min.y < bounds.min.y)
+                        bounds.min.y = min.y;
+                      if (max.y > bounds.max.y)
+                        bounds.max.y = max.y;
+                    }
+                  }
+                  var width = bounds.max.x - bounds.min.x + 2 * padding.x, height = bounds.max.y - bounds.min.y + 2 * padding.y, viewHeight = render.canvas.height, viewWidth = render.canvas.width, outerRatio = viewWidth / viewHeight, innerRatio = width / height, scaleX = 1, scaleY = 1;
+                  if (innerRatio > outerRatio) {
+                    scaleY = innerRatio / outerRatio;
+                  } else {
+                    scaleX = outerRatio / innerRatio;
+                  }
+                  render.options.hasBounds = true;
+                  render.bounds.min.x = bounds.min.x;
+                  render.bounds.max.x = bounds.min.x + width * scaleX;
+                  render.bounds.min.y = bounds.min.y;
+                  render.bounds.max.y = bounds.min.y + height * scaleY;
+                  if (center) {
+                    render.bounds.min.x += width * 0.5 - width * scaleX * 0.5;
+                    render.bounds.max.x += width * 0.5 - width * scaleX * 0.5;
+                    render.bounds.min.y += height * 0.5 - height * scaleY * 0.5;
+                    render.bounds.max.y += height * 0.5 - height * scaleY * 0.5;
+                  }
+                  render.bounds.min.x -= padding.x;
+                  render.bounds.max.x -= padding.x;
+                  render.bounds.min.y -= padding.y;
+                  render.bounds.max.y -= padding.y;
+                  if (render.mouse) {
+                    Mouse.setScale(render.mouse, {
+                      x: (render.bounds.max.x - render.bounds.min.x) / render.canvas.width,
+                      y: (render.bounds.max.y - render.bounds.min.y) / render.canvas.height
+                    });
+                    Mouse.setOffset(render.mouse, render.bounds.min);
+                  }
+                };
+                Render.startViewTransform = function(render) {
+                  var boundsWidth = render.bounds.max.x - render.bounds.min.x, boundsHeight = render.bounds.max.y - render.bounds.min.y, boundsScaleX = boundsWidth / render.options.width, boundsScaleY = boundsHeight / render.options.height;
+                  render.context.setTransform(
+                    render.options.pixelRatio / boundsScaleX,
+                    0,
+                    0,
+                    render.options.pixelRatio / boundsScaleY,
+                    0,
+                    0
+                  );
+                  render.context.translate(-render.bounds.min.x, -render.bounds.min.y);
+                };
+                Render.endViewTransform = function(render) {
+                  render.context.setTransform(render.options.pixelRatio, 0, 0, render.options.pixelRatio, 0, 0);
+                };
+                Render.world = function(render, time) {
+                  var startTime = Common.now(), engine = render.engine, world = engine.world, canvas2 = render.canvas, context = render.context, options = render.options, timing = render.timing;
+                  var allBodies = Composite.allBodies(world), allConstraints = Composite.allConstraints(world), background = options.wireframes ? options.wireframeBackground : options.background, bodies = [], constraints = [], i;
+                  var event = {
+                    timestamp: engine.timing.timestamp
+                  };
+                  Events.trigger(render, "beforeRender", event);
+                  if (render.currentBackground !== background)
+                    _applyBackground(render, background);
+                  context.globalCompositeOperation = "source-in";
+                  context.fillStyle = "transparent";
+                  context.fillRect(0, 0, canvas2.width, canvas2.height);
+                  context.globalCompositeOperation = "source-over";
+                  if (options.hasBounds) {
+                    for (i = 0; i < allBodies.length; i++) {
+                      var body = allBodies[i];
+                      if (Bounds.overlaps(body.bounds, render.bounds))
+                        bodies.push(body);
+                    }
+                    for (i = 0; i < allConstraints.length; i++) {
+                      var constraint = allConstraints[i], bodyA = constraint.bodyA, bodyB = constraint.bodyB, pointAWorld = constraint.pointA, pointBWorld = constraint.pointB;
+                      if (bodyA) pointAWorld = Vector.add(bodyA.position, constraint.pointA);
+                      if (bodyB) pointBWorld = Vector.add(bodyB.position, constraint.pointB);
+                      if (!pointAWorld || !pointBWorld)
+                        continue;
+                      if (Bounds.contains(render.bounds, pointAWorld) || Bounds.contains(render.bounds, pointBWorld))
+                        constraints.push(constraint);
+                    }
+                    Render.startViewTransform(render);
+                    if (render.mouse) {
+                      Mouse.setScale(render.mouse, {
+                        x: (render.bounds.max.x - render.bounds.min.x) / render.options.width,
+                        y: (render.bounds.max.y - render.bounds.min.y) / render.options.height
+                      });
+                      Mouse.setOffset(render.mouse, render.bounds.min);
+                    }
+                  } else {
+                    constraints = allConstraints;
+                    bodies = allBodies;
+                    if (render.options.pixelRatio !== 1) {
+                      render.context.setTransform(render.options.pixelRatio, 0, 0, render.options.pixelRatio, 0, 0);
+                    }
+                  }
+                  if (!options.wireframes || engine.enableSleeping && options.showSleeping) {
+                    Render.bodies(render, bodies, context);
+                  } else {
+                    if (options.showConvexHulls)
+                      Render.bodyConvexHulls(render, bodies, context);
+                    Render.bodyWireframes(render, bodies, context);
+                  }
+                  if (options.showBounds)
+                    Render.bodyBounds(render, bodies, context);
+                  if (options.showAxes || options.showAngleIndicator)
+                    Render.bodyAxes(render, bodies, context);
+                  if (options.showPositions)
+                    Render.bodyPositions(render, bodies, context);
+                  if (options.showVelocity)
+                    Render.bodyVelocity(render, bodies, context);
+                  if (options.showIds)
+                    Render.bodyIds(render, bodies, context);
+                  if (options.showSeparations)
+                    Render.separations(render, engine.pairs.list, context);
+                  if (options.showCollisions)
+                    Render.collisions(render, engine.pairs.list, context);
+                  if (options.showVertexNumbers)
+                    Render.vertexNumbers(render, bodies, context);
+                  if (options.showMousePosition)
+                    Render.mousePosition(render, render.mouse, context);
+                  Render.constraints(constraints, context);
+                  if (options.hasBounds) {
+                    Render.endViewTransform(render);
+                  }
+                  Events.trigger(render, "afterRender", event);
+                  timing.lastElapsed = Common.now() - startTime;
+                };
+                Render.stats = function(render, context, time) {
+                  var engine = render.engine, world = engine.world, bodies = Composite.allBodies(world), parts = 0, width = 55, height = 44, x = 0, y = 0;
+                  for (var i = 0; i < bodies.length; i += 1) {
+                    parts += bodies[i].parts.length;
+                  }
+                  var sections = {
+                    "Part": parts,
+                    "Body": bodies.length,
+                    "Cons": Composite.allConstraints(world).length,
+                    "Comp": Composite.allComposites(world).length,
+                    "Pair": engine.pairs.list.length
+                  };
+                  context.fillStyle = "#0e0f19";
+                  context.fillRect(x, y, width * 5.5, height);
+                  context.font = "12px Arial";
+                  context.textBaseline = "top";
+                  context.textAlign = "right";
+                  for (var key in sections) {
+                    var section = sections[key];
+                    context.fillStyle = "#aaa";
+                    context.fillText(key, x + width, y + 8);
+                    context.fillStyle = "#eee";
+                    context.fillText(section, x + width, y + 26);
+                    x += width;
+                  }
+                };
+                Render.performance = function(render, context) {
+                  var engine = render.engine, timing = render.timing, deltaHistory = timing.deltaHistory, elapsedHistory = timing.elapsedHistory, timestampElapsedHistory = timing.timestampElapsedHistory, engineDeltaHistory = timing.engineDeltaHistory, engineElapsedHistory = timing.engineElapsedHistory, lastEngineDelta = engine.timing.lastDelta;
+                  var deltaMean = _mean(deltaHistory), elapsedMean = _mean(elapsedHistory), engineDeltaMean = _mean(engineDeltaHistory), engineElapsedMean = _mean(engineElapsedHistory), timestampElapsedMean = _mean(timestampElapsedHistory), rateMean = timestampElapsedMean / deltaMean || 0, fps = 1e3 / deltaMean || 0;
+                  var graphHeight = 4, gap = 12, width = 60, height = 34, x = 10, y = 69;
+                  context.fillStyle = "#0e0f19";
+                  context.fillRect(0, 50, gap * 4 + width * 5 + 22, height);
+                  Render.status(
+                    context,
+                    x,
+                    y,
+                    width,
+                    graphHeight,
+                    deltaHistory.length,
+                    Math.round(fps) + " fps",
+                    fps / Render._goodFps,
+                    function(i) {
+                      return deltaHistory[i] / deltaMean - 1;
+                    }
+                  );
+                  Render.status(
+                    context,
+                    x + gap + width,
+                    y,
+                    width,
+                    graphHeight,
+                    engineDeltaHistory.length,
+                    lastEngineDelta.toFixed(2) + " dt",
+                    Render._goodDelta / lastEngineDelta,
+                    function(i) {
+                      return engineDeltaHistory[i] / engineDeltaMean - 1;
+                    }
+                  );
+                  Render.status(
+                    context,
+                    x + (gap + width) * 2,
+                    y,
+                    width,
+                    graphHeight,
+                    engineElapsedHistory.length,
+                    engineElapsedMean.toFixed(2) + " ut",
+                    1 - engineElapsedMean / Render._goodFps,
+                    function(i) {
+                      return engineElapsedHistory[i] / engineElapsedMean - 1;
+                    }
+                  );
+                  Render.status(
+                    context,
+                    x + (gap + width) * 3,
+                    y,
+                    width,
+                    graphHeight,
+                    elapsedHistory.length,
+                    elapsedMean.toFixed(2) + " rt",
+                    1 - elapsedMean / Render._goodFps,
+                    function(i) {
+                      return elapsedHistory[i] / elapsedMean - 1;
+                    }
+                  );
+                  Render.status(
+                    context,
+                    x + (gap + width) * 4,
+                    y,
+                    width,
+                    graphHeight,
+                    timestampElapsedHistory.length,
+                    rateMean.toFixed(2) + " x",
+                    rateMean * rateMean * rateMean,
+                    function(i) {
+                      return (timestampElapsedHistory[i] / deltaHistory[i] / rateMean || 0) - 1;
+                    }
+                  );
+                };
+                Render.status = function(context, x, y, width, height, count, label, indicator, plotY) {
+                  context.strokeStyle = "#888";
+                  context.fillStyle = "#444";
+                  context.lineWidth = 1;
+                  context.fillRect(x, y + 7, width, 1);
+                  context.beginPath();
+                  context.moveTo(x, y + 7 - height * Common.clamp(0.4 * plotY(0), -2, 2));
+                  for (var i = 0; i < width; i += 1) {
+                    context.lineTo(x + i, y + 7 - (i < count ? height * Common.clamp(0.4 * plotY(i), -2, 2) : 0));
+                  }
+                  context.stroke();
+                  context.fillStyle = "hsl(" + Common.clamp(25 + 95 * indicator, 0, 120) + ",100%,60%)";
+                  context.fillRect(x, y - 7, 4, 4);
+                  context.font = "12px Arial";
+                  context.textBaseline = "middle";
+                  context.textAlign = "right";
+                  context.fillStyle = "#eee";
+                  context.fillText(label, x + width, y - 5);
+                };
+                Render.constraints = function(constraints, context) {
+                  var c = context;
+                  for (var i = 0; i < constraints.length; i++) {
+                    var constraint = constraints[i];
+                    if (!constraint.render.visible || !constraint.pointA || !constraint.pointB)
+                      continue;
+                    var bodyA = constraint.bodyA, bodyB = constraint.bodyB, start, end;
+                    if (bodyA) {
+                      start = Vector.add(bodyA.position, constraint.pointA);
+                    } else {
+                      start = constraint.pointA;
+                    }
+                    if (constraint.render.type === "pin") {
+                      c.beginPath();
+                      c.arc(start.x, start.y, 3, 0, 2 * Math.PI);
+                      c.closePath();
+                    } else {
+                      if (bodyB) {
+                        end = Vector.add(bodyB.position, constraint.pointB);
+                      } else {
+                        end = constraint.pointB;
+                      }
+                      c.beginPath();
+                      c.moveTo(start.x, start.y);
+                      if (constraint.render.type === "spring") {
+                        var delta = Vector.sub(end, start), normal = Vector.perp(Vector.normalise(delta)), coils = Math.ceil(Common.clamp(constraint.length / 5, 12, 20)), offset;
+                        for (var j = 1; j < coils; j += 1) {
+                          offset = j % 2 === 0 ? 1 : -1;
+                          c.lineTo(
+                            start.x + delta.x * (j / coils) + normal.x * offset * 4,
+                            start.y + delta.y * (j / coils) + normal.y * offset * 4
+                          );
+                        }
+                      }
+                      c.lineTo(end.x, end.y);
+                    }
+                    if (constraint.render.lineWidth) {
+                      c.lineWidth = constraint.render.lineWidth;
+                      c.strokeStyle = constraint.render.strokeStyle;
+                      c.stroke();
+                    }
+                    if (constraint.render.anchors) {
+                      c.fillStyle = constraint.render.strokeStyle;
+                      c.beginPath();
+                      c.arc(start.x, start.y, 3, 0, 2 * Math.PI);
+                      c.arc(end.x, end.y, 3, 0, 2 * Math.PI);
+                      c.closePath();
+                      c.fill();
+                    }
+                  }
+                };
+                Render.bodies = function(render, bodies, context) {
+                  var c = context, engine = render.engine, options = render.options, showInternalEdges = options.showInternalEdges || !options.wireframes, body, part, i, k;
+                  for (i = 0; i < bodies.length; i++) {
+                    body = bodies[i];
+                    if (!body.render.visible)
+                      continue;
+                    for (k = body.parts.length > 1 ? 1 : 0; k < body.parts.length; k++) {
+                      part = body.parts[k];
+                      if (!part.render.visible)
+                        continue;
+                      if (options.showSleeping && body.isSleeping) {
+                        c.globalAlpha = 0.5 * part.render.opacity;
+                      } else if (part.render.opacity !== 1) {
+                        c.globalAlpha = part.render.opacity;
+                      }
+                      if (part.render.sprite && part.render.sprite.texture && !options.wireframes) {
+                        var sprite = part.render.sprite, texture = _getTexture(render, sprite.texture);
+                        c.translate(part.position.x, part.position.y);
+                        c.rotate(part.angle);
+                        c.drawImage(
+                          texture,
+                          texture.width * -sprite.xOffset * sprite.xScale,
+                          texture.height * -sprite.yOffset * sprite.yScale,
+                          texture.width * sprite.xScale,
+                          texture.height * sprite.yScale
+                        );
+                        c.rotate(-part.angle);
+                        c.translate(-part.position.x, -part.position.y);
+                      } else {
+                        if (part.circleRadius) {
+                          c.beginPath();
+                          c.arc(part.position.x, part.position.y, part.circleRadius, 0, 2 * Math.PI);
+                        } else {
+                          c.beginPath();
+                          c.moveTo(part.vertices[0].x, part.vertices[0].y);
+                          for (var j = 1; j < part.vertices.length; j++) {
+                            if (!part.vertices[j - 1].isInternal || showInternalEdges) {
+                              c.lineTo(part.vertices[j].x, part.vertices[j].y);
+                            } else {
+                              c.moveTo(part.vertices[j].x, part.vertices[j].y);
+                            }
+                            if (part.vertices[j].isInternal && !showInternalEdges) {
+                              c.moveTo(part.vertices[(j + 1) % part.vertices.length].x, part.vertices[(j + 1) % part.vertices.length].y);
+                            }
+                          }
+                          c.lineTo(part.vertices[0].x, part.vertices[0].y);
+                          c.closePath();
+                        }
+                        if (!options.wireframes) {
+                          c.fillStyle = part.render.fillStyle;
+                          if (part.render.lineWidth) {
+                            c.lineWidth = part.render.lineWidth;
+                            c.strokeStyle = part.render.strokeStyle;
+                            c.stroke();
+                          }
+                          c.fill();
+                        } else {
+                          c.lineWidth = 1;
+                          c.strokeStyle = "#bbb";
+                          c.stroke();
+                        }
+                      }
+                      c.globalAlpha = 1;
+                    }
+                  }
+                };
+                Render.bodyWireframes = function(render, bodies, context) {
+                  var c = context, showInternalEdges = render.options.showInternalEdges, body, part, i, j, k;
+                  c.beginPath();
+                  for (i = 0; i < bodies.length; i++) {
+                    body = bodies[i];
+                    if (!body.render.visible)
+                      continue;
+                    for (k = body.parts.length > 1 ? 1 : 0; k < body.parts.length; k++) {
+                      part = body.parts[k];
+                      c.moveTo(part.vertices[0].x, part.vertices[0].y);
+                      for (j = 1; j < part.vertices.length; j++) {
+                        if (!part.vertices[j - 1].isInternal || showInternalEdges) {
+                          c.lineTo(part.vertices[j].x, part.vertices[j].y);
+                        } else {
+                          c.moveTo(part.vertices[j].x, part.vertices[j].y);
+                        }
+                        if (part.vertices[j].isInternal && !showInternalEdges) {
+                          c.moveTo(part.vertices[(j + 1) % part.vertices.length].x, part.vertices[(j + 1) % part.vertices.length].y);
+                        }
+                      }
+                      c.lineTo(part.vertices[0].x, part.vertices[0].y);
+                    }
+                  }
+                  c.lineWidth = 1;
+                  c.strokeStyle = "#bbb";
+                  c.stroke();
+                };
+                Render.bodyConvexHulls = function(render, bodies, context) {
+                  var c = context, body, part, i, j, k;
+                  c.beginPath();
+                  for (i = 0; i < bodies.length; i++) {
+                    body = bodies[i];
+                    if (!body.render.visible || body.parts.length === 1)
+                      continue;
+                    c.moveTo(body.vertices[0].x, body.vertices[0].y);
+                    for (j = 1; j < body.vertices.length; j++) {
+                      c.lineTo(body.vertices[j].x, body.vertices[j].y);
+                    }
+                    c.lineTo(body.vertices[0].x, body.vertices[0].y);
+                  }
+                  c.lineWidth = 1;
+                  c.strokeStyle = "rgba(255,255,255,0.2)";
+                  c.stroke();
+                };
+                Render.vertexNumbers = function(render, bodies, context) {
+                  var c = context, i, j, k;
+                  for (i = 0; i < bodies.length; i++) {
+                    var parts = bodies[i].parts;
+                    for (k = parts.length > 1 ? 1 : 0; k < parts.length; k++) {
+                      var part = parts[k];
+                      for (j = 0; j < part.vertices.length; j++) {
+                        c.fillStyle = "rgba(255,255,255,0.2)";
+                        c.fillText(i + "_" + j, part.position.x + (part.vertices[j].x - part.position.x) * 0.8, part.position.y + (part.vertices[j].y - part.position.y) * 0.8);
+                      }
+                    }
+                  }
+                };
+                Render.mousePosition = function(render, mouse, context) {
+                  var c = context;
+                  c.fillStyle = "rgba(255,255,255,0.8)";
+                  c.fillText(mouse.position.x + "  " + mouse.position.y, mouse.position.x + 5, mouse.position.y - 5);
+                };
+                Render.bodyBounds = function(render, bodies, context) {
+                  var c = context, engine = render.engine, options = render.options;
+                  c.beginPath();
+                  for (var i = 0; i < bodies.length; i++) {
+                    var body = bodies[i];
+                    if (body.render.visible) {
+                      var parts = bodies[i].parts;
+                      for (var j = parts.length > 1 ? 1 : 0; j < parts.length; j++) {
+                        var part = parts[j];
+                        c.rect(part.bounds.min.x, part.bounds.min.y, part.bounds.max.x - part.bounds.min.x, part.bounds.max.y - part.bounds.min.y);
+                      }
+                    }
+                  }
+                  if (options.wireframes) {
+                    c.strokeStyle = "rgba(255,255,255,0.08)";
+                  } else {
+                    c.strokeStyle = "rgba(0,0,0,0.1)";
+                  }
+                  c.lineWidth = 1;
+                  c.stroke();
+                };
+                Render.bodyAxes = function(render, bodies, context) {
+                  var c = context, engine = render.engine, options = render.options, part, i, j, k;
+                  c.beginPath();
+                  for (i = 0; i < bodies.length; i++) {
+                    var body = bodies[i], parts = body.parts;
+                    if (!body.render.visible)
+                      continue;
+                    if (options.showAxes) {
+                      for (j = parts.length > 1 ? 1 : 0; j < parts.length; j++) {
+                        part = parts[j];
+                        for (k = 0; k < part.axes.length; k++) {
+                          var axis = part.axes[k];
+                          c.moveTo(part.position.x, part.position.y);
+                          c.lineTo(part.position.x + axis.x * 20, part.position.y + axis.y * 20);
+                        }
+                      }
+                    } else {
+                      for (j = parts.length > 1 ? 1 : 0; j < parts.length; j++) {
+                        part = parts[j];
+                        for (k = 0; k < part.axes.length; k++) {
+                          c.moveTo(part.position.x, part.position.y);
+                          c.lineTo(
+                            (part.vertices[0].x + part.vertices[part.vertices.length - 1].x) / 2,
+                            (part.vertices[0].y + part.vertices[part.vertices.length - 1].y) / 2
+                          );
+                        }
+                      }
+                    }
+                  }
+                  if (options.wireframes) {
+                    c.strokeStyle = "indianred";
+                    c.lineWidth = 1;
+                  } else {
+                    c.strokeStyle = "rgba(255, 255, 255, 0.4)";
+                    c.globalCompositeOperation = "overlay";
+                    c.lineWidth = 2;
+                  }
+                  c.stroke();
+                  c.globalCompositeOperation = "source-over";
+                };
+                Render.bodyPositions = function(render, bodies, context) {
+                  var c = context, engine = render.engine, options = render.options, body, part, i, k;
+                  c.beginPath();
+                  for (i = 0; i < bodies.length; i++) {
+                    body = bodies[i];
+                    if (!body.render.visible)
+                      continue;
+                    for (k = 0; k < body.parts.length; k++) {
+                      part = body.parts[k];
+                      c.arc(part.position.x, part.position.y, 3, 0, 2 * Math.PI, false);
+                      c.closePath();
+                    }
+                  }
+                  if (options.wireframes) {
+                    c.fillStyle = "indianred";
+                  } else {
+                    c.fillStyle = "rgba(0,0,0,0.5)";
+                  }
+                  c.fill();
+                  c.beginPath();
+                  for (i = 0; i < bodies.length; i++) {
+                    body = bodies[i];
+                    if (body.render.visible) {
+                      c.arc(body.positionPrev.x, body.positionPrev.y, 2, 0, 2 * Math.PI, false);
+                      c.closePath();
+                    }
+                  }
+                  c.fillStyle = "rgba(255,165,0,0.8)";
+                  c.fill();
+                };
+                Render.bodyVelocity = function(render, bodies, context) {
+                  var c = context;
+                  c.beginPath();
+                  for (var i = 0; i < bodies.length; i++) {
+                    var body = bodies[i];
+                    if (!body.render.visible)
+                      continue;
+                    var velocity = Body.getVelocity(body);
+                    c.moveTo(body.position.x, body.position.y);
+                    c.lineTo(body.position.x + velocity.x, body.position.y + velocity.y);
+                  }
+                  c.lineWidth = 3;
+                  c.strokeStyle = "cornflowerblue";
+                  c.stroke();
+                };
+                Render.bodyIds = function(render, bodies, context) {
+                  var c = context, i, j;
+                  for (i = 0; i < bodies.length; i++) {
+                    if (!bodies[i].render.visible)
+                      continue;
+                    var parts = bodies[i].parts;
+                    for (j = parts.length > 1 ? 1 : 0; j < parts.length; j++) {
+                      var part = parts[j];
+                      c.font = "12px Arial";
+                      c.fillStyle = "rgba(255,255,255,0.5)";
+                      c.fillText(part.id, part.position.x + 10, part.position.y - 10);
+                    }
+                  }
+                };
+                Render.collisions = function(render, pairs, context) {
+                  var c = context, options = render.options, pair, collision, corrected, bodyA, bodyB, i, j;
+                  c.beginPath();
+                  for (i = 0; i < pairs.length; i++) {
+                    pair = pairs[i];
+                    if (!pair.isActive)
+                      continue;
+                    collision = pair.collision;
+                    for (j = 0; j < pair.activeContacts.length; j++) {
+                      var contact = pair.activeContacts[j], vertex = contact.vertex;
+                      c.rect(vertex.x - 1.5, vertex.y - 1.5, 3.5, 3.5);
+                    }
+                  }
+                  if (options.wireframes) {
+                    c.fillStyle = "rgba(255,255,255,0.7)";
+                  } else {
+                    c.fillStyle = "orange";
+                  }
+                  c.fill();
+                  c.beginPath();
+                  for (i = 0; i < pairs.length; i++) {
+                    pair = pairs[i];
+                    if (!pair.isActive)
+                      continue;
+                    collision = pair.collision;
+                    if (pair.activeContacts.length > 0) {
+                      var normalPosX = pair.activeContacts[0].vertex.x, normalPosY = pair.activeContacts[0].vertex.y;
+                      if (pair.activeContacts.length === 2) {
+                        normalPosX = (pair.activeContacts[0].vertex.x + pair.activeContacts[1].vertex.x) / 2;
+                        normalPosY = (pair.activeContacts[0].vertex.y + pair.activeContacts[1].vertex.y) / 2;
+                      }
+                      if (collision.bodyB === collision.supports[0].body || collision.bodyA.isStatic === true) {
+                        c.moveTo(normalPosX - collision.normal.x * 8, normalPosY - collision.normal.y * 8);
+                      } else {
+                        c.moveTo(normalPosX + collision.normal.x * 8, normalPosY + collision.normal.y * 8);
+                      }
+                      c.lineTo(normalPosX, normalPosY);
+                    }
+                  }
+                  if (options.wireframes) {
+                    c.strokeStyle = "rgba(255,165,0,0.7)";
+                  } else {
+                    c.strokeStyle = "orange";
+                  }
+                  c.lineWidth = 1;
+                  c.stroke();
+                };
+                Render.separations = function(render, pairs, context) {
+                  var c = context, options = render.options, pair, collision, corrected, bodyA, bodyB, i, j;
+                  c.beginPath();
+                  for (i = 0; i < pairs.length; i++) {
+                    pair = pairs[i];
+                    if (!pair.isActive)
+                      continue;
+                    collision = pair.collision;
+                    bodyA = collision.bodyA;
+                    bodyB = collision.bodyB;
+                    var k = 1;
+                    if (!bodyB.isStatic && !bodyA.isStatic) k = 0.5;
+                    if (bodyB.isStatic) k = 0;
+                    c.moveTo(bodyB.position.x, bodyB.position.y);
+                    c.lineTo(bodyB.position.x - collision.penetration.x * k, bodyB.position.y - collision.penetration.y * k);
+                    k = 1;
+                    if (!bodyB.isStatic && !bodyA.isStatic) k = 0.5;
+                    if (bodyA.isStatic) k = 0;
+                    c.moveTo(bodyA.position.x, bodyA.position.y);
+                    c.lineTo(bodyA.position.x + collision.penetration.x * k, bodyA.position.y + collision.penetration.y * k);
+                  }
+                  if (options.wireframes) {
+                    c.strokeStyle = "rgba(255,165,0,0.5)";
+                  } else {
+                    c.strokeStyle = "orange";
+                  }
+                  c.stroke();
+                };
+                Render.inspector = function(inspector, context) {
+                  var engine = inspector.engine, selected = inspector.selected, render = inspector.render, options = render.options, bounds;
+                  if (options.hasBounds) {
+                    var boundsWidth = render.bounds.max.x - render.bounds.min.x, boundsHeight = render.bounds.max.y - render.bounds.min.y, boundsScaleX = boundsWidth / render.options.width, boundsScaleY = boundsHeight / render.options.height;
+                    context.scale(1 / boundsScaleX, 1 / boundsScaleY);
+                    context.translate(-render.bounds.min.x, -render.bounds.min.y);
+                  }
+                  for (var i = 0; i < selected.length; i++) {
+                    var item = selected[i].data;
+                    context.translate(0.5, 0.5);
+                    context.lineWidth = 1;
+                    context.strokeStyle = "rgba(255,165,0,0.9)";
+                    context.setLineDash([1, 2]);
+                    switch (item.type) {
+                      case "body":
+                        bounds = item.bounds;
+                        context.beginPath();
+                        context.rect(
+                          Math.floor(bounds.min.x - 3),
+                          Math.floor(bounds.min.y - 3),
+                          Math.floor(bounds.max.x - bounds.min.x + 6),
+                          Math.floor(bounds.max.y - bounds.min.y + 6)
+                        );
+                        context.closePath();
+                        context.stroke();
+                        break;
+                      case "constraint":
+                        var point = item.pointA;
+                        if (item.bodyA)
+                          point = item.pointB;
+                        context.beginPath();
+                        context.arc(point.x, point.y, 10, 0, 2 * Math.PI);
+                        context.closePath();
+                        context.stroke();
+                        break;
+                    }
+                    context.setLineDash([]);
+                    context.translate(-0.5, -0.5);
+                  }
+                  if (inspector.selectStart !== null) {
+                    context.translate(0.5, 0.5);
+                    context.lineWidth = 1;
+                    context.strokeStyle = "rgba(255,165,0,0.6)";
+                    context.fillStyle = "rgba(255,165,0,0.1)";
+                    bounds = inspector.selectBounds;
+                    context.beginPath();
+                    context.rect(
+                      Math.floor(bounds.min.x),
+                      Math.floor(bounds.min.y),
+                      Math.floor(bounds.max.x - bounds.min.x),
+                      Math.floor(bounds.max.y - bounds.min.y)
+                    );
+                    context.closePath();
+                    context.stroke();
+                    context.fill();
+                    context.translate(-0.5, -0.5);
+                  }
+                  if (options.hasBounds)
+                    context.setTransform(1, 0, 0, 1, 0, 0);
+                };
+                var _updateTiming = function(render, time) {
+                  var engine = render.engine, timing = render.timing, historySize = timing.historySize, timestamp = engine.timing.timestamp;
+                  timing.delta = time - timing.lastTime || Render._goodDelta;
+                  timing.lastTime = time;
+                  timing.timestampElapsed = timestamp - timing.lastTimestamp || 0;
+                  timing.lastTimestamp = timestamp;
+                  timing.deltaHistory.unshift(timing.delta);
+                  timing.deltaHistory.length = Math.min(timing.deltaHistory.length, historySize);
+                  timing.engineDeltaHistory.unshift(engine.timing.lastDelta);
+                  timing.engineDeltaHistory.length = Math.min(timing.engineDeltaHistory.length, historySize);
+                  timing.timestampElapsedHistory.unshift(timing.timestampElapsed);
+                  timing.timestampElapsedHistory.length = Math.min(timing.timestampElapsedHistory.length, historySize);
+                  timing.engineElapsedHistory.unshift(engine.timing.lastElapsed);
+                  timing.engineElapsedHistory.length = Math.min(timing.engineElapsedHistory.length, historySize);
+                  timing.elapsedHistory.unshift(timing.lastElapsed);
+                  timing.elapsedHistory.length = Math.min(timing.elapsedHistory.length, historySize);
+                };
+                var _mean = function(values) {
+                  var result = 0;
+                  for (var i = 0; i < values.length; i += 1) {
+                    result += values[i];
+                  }
+                  return result / values.length || 0;
+                };
+                var _createCanvas = function(width, height) {
+                  var canvas2 = document.createElement("canvas");
+                  canvas2.width = width;
+                  canvas2.height = height;
+                  canvas2.oncontextmenu = function() {
+                    return false;
+                  };
+                  canvas2.onselectstart = function() {
+                    return false;
+                  };
+                  return canvas2;
+                };
+                var _getPixelRatio = function(canvas2) {
+                  var context = canvas2.getContext("2d"), devicePixelRatio = window.devicePixelRatio || 1, backingStorePixelRatio = context.webkitBackingStorePixelRatio || context.mozBackingStorePixelRatio || context.msBackingStorePixelRatio || context.oBackingStorePixelRatio || context.backingStorePixelRatio || 1;
+                  return devicePixelRatio / backingStorePixelRatio;
+                };
+                var _getTexture = function(render, imagePath) {
+                  var image = render.textures[imagePath];
+                  if (image)
+                    return image;
+                  image = render.textures[imagePath] = new Image();
+                  image.src = imagePath;
+                  return image;
+                };
+                var _applyBackground = function(render, background) {
+                  var cssBackground = background;
+                  if (/(jpg|gif|png)$/.test(background))
+                    cssBackground = "url(" + background + ")";
+                  render.canvas.style.background = cssBackground;
+                  render.canvas.style.backgroundSize = "contain";
+                  render.currentBackground = background;
+                };
+              })();
+            },
+            /* 27 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Runner = {};
+              module2.exports = Runner;
+              var Events = __webpack_require__(5);
+              var Engine = __webpack_require__(17);
+              var Common = __webpack_require__(0);
+              (function() {
+                var _requestAnimationFrame, _cancelAnimationFrame;
+                if (typeof window !== "undefined") {
+                  _requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame;
+                  _cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.msCancelAnimationFrame;
+                }
+                if (!_requestAnimationFrame) {
+                  var _frameTimeout;
+                  _requestAnimationFrame = function(callback) {
+                    _frameTimeout = setTimeout(function() {
+                      callback(Common.now());
+                    }, 1e3 / 60);
+                  };
+                  _cancelAnimationFrame = function() {
+                    clearTimeout(_frameTimeout);
+                  };
+                }
+                Runner.create = function(options) {
+                  var defaults = {
+                    fps: 60,
+                    deltaSampleSize: 60,
+                    counterTimestamp: 0,
+                    frameCounter: 0,
+                    deltaHistory: [],
+                    timePrev: null,
+                    frameRequestId: null,
+                    isFixed: false,
+                    enabled: true
+                  };
+                  var runner = Common.extend(defaults, options);
+                  runner.delta = runner.delta || 1e3 / runner.fps;
+                  runner.deltaMin = runner.deltaMin || 1e3 / runner.fps;
+                  runner.deltaMax = runner.deltaMax || 1e3 / (runner.fps * 0.5);
+                  runner.fps = 1e3 / runner.delta;
+                  return runner;
+                };
+                Runner.run = function(runner, engine) {
+                  if (typeof runner.positionIterations !== "undefined") {
+                    engine = runner;
+                    runner = Runner.create();
+                  }
+                  (function run(time) {
+                    runner.frameRequestId = _requestAnimationFrame(run);
+                    if (time && runner.enabled) {
+                      Runner.tick(runner, engine, time);
+                    }
+                  })();
+                  return runner;
+                };
+                Runner.tick = function(runner, engine, time) {
+                  var timing = engine.timing, delta;
+                  if (runner.isFixed) {
+                    delta = runner.delta;
+                  } else {
+                    delta = time - runner.timePrev || runner.delta;
+                    runner.timePrev = time;
+                    runner.deltaHistory.push(delta);
+                    runner.deltaHistory = runner.deltaHistory.slice(-runner.deltaSampleSize);
+                    delta = Math.min.apply(null, runner.deltaHistory);
+                    delta = delta < runner.deltaMin ? runner.deltaMin : delta;
+                    delta = delta > runner.deltaMax ? runner.deltaMax : delta;
+                    runner.delta = delta;
+                  }
+                  var event = {
+                    timestamp: timing.timestamp
+                  };
+                  Events.trigger(runner, "beforeTick", event);
+                  runner.frameCounter += 1;
+                  if (time - runner.counterTimestamp >= 1e3) {
+                    runner.fps = runner.frameCounter * ((time - runner.counterTimestamp) / 1e3);
+                    runner.counterTimestamp = time;
+                    runner.frameCounter = 0;
+                  }
+                  Events.trigger(runner, "tick", event);
+                  Events.trigger(runner, "beforeUpdate", event);
+                  Engine.update(engine, delta);
+                  Events.trigger(runner, "afterUpdate", event);
+                  Events.trigger(runner, "afterTick", event);
+                };
+                Runner.stop = function(runner) {
+                  _cancelAnimationFrame(runner.frameRequestId);
+                };
+                Runner.start = function(runner, engine) {
+                  Runner.run(runner, engine);
+                };
+              })();
+            },
+            /* 28 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var SAT = {};
+              module2.exports = SAT;
+              var Collision = __webpack_require__(8);
+              var Common = __webpack_require__(0);
+              var deprecated = Common.deprecated;
+              (function() {
+                SAT.collides = function(bodyA, bodyB) {
+                  return Collision.collides(bodyA, bodyB);
+                };
+                deprecated(SAT, "collides", "SAT.collides \u27A4 replaced by Collision.collides");
+              })();
+            },
+            /* 29 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var Svg = {};
+              module2.exports = Svg;
+              var Bounds = __webpack_require__(1);
+              var Common = __webpack_require__(0);
+              (function() {
+                Svg.pathToVertices = function(path, sampleLength) {
+                  if (typeof window !== "undefined" && !("SVGPathSeg" in window)) {
+                    Common.warn("Svg.pathToVertices: SVGPathSeg not defined, a polyfill is required.");
+                  }
+                  var i, il, total, point, segment, segments, segmentsQueue, lastSegment, lastPoint, segmentIndex, points = [], lx, ly, length = 0, x = 0, y = 0;
+                  sampleLength = sampleLength || 15;
+                  var addPoint = function(px, py, pathSegType) {
+                    var isRelative = pathSegType % 2 === 1 && pathSegType > 1;
+                    if (!lastPoint || px != lastPoint.x || py != lastPoint.y) {
+                      if (lastPoint && isRelative) {
+                        lx = lastPoint.x;
+                        ly = lastPoint.y;
+                      } else {
+                        lx = 0;
+                        ly = 0;
+                      }
+                      var point2 = {
+                        x: lx + px,
+                        y: ly + py
+                      };
+                      if (isRelative || !lastPoint) {
+                        lastPoint = point2;
+                      }
+                      points.push(point2);
+                      x = lx + px;
+                      y = ly + py;
+                    }
+                  };
+                  var addSegmentPoint = function(segment2) {
+                    var segType = segment2.pathSegTypeAsLetter.toUpperCase();
+                    if (segType === "Z")
+                      return;
+                    switch (segType) {
+                      case "M":
+                      case "L":
+                      case "T":
+                      case "C":
+                      case "S":
+                      case "Q":
+                        x = segment2.x;
+                        y = segment2.y;
+                        break;
+                      case "H":
+                        x = segment2.x;
+                        break;
+                      case "V":
+                        y = segment2.y;
+                        break;
+                    }
+                    addPoint(x, y, segment2.pathSegType);
+                  };
+                  Svg._svgPathToAbsolute(path);
+                  total = path.getTotalLength();
+                  segments = [];
+                  for (i = 0; i < path.pathSegList.numberOfItems; i += 1)
+                    segments.push(path.pathSegList.getItem(i));
+                  segmentsQueue = segments.concat();
+                  while (length < total) {
+                    segmentIndex = path.getPathSegAtLength(length);
+                    segment = segments[segmentIndex];
+                    if (segment != lastSegment) {
+                      while (segmentsQueue.length && segmentsQueue[0] != segment)
+                        addSegmentPoint(segmentsQueue.shift());
+                      lastSegment = segment;
+                    }
+                    switch (segment.pathSegTypeAsLetter.toUpperCase()) {
+                      case "C":
+                      case "T":
+                      case "S":
+                      case "Q":
+                      case "A":
+                        point = path.getPointAtLength(length);
+                        addPoint(point.x, point.y, 0);
+                        break;
+                    }
+                    length += sampleLength;
+                  }
+                  for (i = 0, il = segmentsQueue.length; i < il; ++i)
+                    addSegmentPoint(segmentsQueue[i]);
+                  return points;
+                };
+                Svg._svgPathToAbsolute = function(path) {
+                  var x0, y0, x1, y1, x2, y2, segs = path.pathSegList, x = 0, y = 0, len = segs.numberOfItems;
+                  for (var i = 0; i < len; ++i) {
+                    var seg = segs.getItem(i), segType = seg.pathSegTypeAsLetter;
+                    if (/[MLHVCSQTA]/.test(segType)) {
+                      if ("x" in seg) x = seg.x;
+                      if ("y" in seg) y = seg.y;
+                    } else {
+                      if ("x1" in seg) x1 = x + seg.x1;
+                      if ("x2" in seg) x2 = x + seg.x2;
+                      if ("y1" in seg) y1 = y + seg.y1;
+                      if ("y2" in seg) y2 = y + seg.y2;
+                      if ("x" in seg) x += seg.x;
+                      if ("y" in seg) y += seg.y;
+                      switch (segType) {
+                        case "m":
+                          segs.replaceItem(path.createSVGPathSegMovetoAbs(x, y), i);
+                          break;
+                        case "l":
+                          segs.replaceItem(path.createSVGPathSegLinetoAbs(x, y), i);
+                          break;
+                        case "h":
+                          segs.replaceItem(path.createSVGPathSegLinetoHorizontalAbs(x), i);
+                          break;
+                        case "v":
+                          segs.replaceItem(path.createSVGPathSegLinetoVerticalAbs(y), i);
+                          break;
+                        case "c":
+                          segs.replaceItem(path.createSVGPathSegCurvetoCubicAbs(x, y, x1, y1, x2, y2), i);
+                          break;
+                        case "s":
+                          segs.replaceItem(path.createSVGPathSegCurvetoCubicSmoothAbs(x, y, x2, y2), i);
+                          break;
+                        case "q":
+                          segs.replaceItem(path.createSVGPathSegCurvetoQuadraticAbs(x, y, x1, y1), i);
+                          break;
+                        case "t":
+                          segs.replaceItem(path.createSVGPathSegCurvetoQuadraticSmoothAbs(x, y), i);
+                          break;
+                        case "a":
+                          segs.replaceItem(path.createSVGPathSegArcAbs(x, y, seg.r1, seg.r2, seg.angle, seg.largeArcFlag, seg.sweepFlag), i);
+                          break;
+                        case "z":
+                        case "Z":
+                          x = x0;
+                          y = y0;
+                          break;
+                      }
+                    }
+                    if (segType == "M" || segType == "m") {
+                      x0 = x;
+                      y0 = y;
+                    }
+                  }
+                };
+              })();
+            },
+            /* 30 */
+            /***/
+            function(module2, exports2, __webpack_require__) {
+              var World = {};
+              module2.exports = World;
+              var Composite = __webpack_require__(6);
+              var Common = __webpack_require__(0);
+              (function() {
+                World.create = Composite.create;
+                World.add = Composite.add;
+                World.remove = Composite.remove;
+                World.clear = Composite.clear;
+                World.addComposite = Composite.addComposite;
+                World.addBody = Composite.addBody;
+                World.addConstraint = Composite.addConstraint;
+              })();
+            }
+            /******/
+          ])
+        );
+      });
+    }
+  });
+
+  // src/main.ts
+  var import_matter_js4 = __toESM(require_matter());
+
+  // src/core/levels/mapParser.ts
+  function parseMap(mapStr, opts = {}) {
+    const rows = mapStr.trim().split("\n").map((r) => r.replace(/\s+$/, ""));
+    const numRows = rows.length;
+    const numCols = Math.max(...rows.map((r) => r.length));
+    const cellW = 720 / numCols;
+    const cellH = 960 / numRows;
+    const toLogical = (col, row) => ({
+      x: -360 + (col + 0.5) * cellW,
+      y: 480 - (row + 0.5) * cellH
+    });
+    let blueSpawn = { x: -260, y: -350 };
+    let yellowSpawn = { x: 260, y: 350 };
+    const holes = [];
+    const wallGrid = Array.from(
+      { length: numRows },
+      () => new Array(numCols).fill(false)
+    );
+    const rotateGrid = Array.from(
+      { length: numRows },
+      () => new Array(numCols).fill(false)
+    );
+    const holeRadius = opts.holeRadius ?? 40;
+    for (let r = 0; r < numRows; r++) {
+      const row = rows[r] ?? "";
+      for (let c = 0; c < row.length; c++) {
+        switch (row[c]) {
+          case "1":
+            wallGrid[r][c] = true;
+            break;
+          case "2":
+            rotateGrid[r][c] = true;
+            break;
+          case "x":
+          case "X":
+            blueSpawn = toLogical(c, r);
+            break;
+          case "y":
+          case "Y":
+            yellowSpawn = toLogical(c, r);
+            break;
+          case "z":
+            holes.push({ position: toLogical(c, r), radius: holeRadius, requireBlue: true, requireYellow: false });
+            break;
+          case "Z":
+          case "B":
+            holes.push({ position: toLogical(c, r), radius: holeRadius, requireBlue: true, requireYellow: true });
+            break;
+        }
+      }
+    }
+    const obstacles = [
+      ...mergeWallRects(wallGrid, numRows, numCols, cellW, cellH),
+      ...findRotatingDoors(rotateGrid, numRows, numCols, cellW, cellH, opts.rotateSpeed ?? 45)
+    ];
+    if (opts.extraObstacles) obstacles.push(...opts.extraObstacles);
+    const requireBothBalls = holes.some((h) => h.requireBlue) && holes.some((h) => h.requireYellow);
+    return {
+      requireBothBalls,
+      holeDwellTime: opts.holeDwellTime ?? 0.3,
+      timeLimitSeconds: opts.timeLimitSeconds ?? 0,
+      holes,
+      obstacles,
+      blueSpawn,
+      yellowSpawn
+    };
+  }
+  function mergeWallRects(grid, numRows, numCols, cellW, cellH) {
+    const used = Array.from({ length: numRows }, () => new Array(numCols).fill(false));
+    const result = [];
+    for (let r = 0; r < numRows; r++) {
+      for (let c = 0; c < numCols; c++) {
+        if (!grid[r][c] || used[r][c]) continue;
+        let endC = c;
+        while (endC + 1 < numCols && grid[r][endC + 1] && !used[r][endC + 1]) endC++;
+        let endR = r;
+        expand: while (endR + 1 < numRows) {
+          for (let cc = c; cc <= endC; cc++) {
+            if (!grid[endR + 1][cc] || used[endR + 1][cc]) break expand;
+          }
+          endR++;
+        }
+        for (let rr = r; rr <= endR; rr++)
+          for (let cc = c; cc <= endC; cc++)
+            used[rr][cc] = true;
+        const left = -360 + c * cellW;
+        const right = -360 + (endC + 1) * cellW;
+        const top = 480 - r * cellH;
+        const bot = 480 - (endR + 1) * cellH;
+        result.push({
+          type: "rect",
+          position: { x: (left + right) / 2, y: (top + bot) / 2 },
+          width: right - left,
+          height: top - bot
+        });
+      }
+    }
+    return result;
+  }
+  function findRotatingDoors(grid, numRows, numCols, cellW, cellH, rotateSpeed) {
+    const used = Array.from({ length: numRows }, () => new Array(numCols).fill(false));
+    const result = [];
+    const dirs = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+    for (let r = 0; r < numRows; r++) {
+      for (let c = 0; c < numCols; c++) {
+        if (!grid[r][c] || used[r][c]) continue;
+        const cells = [];
+        const queue = [[r, c]];
+        used[r][c] = true;
+        while (queue.length > 0) {
+          const [qr, qc] = queue.shift();
+          cells.push([qr, qc]);
+          for (const [dr, dc] of dirs) {
+            const nr = qr + dr, nc = qc + dc;
+            if (nr >= 0 && nr < numRows && nc >= 0 && nc < numCols && grid[nr][nc] && !used[nr][nc]) {
+              used[nr][nc] = true;
+              queue.push([nr, nc]);
+            }
+          }
+        }
+        const minR = Math.min(...cells.map(([rr]) => rr));
+        const maxR = Math.max(...cells.map(([rr]) => rr));
+        const minC = Math.min(...cells.map(([, cc]) => cc));
+        const maxC = Math.max(...cells.map(([, cc]) => cc));
+        const cx = -360 + (minC + maxC + 1) * cellW / 2;
+        const cy = 480 - (minR + maxR + 1) * cellH / 2;
+        const spanH = (maxC - minC + 1) * cellW;
+        const spanV = (maxR - minR + 1) * cellH;
+        const THIN = Math.min(cellW, cellH) / 4;
+        result.push({
+          type: "rect",
+          position: { x: cx, y: cy },
+          width: spanH >= spanV ? spanH : THIN,
+          height: spanV > spanH ? spanV : THIN,
+          moving: { mode: "rotate", rotateSpeed }
+        });
+      }
+    }
+    return result;
+  }
+
+  // src/core/levels/maps/level1.ts
+  var LEVEL1_MAP = `000100000
+0001000y0
+000101111
+000101000
+000101000
+000101000
+0001z1000
+000101000
+000101000
+111101000
+0x0001000
+000001000`;
+
+  // src/core/levels/level1.ts
+  var LEVEL_1 = {
+    config: parseMap(LEVEL1_MAP, { holeRadius: 40 }),
+    meta: {
+      title: "\u7B2C 1 \u5173",
+      subtitle: "Z \u5F62\u8D70\u5ECA \xB7 \u521D\u8BC6\u955C\u50CF",
+      starTargetSeconds: 20
+    }
+  };
+
+  // src/core/levels/maps/level2.ts
+  var LEVEL2_MAP = `00000000Y
+000000010
+000000010
+000000010
+000000010
+000111110
+000100Z00
+000111110
+000000010
+000000010
+111111110
+X00000000`;
+
+  // src/core/levels/level2.ts
+  var LEVEL_2 = {
+    config: parseMap(LEVEL2_MAP, { holeRadius: 45 }),
+    meta: {
+      title: "\u7B2C 2 \u5173",
+      subtitle: "\u53CC\u7403\u540C\u5165 \xB7 \u5171\u632F\u65F6\u523B",
+      starTargetSeconds: 25
+    }
+  };
+
+  // src/core/levels/maps/level3.ts
+  var LEVEL3_MAP = `00011100Y
+010100010
+010100010
+010100010
+010100010
+01010Z010
+010100010
+010100010
+010200010
+010200010
+010111110
+X10100000`;
+
+  // src/core/levels/level3.ts
+  var LEVEL_3 = {
+    config: parseMap(LEVEL3_MAP, {
+      holeRadius: 40,
+      timeLimitSeconds: 60,
+      rotateSpeed: 45
+      // degrees/second
+    }),
+    meta: {
+      title: "\u7B2C 3 \u5173",
+      subtitle: "\u7A7F\u8D8A\u673A\u5173 \xB7 60 \u79D2\u6311\u6218",
+      starTargetSeconds: 40
+    }
+  };
+
+  // src/core/levels/index.ts
+  var ALL_LEVELS = [LEVEL_1, LEVEL_2, LEVEL_3];
+
+  // src/core/LevelLoader.ts
+  var import_matter_js3 = __toESM(require_matter());
+
+  // src/constants.ts
+  var CANVAS_WIDTH = 720;
+  var CANVAS_HEIGHT = 1280;
+  var MAP_TOP = 160;
+  var MAP_HEIGHT = 960;
+  var CENTER_X = CANVAS_WIDTH / 2;
+  var CENTER_Y = MAP_TOP + MAP_HEIGHT / 2;
+  var BALL_RADIUS = 28;
+  var FORCE_SCALE = 6e-3;
+  var PHYSICS_STEP_MS = 1e3 / 60;
+  var JOYSTICK_RADIUS = 60;
+  var JOYSTICK_DEADZONE = 0.15;
+  var DOODLE_INK = "#1a1a1a";
+  var DOODLE_PAPER = "#fffef6";
+  var DOODLE_PAPER_DARK = "#f2ecd8";
+  var DOODLE_BALL_BLUE = "#4a90e2";
+  var DOODLE_BALL_YELLOW = "#f5c518";
+  var DOODLE_OBSTACLE = "#d4a96a";
+  var DOODLE_SHADOW = "rgba(26,26,26,0.85)";
+  var DOODLE_STROKE_PX = 4;
+  var DOODLE_SHADOW_PX = 4;
+  var DOODLE_BALL_TILT_DEG = 3;
+
+  // src/ball/HoleDetector.ts
+  function dist(a, b) {
+    return Math.hypot(a.x - b.x, a.y - b.y);
+  }
+  var HoleDetector = class {
+    /**
+     * @param cfg        洞口配置（逻辑坐标字段不被本类使用）
+     * @param screenPos  洞口中心（屏幕/物理坐标，由 LevelLoader 转换后传入）
+     * @param threshold  满足通关需要的最小停留时间（秒），来自 LevelConfig.holeDwellTime
+     * @param blueBody   蓝球物理体
+     * @param yellowBody 黄球物理体
+     */
+    constructor(cfg, screenPos, threshold, blueBody, yellowBody) {
+      this.cfg = cfg;
+      this.screenPos = screenPos;
+      this.threshold = threshold;
+      this.blueBody = blueBody;
+      this.yellowBody = yellowBody;
+      this.dwell = 0;
+    }
+    update(dt) {
+      const blueIn = dist(this.blueBody.position, this.screenPos) < this.cfg.radius + BALL_RADIUS;
+      const yellowIn = dist(this.yellowBody.position, this.screenPos) < this.cfg.radius + BALL_RADIUS;
+      const met = (!this.cfg.requireBlue || blueIn) && (!this.cfg.requireYellow || yellowIn);
+      this.dwell = met ? this.dwell + dt : 0;
+    }
+    get isSatisfied() {
+      return this.dwell >= this.threshold;
+    }
+    /** 供 GameRenderer 查询洞口屏幕坐标用于绘制 */
+    getScreenPos() {
+      return this.screenPos;
+    }
+    reset() {
+      this.dwell = 0;
+    }
+  };
+
+  // src/ball/BallController.ts
+  var import_matter_js = __toESM(require_matter());
+  var BallController = class {
+    constructor(blueBody, yellowBody) {
+      this.blueBody = blueBody;
+      this.yellowBody = yellowBody;
+    }
+    /**
+     * 根据摇杆方向对双球施加力镜像。
+     * @param dir 逻辑方向向量（Y 轴向上），来自 JoystickLogic.calculateDirection
+     */
+    update(dir) {
+      if (Math.hypot(dir.x, dir.y) < 0.01) return;
+      const f = {
+        x: dir.x * FORCE_SCALE,
+        y: -dir.y * FORCE_SCALE
+      };
+      import_matter_js.default.Body.applyForce(this.blueBody, this.blueBody.position, f);
+      import_matter_js.default.Body.applyForce(this.yellowBody, this.yellowBody.position, { x: -f.x, y: -f.y });
+    }
+  };
+
+  // src/obstacles/MovingObstacle.ts
+  var import_matter_js2 = __toESM(require_matter());
+  var MovingObstacle = class {
+    /**
+     * @param body    Matter.js 物理体（isStatic = true）
+     * @param cfg     移动配置（屏幕坐标系）
+     * @param origin  物理体初始中心位置（屏幕坐标）
+     */
+    constructor(body, cfg, origin) {
+      this.body = body;
+      this.cfg = cfg;
+      this.origin = origin;
+      /** patrol: 插值参数 0->1；rotate: 累积弧度 */
+      this.t = 0;
+      /** patrol 方向：1=向 B，-1=向 A */
+      this.dir = 1;
+    }
+    update(dt) {
+      if (this.cfg.mode === "patrol") {
+        const { offsetA, offsetB, speed } = this.cfg;
+        const dx = offsetB.x - offsetA.x;
+        const dy = offsetB.y - offsetA.y;
+        const totalDist = Math.hypot(dx, dy);
+        if (totalDist < 1e-3) return;
+        this.t += speed * dt / totalDist * this.dir;
+        if (this.t >= 1) {
+          this.t = 1;
+          this.dir = -1;
+        }
+        if (this.t <= 0) {
+          this.t = 0;
+          this.dir = 1;
+        }
+        const nx = this.origin.x + offsetA.x + dx * this.t;
+        const ny = this.origin.y + offsetA.y + dy * this.t;
+        import_matter_js2.default.Body.setPosition(this.body, { x: nx, y: ny });
+      } else if (this.cfg.mode === "rotate") {
+        this.t = (this.t + this.cfg.rotateSpeed * Math.PI / 180 * dt) % (2 * Math.PI);
+        import_matter_js2.default.Body.setAngle(this.body, this.t);
+      }
+    }
+  };
+
+  // src/core/LevelLoader.ts
+  function logicToScreen(v) {
+    return { x: CENTER_X + v.x, y: CENTER_Y - v.y };
+  }
+  var WALL_T = 20;
+  var LevelLoader = class {
+    load(cfg) {
+      for (const [label, pos] of [
+        ["blueSpawn", cfg.blueSpawn],
+        ["yellowSpawn", cfg.yellowSpawn]
+      ]) {
+        if (Math.abs(pos.x) > 360 || Math.abs(pos.y) > 480) {
+          console.warn(`[LevelLoader] ${label} out of bounds: (${pos.x}, ${pos.y})`);
+        }
+      }
+      const engine = import_matter_js3.default.Engine.create({
+        gravity: { x: 0, y: 0 },
+        positionIterations: 10
+      });
+      const blueScreen = logicToScreen(cfg.blueSpawn);
+      const yellowScreen = logicToScreen(cfg.yellowSpawn);
+      const blueBody = import_matter_js3.default.Bodies.circle(
+        blueScreen.x,
+        blueScreen.y,
+        BALL_RADIUS,
+        { frictionAir: 0.05, restitution: 0.2, label: "blue" }
+      );
+      const yellowBody = import_matter_js3.default.Bodies.circle(
+        yellowScreen.x,
+        yellowScreen.y,
+        BALL_RADIUS,
+        { frictionAir: 0.05, restitution: 0.2, label: "yellow" }
+      );
+      const mapBottom = MAP_TOP + MAP_HEIGHT;
+      const wallBodies = [
+        import_matter_js3.default.Bodies.rectangle(CENTER_X, MAP_TOP - WALL_T / 2, CANVAS_WIDTH, WALL_T, { isStatic: true, label: "wall" }),
+        import_matter_js3.default.Bodies.rectangle(CENTER_X, mapBottom + WALL_T / 2, CANVAS_WIDTH, WALL_T, { isStatic: true, label: "wall" }),
+        import_matter_js3.default.Bodies.rectangle(-WALL_T / 2, CENTER_Y, WALL_T, MAP_HEIGHT + 2 * WALL_T, { isStatic: true, label: "wall" }),
+        import_matter_js3.default.Bodies.rectangle(CANVAS_WIDTH + WALL_T / 2, CENTER_Y, WALL_T, MAP_HEIGHT + 2 * WALL_T, { isStatic: true, label: "wall" })
+      ];
+      const obstacleBodies = [];
+      const movingObstacles = [];
+      for (const obs of cfg.obstacles) {
+        if (Math.abs(obs.position.x) > 360 || Math.abs(obs.position.y) > 480) {
+          console.warn(`[LevelLoader] obstacle out of bounds: (${obs.position.x}, ${obs.position.y})`);
+        }
+        const sp = logicToScreen(obs.position);
+        let body;
+        if (obs.type === "rect") {
+          if (obs.width == null || obs.height == null) {
+            console.error(`[LevelLoader] rect obstacle missing width/height at (${obs.position.x}, ${obs.position.y})`);
+            continue;
+          }
+          body = import_matter_js3.default.Bodies.rectangle(sp.x, sp.y, obs.width, obs.height, { isStatic: true, label: "obstacle" });
+        } else {
+          if (obs.radius == null) {
+            console.error(`[LevelLoader] circle obstacle missing radius at (${obs.position.x}, ${obs.position.y})`);
+            continue;
+          }
+          body = import_matter_js3.default.Bodies.circle(sp.x, sp.y, obs.radius, { isStatic: true, label: "obstacle" });
+        }
+        obstacleBodies.push(body);
+        if (obs.moving) {
+          let moveCfg;
+          if (obs.moving.mode === "patrol") {
+            const oA = obs.moving.offsetA ?? { x: 0, y: 0 };
+            const oB = obs.moving.offsetB ?? { x: 0, y: 0 };
+            moveCfg = {
+              mode: "patrol",
+              offsetA: { x: oA.x, y: -oA.y },
+              offsetB: { x: oB.x, y: -oB.y },
+              speed: obs.moving.speed ?? 100
+            };
+          } else {
+            moveCfg = {
+              mode: "rotate",
+              rotateSpeed: obs.moving.rotateSpeed ?? 30
+            };
+          }
+          movingObstacles.push(new MovingObstacle(body, moveCfg, sp));
+        }
+      }
+      import_matter_js3.default.Composite.add(engine.world, [
+        blueBody,
+        yellowBody,
+        ...wallBodies,
+        ...obstacleBodies
+      ]);
+      const detectors = cfg.holes.map(
+        (hole) => new HoleDetector(
+          hole,
+          logicToScreen(hole.position),
+          cfg.holeDwellTime,
+          blueBody,
+          yellowBody
+        )
+      );
+      const ballController = new BallController(blueBody, yellowBody);
+      return { engine, blueBody, yellowBody, wallBodies, obstacleBodies, detectors, movingObstacles, ballController };
+    }
+    /**
+     * 销毁物理引擎和世界。调用后不得再使用 objects 中的任何方法或引用。
+     */
+    unload(objects) {
+      import_matter_js3.default.Composite.clear(objects.engine.world, false);
+      import_matter_js3.default.Engine.clear(objects.engine);
+    }
+  };
+
+  // src/core/GameManager.ts
+  var GameManager = class {
+    constructor(cfg, detectors, onComplete, onTimeout2) {
+      this.cfg = cfg;
+      this.detectors = detectors;
+      this.onComplete = onComplete;
+      this.onTimeout = onTimeout2;
+      this.state = "loading";
+      this.elapsed = 0;
+    }
+    start() {
+      this.state = "playing";
+      this.elapsed = 0;
+    }
+    update(dt) {
+      if (this.state !== "playing") return;
+      this.elapsed += dt;
+      if (this.cfg.timeLimitSeconds > 0 && this.elapsed >= this.cfg.timeLimitSeconds) {
+        this.state = "timeout";
+        this.onTimeout();
+        return;
+      }
+      if (this.detectors.every((d) => d.isSatisfied)) {
+        this.state = "levelComplete";
+        this.onComplete();
+      }
+    }
+    getState() {
+      return this.state;
+    }
+    getElapsed() {
+      return this.elapsed;
+    }
+    /**
+     * 重置游戏（重开本关）。
+     * @param freshDetectors 新一组 HoleDetector 实例（由 main.ts 在重建关卡后传入）
+     */
+    reset(freshDetectors) {
+      this.state = "playing";
+      this.elapsed = 0;
+      this.detectors = freshDetectors;
+    }
+  };
+
+  // src/input/JoystickLogic.ts
+  function calculateDirection(delta, radius, deadzone) {
+    const mag = Math.hypot(delta.x, delta.y);
+    const deadPx = radius * deadzone;
+    if (mag < deadPx) return { x: 0, y: 0 };
+    const clamped = Math.min(mag, radius);
+    const remapped = (clamped - deadPx) / (radius - deadPx);
+    return {
+      x: delta.x / mag * remapped,
+      y: -(delta.y / mag) * remapped || 0
+      // 翻转 Y：Canvas Y 向下 -> 逻辑 Y 向上；避免 -0
+    };
+  }
+
+  // src/input/JoystickInput.ts
+  var LONG_PRESS_MS = 1500;
+  var LONG_PRESS_MOVE_RATIO = 0.3;
+  var JoystickInput = class {
+    constructor(canvas2, viewport2, onReset) {
+      this.canvas = canvas2;
+      this.viewport = viewport2;
+      this.onReset = onReset;
+      this.active = false;
+      this.visible = false;
+      this.touchId = null;
+      this.basePos = { x: 0, y: 0 };
+      this.handlePos = { x: 0, y: 0 };
+      this.direction = { x: 0, y: 0 };
+      this.longPressTimer = null;
+      this.boundStart = this.onTouchStart.bind(this);
+      this.boundMove = this.onTouchMove.bind(this);
+      this.boundEnd = this.onTouchEnd.bind(this);
+      canvas2.addEventListener("touchstart", this.boundStart);
+      canvas2.addEventListener("touchmove", this.boundMove);
+      canvas2.addEventListener("touchend", this.boundEnd);
+      canvas2.addEventListener("touchcancel", this.boundEnd);
+    }
+    onTouchStart(e) {
+      const touch = e.changedTouches[0];
+      if (!touch) return;
+      this.clearLongPress();
+      const logical = this.viewport.toLogical(touch.clientX, touch.clientY);
+      this.touchId = touch.identifier;
+      this.active = true;
+      this.visible = true;
+      this.basePos = { x: logical.x, y: logical.y };
+      this.handlePos = { x: logical.x, y: logical.y };
+      this.direction = { x: 0, y: 0 };
+      this.longPressTimer = setTimeout(() => this.onReset(), LONG_PRESS_MS);
+    }
+    onTouchMove(e) {
+      for (const touch of e.changedTouches) {
+        if (touch.identifier !== this.touchId) continue;
+        const logical = this.viewport.toLogical(touch.clientX, touch.clientY);
+        this.updateHandle(logical.x, logical.y);
+        const dx = logical.x - this.basePos.x;
+        const dy = logical.y - this.basePos.y;
+        if (Math.hypot(dx, dy) > JOYSTICK_RADIUS * LONG_PRESS_MOVE_RATIO) this.clearLongPress();
+        break;
+      }
+    }
+    onTouchEnd(e) {
+      for (const touch of e.changedTouches) {
+        if (touch.identifier !== this.touchId) continue;
+        this.touchId = null;
+        this.active = false;
+        this.visible = false;
+        this.direction = { x: 0, y: 0 };
+        this.clearLongPress();
+        break;
+      }
+    }
+    updateHandle(logicalX, logicalY) {
+      const delta = { x: logicalX - this.basePos.x, y: logicalY - this.basePos.y };
+      const mag = Math.hypot(delta.x, delta.y);
+      const clamp = Math.min(mag, JOYSTICK_RADIUS);
+      this.handlePos = mag > 0 ? { x: this.basePos.x + delta.x / mag * clamp, y: this.basePos.y + delta.y / mag * clamp } : { x: this.basePos.x, y: this.basePos.y };
+      this.direction = calculateDirection(delta, JOYSTICK_RADIUS, JOYSTICK_DEADZONE);
+    }
+    clearLongPress() {
+      if (this.longPressTimer !== null) {
+        clearTimeout(this.longPressTimer);
+        this.longPressTimer = null;
+      }
+    }
+    destroy() {
+      this.canvas.removeEventListener("touchstart", this.boundStart);
+      this.canvas.removeEventListener("touchmove", this.boundMove);
+      this.canvas.removeEventListener("touchend", this.boundEnd);
+      this.canvas.removeEventListener("touchcancel", this.boundEnd);
+      this.clearLongPress();
+    }
+    getDirection() {
+      return { x: this.direction.x, y: this.direction.y };
+    }
+    getHandlePos() {
+      return { x: this.handlePos.x, y: this.handlePos.y };
+    }
+    getBasePos() {
+      return { x: this.basePos.x, y: this.basePos.y };
+    }
+    isActive() {
+      return this.active;
+    }
+    isVisible() {
+      return this.visible;
+    }
+  };
+
+  // src/renderer/PaperBackground.ts
+  var PaperBackground = class {
+    constructor() {
+      this.offscreen = null;
+    }
+    ensure() {
+      if (this.offscreen) return this.offscreen;
+      const off = (() => {
+        try {
+          if (typeof OffscreenCanvas !== "undefined") {
+            return new OffscreenCanvas(CANVAS_WIDTH, MAP_HEIGHT);
+          }
+        } catch {
+        }
+        if (typeof document !== "undefined" && document.createElement) {
+          const c = document.createElement("canvas");
+          c.width = CANVAS_WIDTH;
+          c.height = MAP_HEIGHT;
+          return c;
+        }
+        const ttGlobal = globalThis.tt;
+        if (ttGlobal && typeof ttGlobal.createCanvas === "function") {
+          const c = ttGlobal.createCanvas();
+          c.width = CANVAS_WIDTH;
+          c.height = MAP_HEIGHT;
+          return c;
+        }
+        return null;
+      })();
+      if (!off) {
+        this.offscreen = null;
+        return null;
+      }
+      const ctx2 = off.getContext("2d");
+      if (!ctx2) {
+        this.offscreen = null;
+        return null;
+      }
+      ctx2.fillStyle = DOODLE_PAPER;
+      ctx2.fillRect(0, 0, CANVAS_WIDTH, MAP_HEIGHT);
+      let s = 12345;
+      const rand = () => {
+        s = s * 1664525 + 1013904223 >>> 0;
+        return (s & 65535) / 65535;
+      };
+      ctx2.fillStyle = DOODLE_PAPER_DARK;
+      for (let i = 0; i < 800; i++) {
+        const x = rand() * CANVAS_WIDTH;
+        const y = rand() * MAP_HEIGHT;
+        const r = 0.6 + rand() * 1.4;
+        ctx2.globalAlpha = 0.2 + rand() * 0.4;
+        ctx2.beginPath();
+        ctx2.arc(x, y, r, 0, Math.PI * 2);
+        ctx2.fill();
+      }
+      ctx2.globalAlpha = 1;
+      this.offscreen = off;
+      return off;
+    }
+    draw(ctx2) {
+      const bg = this.ensure();
+      if (bg) {
+        ctx2.drawImage(bg, 0, MAP_TOP);
+      } else {
+        ctx2.fillStyle = DOODLE_PAPER;
+        ctx2.fillRect(0, MAP_TOP, CANVAS_WIDTH, MAP_HEIGHT);
+      }
+    }
+  };
+
+  // src/renderer/DoodleStyle.ts
+  function withHardShadow(ctx2, pathFn, fill) {
+    ctx2.save();
+    ctx2.translate(DOODLE_SHADOW_PX, DOODLE_SHADOW_PX);
+    ctx2.fillStyle = DOODLE_SHADOW;
+    pathFn();
+    ctx2.fill();
+    ctx2.restore();
+    ctx2.save();
+    ctx2.fillStyle = fill;
+    pathFn();
+    ctx2.fill();
+    ctx2.strokeStyle = DOODLE_INK;
+    ctx2.lineWidth = DOODLE_STROKE_PX;
+    ctx2.lineJoin = "round";
+    ctx2.lineCap = "round";
+    pathFn();
+    ctx2.stroke();
+    ctx2.restore();
+  }
+  function doodleText(ctx2, text, x, y, sizePx, align = "left", fillColor = "#ffffff") {
+    ctx2.save();
+    ctx2.font = `bold ${sizePx}px sans-serif`;
+    ctx2.textAlign = align;
+    ctx2.lineWidth = Math.max(4, sizePx / 8);
+    ctx2.lineJoin = "round";
+    ctx2.strokeStyle = DOODLE_INK;
+    ctx2.strokeText(text, x, y);
+    ctx2.fillStyle = fillColor;
+    ctx2.fillText(text, x, y);
+    ctx2.restore();
+  }
+
+  // src/renderer/GameRenderer.ts
+  var GameRenderer = class {
+    constructor(ctx2) {
+      this.ctx = ctx2;
+      /** 洞口旋转虚线圈的累积角度（弧度） */
+      this.holeAngle = 0;
+      this.paper = new PaperBackground();
+    }
+    render(objects, cfg, joystick2, dt) {
+      const { ctx: ctx2 } = this;
+      this.holeAngle = (this.holeAngle + dt * 1.5) % (Math.PI * 2);
+      ctx2.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      ctx2.fillStyle = DOODLE_PAPER;
+      ctx2.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      this.paper.draw(ctx2);
+      ctx2.strokeStyle = DOODLE_INK;
+      ctx2.lineWidth = DOODLE_STROKE_PX;
+      ctx2.lineJoin = "round";
+      ctx2.strokeRect(0, MAP_TOP, CANVAS_WIDTH, MAP_HEIGHT);
+      objects.detectors.forEach((det, i) => {
+        this.drawHole(det.getScreenPos(), cfg.holes[i].radius);
+      });
+      cfg.obstacles.forEach((obsCfg, i) => {
+        this.drawObstacle(obsCfg, objects.obstacleBodies[i]);
+      });
+      this.drawBall(objects.yellowBody.position.x, objects.yellowBody.position.y, DOODLE_BALL_YELLOW, DOODLE_BALL_TILT_DEG);
+      this.drawBall(objects.blueBody.position.x, objects.blueBody.position.y, DOODLE_BALL_BLUE, -DOODLE_BALL_TILT_DEG);
+      if (joystick2.isVisible()) this.drawJoystick(joystick2);
+    }
+    drawBall(x, y, fill, tiltDeg) {
+      const { ctx: ctx2 } = this;
+      ctx2.save();
+      ctx2.translate(x, y);
+      ctx2.rotate(tiltDeg * Math.PI / 180);
+      withHardShadow(ctx2, () => {
+        ctx2.beginPath();
+        ctx2.arc(0, 0, BALL_RADIUS, 0, Math.PI * 2);
+      }, fill);
+      ctx2.restore();
+    }
+    drawHole(pos, radius) {
+      const { ctx: ctx2 } = this;
+      ctx2.fillStyle = DOODLE_INK;
+      ctx2.beginPath();
+      ctx2.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
+      ctx2.fill();
+      ctx2.save();
+      ctx2.translate(pos.x, pos.y);
+      ctx2.strokeStyle = DOODLE_INK;
+      ctx2.lineWidth = 3;
+      ctx2.setLineDash([6, 10]);
+      ctx2.lineDashOffset = -this.holeAngle * (radius + 8);
+      ctx2.beginPath();
+      ctx2.arc(0, 0, radius + 10, 0, Math.PI * 2);
+      ctx2.stroke();
+      ctx2.setLineDash([]);
+      ctx2.restore();
+    }
+    drawObstacle(cfg, body) {
+      if (!body) return;
+      const { ctx: ctx2 } = this;
+      const { x, y } = body.position;
+      ctx2.save();
+      ctx2.translate(x, y);
+      ctx2.rotate(body.angle);
+      if (cfg.type === "rect") {
+        const hw = cfg.width / 2;
+        const hh = cfg.height / 2;
+        withHardShadow(ctx2, () => {
+          ctx2.beginPath();
+          ctx2.rect(-hw, -hh, cfg.width, cfg.height);
+        }, DOODLE_OBSTACLE);
+      } else {
+        withHardShadow(ctx2, () => {
+          ctx2.beginPath();
+          ctx2.arc(0, 0, cfg.radius, 0, Math.PI * 2);
+        }, DOODLE_OBSTACLE);
+      }
+      ctx2.restore();
+    }
+    drawJoystick(joystick2) {
+      const { ctx: ctx2 } = this;
+      const base = joystick2.getBasePos();
+      const handle = joystick2.getHandlePos();
+      ctx2.save();
+      ctx2.strokeStyle = DOODLE_INK;
+      ctx2.fillStyle = "rgba(255,254,246,0.55)";
+      ctx2.lineWidth = 3;
+      ctx2.setLineDash([6, 6]);
+      ctx2.beginPath();
+      ctx2.arc(base.x, base.y, JOYSTICK_RADIUS, 0, Math.PI * 2);
+      ctx2.fill();
+      ctx2.stroke();
+      ctx2.setLineDash([]);
+      ctx2.restore();
+      withHardShadow(ctx2, () => {
+        ctx2.beginPath();
+        ctx2.arc(handle.x, handle.y, 32, 0, Math.PI * 2);
+      }, DOODLE_BALL_BLUE);
+    }
+  };
+
+  // src/ui/HUDRenderer.ts
+  var HUDRenderer = class {
+    constructor(ctx2) {
+      this.ctx = ctx2;
+    }
+    render(levelIndex, elapsed, timeLimitSeconds) {
+      const { ctx: ctx2 } = this;
+      ctx2.save();
+      ctx2.fillStyle = DOODLE_PAPER;
+      ctx2.fillRect(0, 0, CANVAS_WIDTH, MAP_TOP);
+      ctx2.strokeStyle = DOODLE_INK;
+      ctx2.lineWidth = DOODLE_STROKE_PX;
+      ctx2.beginPath();
+      ctx2.moveTo(0, MAP_TOP);
+      ctx2.lineTo(CANVAS_WIDTH, MAP_TOP);
+      ctx2.stroke();
+      doodleText(ctx2, `\u5173\u5361 ${levelIndex + 1}`, 28, 64, 36, "left");
+      if (timeLimitSeconds > 0) {
+        const remaining = Math.max(0, timeLimitSeconds - elapsed);
+        const secs = Math.ceil(remaining);
+        const txt = `${secs}s`;
+        ctx2.font = "bold 36px sans-serif";
+        ctx2.textAlign = "right";
+        ctx2.lineWidth = 5;
+        ctx2.lineJoin = "round";
+        ctx2.strokeStyle = DOODLE_INK;
+        ctx2.strokeText(txt, CANVAS_WIDTH - 28, 64);
+        ctx2.fillStyle = secs <= 10 ? "#e64646" : "#ffffff";
+        ctx2.fillText(txt, CANVAS_WIDTH - 28, 64);
+      }
+      ctx2.restore();
+    }
+  };
+
+  // src/ui/OverlayRenderer.ts
+  var OverlayRenderer = class {
+    constructor(ctx2, levels) {
+      this.ctx = ctx2;
+      this.levels = levels;
+      this.nextBtn = null;
+      this.retryBtn = null;
+      this.retryAdBtn = null;
+      this.menuBtn = null;
+      this.sidebarBtn = null;
+      this.levelBtns = [];
+      // 索引 0/1/2 对应 level1/2/3
+      // 每帧自增的"涂鸦呼吸"相位，让主界面卡片轻微浮动
+      this.breathPhase = 0;
+    }
+    /** 渲染选关主界面（启动时 & 通关返回时显示） */
+    renderLevelSelect() {
+      const { ctx: ctx2 } = this;
+      this.clearButtons();
+      this.breathPhase += 0.03;
+      ctx2.save();
+      this.drawPaperBackdrop();
+      this.drawDualBallLogo(CANVAS_WIDTH / 2, 220, 56);
+      doodleText(ctx2, "\u53CC\u7403\u955C\u50CF", CANVAS_WIDTH / 2, 360, 72, "center", DOODLE_BALL_BLUE);
+      ctx2.font = "500 22px sans-serif";
+      ctx2.fillStyle = "#7a7a7a";
+      ctx2.textAlign = "center";
+      ctx2.fillText("DUAL BALL MIRROR", CANVAS_WIDTH / 2, 392);
+      this.drawChapterRibbon(CANVAS_WIDTH / 2, 460, "\u9009 \u62E9 \u5173 \u5361");
+      const cardW = 540, cardH = 130;
+      const cardX = (CANVAS_WIDTH - cardW) / 2;
+      const startY = 510;
+      const gap = 160;
+      this.levelBtns = [];
+      for (let i = 0; i < this.levels.length; i++) {
+        const breathOffset = Math.sin(this.breathPhase + i * 1.3) * 1.5;
+        const by = startY + i * gap + breathOffset;
+        this.levelBtns.push({ x: cardX, y: by, w: cardW, h: cardH });
+        this.drawLevelCard(cardX, by, cardW, cardH, i);
+      }
+      ctx2.font = "500 20px sans-serif";
+      ctx2.fillStyle = "#9a9a9a";
+      ctx2.textAlign = "center";
+      ctx2.fillText("v1.1 \xB7 doodle physics", CANVAS_WIDTH / 2, CANVAS_HEIGHT - 36);
+      ctx2.textAlign = "left";
+      ctx2.restore();
+    }
+    /** 渲染过关弹窗 */
+    renderWin(isLastLevel, elapsedSeconds, levelIndex) {
+      const { ctx: ctx2 } = this;
+      this.clearButtons();
+      ctx2.save();
+      ctx2.fillStyle = "rgba(0,0,0,0.55)";
+      ctx2.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      this.drawConfetti(23057);
+      const pw = 580, ph = 460;
+      const px = (CANVAS_WIDTH - pw) / 2;
+      const py = (CANVAS_HEIGHT - ph) / 2;
+      this.drawDoodleCard(px, py, pw, ph, DOODLE_PAPER);
+      this.drawChapterRibbon(CANVAS_WIDTH / 2, py + 60, "\u{1F389}  \u901A  \u5173  \u{1F389}");
+      doodleText(ctx2, `\u7B2C ${levelIndex + 1} \u5173 \u5B8C \u6210`, CANVAS_WIDTH / 2, py + 150, 44, "center", DOODLE_INK);
+      const starTarget = this.levels[levelIndex]?.meta.starTargetSeconds ?? 30;
+      this.drawStars(CANVAS_WIDTH / 2, py + 210, this.starsForTime(elapsedSeconds, starTarget));
+      ctx2.font = "600 28px sans-serif";
+      ctx2.fillStyle = "#666";
+      ctx2.textAlign = "center";
+      ctx2.fillText(`\u7528\u65F6 ${elapsedSeconds.toFixed(1)} \u79D2`, CANVAS_WIDTH / 2, py + 290);
+      const btnY = py + 326;
+      const smallBw = 220, smallBh = 64;
+      const gap = 24;
+      const totalW = smallBw * 2 + gap;
+      const startX = (CANVAS_WIDTH - totalW) / 2;
+      this.retryBtn = { x: startX, y: btnY, w: smallBw, h: smallBh };
+      this.drawButton(this.retryBtn, "\u518D\u73A9\u4E00\u6B21", DOODLE_PAPER_DARK, DOODLE_INK);
+      this.nextBtn = { x: startX + smallBw + gap, y: btnY, w: smallBw, h: smallBh };
+      this.drawButton(
+        this.nextBtn,
+        isLastLevel ? "\u8FD4\u56DE\u4E3B\u754C\u9762" : "\u4E0B\u4E00\u5173 \u2192",
+        isLastLevel ? DOODLE_BALL_BLUE : DOODLE_BALL_YELLOW,
+        DOODLE_INK
+      );
+      const sidebarBw = smallBw * 2 + gap;
+      const sidebarBh = 52;
+      const sidebarY = btnY + smallBh + 16;
+      this.sidebarBtn = { x: startX, y: sidebarY, w: sidebarBw, h: sidebarBh };
+      this.drawButton(this.sidebarBtn, "\u2B50 \u52A0\u5165\u4FA7\u8FB9\u680F", DOODLE_PAPER_DARK, DOODLE_INK);
+      ctx2.textAlign = "left";
+      ctx2.restore();
+    }
+    /** 渲染超时弹窗 */
+    renderTimeout() {
+      const { ctx: ctx2 } = this;
+      this.clearButtons();
+      ctx2.save();
+      ctx2.fillStyle = "rgba(0,0,0,0.55)";
+      ctx2.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      const pw = 580, ph = 420;
+      const px = (CANVAS_WIDTH - pw) / 2;
+      const py = (CANVAS_HEIGHT - ph) / 2;
+      this.drawDoodleCard(px, py, pw, ph, DOODLE_PAPER);
+      this.drawHourglass(CANVAS_WIDTH / 2, py + 100, 40);
+      doodleText(ctx2, "\u65F6 \u95F4 \u5230", CANVAS_WIDTH / 2, py + 210, 52, "center", "#e64646");
+      ctx2.font = "500 22px sans-serif";
+      ctx2.fillStyle = "#666";
+      ctx2.textAlign = "center";
+      ctx2.fillText("\u770B\u4E2A\u5E7F\u544A\u518D\u8BD5\u4E00\u6B21\uFF1F", CANVAS_WIDTH / 2, py + 250);
+      const mainBw = 320, mainBh = 64;
+      const mainBx = (CANVAS_WIDTH - mainBw) / 2;
+      const mainBy = py + 280;
+      this.retryAdBtn = { x: mainBx, y: mainBy, w: mainBw, h: mainBh };
+      this.drawButton(this.retryAdBtn, "\u25B6 \u770B\u5E7F\u544A\u518D\u8BD5", DOODLE_BALL_BLUE, "#ffffff");
+      const subBw = 200, subBh = 52;
+      const subBx = (CANVAS_WIDTH - subBw) / 2;
+      const subBy = mainBy + mainBh + 16;
+      this.menuBtn = { x: subBx, y: subBy, w: subBw, h: subBh };
+      this.drawButton(this.menuBtn, "\u8FD4\u56DE\u4E3B\u754C\u9762", DOODLE_PAPER_DARK, DOODLE_INK);
+      const sidebarBw = 280, sidebarBh = 48;
+      const sidebarBx = (CANVAS_WIDTH - sidebarBw) / 2;
+      const sidebarBy = subBy + subBh + 14;
+      this.sidebarBtn = { x: sidebarBx, y: sidebarBy, w: sidebarBw, h: sidebarBh };
+      this.drawButton(this.sidebarBtn, "\u2B50 \u52A0\u5165\u4FA7\u8FB9\u680F", DOODLE_PAPER_DARK, DOODLE_INK);
+      ctx2.textAlign = "left";
+      ctx2.restore();
+    }
+    // ─── hit test ────────────────────────────────────────────────────
+    hitTest(x, y) {
+      if (this.nextBtn && this.inside(x, y, this.nextBtn)) return "next";
+      if (this.retryBtn && this.inside(x, y, this.retryBtn)) return "retry";
+      if (this.retryAdBtn && this.inside(x, y, this.retryAdBtn)) return "retryAd";
+      if (this.menuBtn && this.inside(x, y, this.menuBtn)) return "menu";
+      if (this.sidebarBtn && this.inside(x, y, this.sidebarBtn)) return "sidebar";
+      for (let i = 0; i < this.levelBtns.length; i++) {
+        if (this.inside(x, y, this.levelBtns[i])) return `level${i + 1}`;
+      }
+      return null;
+    }
+    clear() {
+      this.clearButtons();
+    }
+    clearButtons() {
+      this.nextBtn = null;
+      this.retryBtn = null;
+      this.retryAdBtn = null;
+      this.menuBtn = null;
+      this.sidebarBtn = null;
+      this.levelBtns = [];
+    }
+    inside(x, y, r) {
+      return x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h;
+    }
+    // ─── 绘制工具 ────────────────────────────────────────────────────
+    /** 纸色 + 浅格线背景（笔记本风） */
+    drawPaperBackdrop() {
+      const { ctx: ctx2 } = this;
+      ctx2.fillStyle = DOODLE_PAPER;
+      ctx2.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      ctx2.strokeStyle = "rgba(180,170,140,0.18)";
+      ctx2.lineWidth = 1;
+      for (let y = 60; y < CANVAS_HEIGHT; y += 40) {
+        ctx2.beginPath();
+        ctx2.moveTo(40, y);
+        ctx2.lineTo(CANVAS_WIDTH - 40, y);
+        ctx2.stroke();
+      }
+      ctx2.strokeStyle = "rgba(220,80,80,0.25)";
+      ctx2.lineWidth = 2;
+      ctx2.beginPath();
+      ctx2.moveTo(80, 0);
+      ctx2.lineTo(80, CANVAS_HEIGHT);
+      ctx2.stroke();
+    }
+    /** 双球涂鸦 logo：蓝黄两球相切叠加 */
+    drawDualBallLogo(cx, cy, r) {
+      const { ctx: ctx2 } = this;
+      withHardShadow(ctx2, () => {
+        ctx2.beginPath();
+        ctx2.arc(cx - r * 0.55, cy + r * 0.15, r, 0, Math.PI * 2);
+      }, DOODLE_BALL_YELLOW);
+      withHardShadow(ctx2, () => {
+        ctx2.beginPath();
+        ctx2.arc(cx + r * 0.55, cy - r * 0.15, r, 0, Math.PI * 2);
+      }, DOODLE_BALL_BLUE);
+      ctx2.save();
+      ctx2.strokeStyle = DOODLE_INK;
+      ctx2.lineWidth = 2;
+      ctx2.setLineDash([5, 6]);
+      ctx2.beginPath();
+      ctx2.moveTo(cx - r * 1.6, cy);
+      ctx2.lineTo(cx + r * 1.6, cy);
+      ctx2.stroke();
+      ctx2.setLineDash([]);
+      ctx2.restore();
+    }
+    /** 顶部缎带式章节标签 */
+    drawChapterRibbon(cx, cy, text) {
+      const { ctx: ctx2 } = this;
+      const w = 280, h = 52;
+      const x = cx - w / 2;
+      const y = cy - h / 2;
+      ctx2.save();
+      ctx2.fillStyle = DOODLE_SHADOW;
+      this.roundRect(x + DOODLE_SHADOW_PX, y + DOODLE_SHADOW_PX, w, h, h / 2);
+      ctx2.fill();
+      ctx2.fillStyle = DOODLE_INK;
+      this.roundRect(x, y, w, h, h / 2);
+      ctx2.fill();
+      ctx2.font = "bold 26px sans-serif";
+      ctx2.fillStyle = DOODLE_PAPER;
+      ctx2.textAlign = "center";
+      ctx2.textBaseline = "middle";
+      ctx2.fillText(text, cx, cy + 1);
+      ctx2.textBaseline = "alphabetic";
+      ctx2.restore();
+    }
+    /** 单张关卡卡片（带小预览图 + 标题 + 副标） */
+    drawLevelCard(x, y, w, h, idx) {
+      const { ctx: ctx2 } = this;
+      const meta = this.levels[idx].meta;
+      const accent = idx % 2 === 0 ? DOODLE_BALL_BLUE : DOODLE_BALL_YELLOW;
+      ctx2.fillStyle = DOODLE_SHADOW;
+      this.roundRect(x + DOODLE_SHADOW_PX, y + DOODLE_SHADOW_PX, w, h, 20);
+      ctx2.fill();
+      ctx2.fillStyle = DOODLE_PAPER;
+      this.roundRect(x, y, w, h, 20);
+      ctx2.fill();
+      ctx2.strokeStyle = DOODLE_INK;
+      ctx2.lineWidth = 4;
+      ctx2.lineJoin = "round";
+      this.roundRect(x, y, w, h, 20);
+      ctx2.stroke();
+      ctx2.fillStyle = accent;
+      this.roundRect(x + 6, y + 6, 14, h - 12, 6);
+      ctx2.fill();
+      ctx2.strokeStyle = DOODLE_INK;
+      ctx2.lineWidth = 2;
+      this.roundRect(x + 6, y + 6, 14, h - 12, 6);
+      ctx2.stroke();
+      this.drawDualBallLogo(x + 80, y + h / 2, 22);
+      ctx2.font = "bold 38px sans-serif";
+      ctx2.fillStyle = DOODLE_INK;
+      ctx2.textAlign = "left";
+      ctx2.fillText(meta.title, x + 140, y + h / 2 - 4);
+      ctx2.font = "500 20px sans-serif";
+      ctx2.fillStyle = "#666";
+      ctx2.fillText(meta.subtitle, x + 140, y + h / 2 + 28);
+      const arrowCx = x + w - 50;
+      const arrowCy = y + h / 2;
+      ctx2.fillStyle = accent;
+      ctx2.beginPath();
+      ctx2.arc(arrowCx, arrowCy, 26, 0, Math.PI * 2);
+      ctx2.fill();
+      ctx2.strokeStyle = DOODLE_INK;
+      ctx2.lineWidth = 3;
+      ctx2.stroke();
+      ctx2.strokeStyle = DOODLE_INK;
+      ctx2.lineWidth = 4;
+      ctx2.lineCap = "round";
+      ctx2.beginPath();
+      ctx2.moveTo(arrowCx - 7, arrowCy - 8);
+      ctx2.lineTo(arrowCx + 7, arrowCy);
+      ctx2.lineTo(arrowCx - 7, arrowCy + 8);
+      ctx2.stroke();
+    }
+    /** 通用 doodle 卡片（弹窗用） */
+    drawDoodleCard(x, y, w, h, fill) {
+      const { ctx: ctx2 } = this;
+      ctx2.fillStyle = DOODLE_SHADOW;
+      this.roundRect(x + DOODLE_SHADOW_PX, y + DOODLE_SHADOW_PX, w, h, 24);
+      ctx2.fill();
+      ctx2.fillStyle = fill;
+      this.roundRect(x, y, w, h, 24);
+      ctx2.fill();
+      ctx2.strokeStyle = DOODLE_INK;
+      ctx2.lineWidth = 5;
+      ctx2.lineJoin = "round";
+      this.roundRect(x, y, w, h, 24);
+      ctx2.stroke();
+    }
+    /** 通用按钮（带阴影描边） */
+    drawButton(r, label, fill, textColor) {
+      const { ctx: ctx2 } = this;
+      ctx2.fillStyle = DOODLE_SHADOW;
+      this.roundRect(r.x + DOODLE_SHADOW_PX, r.y + DOODLE_SHADOW_PX, r.w, r.h, 16);
+      ctx2.fill();
+      ctx2.fillStyle = fill;
+      this.roundRect(r.x, r.y, r.w, r.h, 16);
+      ctx2.fill();
+      ctx2.strokeStyle = DOODLE_INK;
+      ctx2.lineWidth = 4;
+      ctx2.lineJoin = "round";
+      this.roundRect(r.x, r.y, r.w, r.h, 16);
+      ctx2.stroke();
+      ctx2.font = "bold 26px sans-serif";
+      ctx2.fillStyle = textColor;
+      ctx2.textAlign = "center";
+      ctx2.textBaseline = "middle";
+      ctx2.fillText(label, r.x + r.w / 2, r.y + r.h / 2 + 2);
+      ctx2.textBaseline = "alphabetic";
+    }
+    /** 三星评级（涂鸦风五角星） */
+    drawStars(cx, cy, filled) {
+      const { ctx: ctx2 } = this;
+      const r = 22;
+      const gap = 60;
+      for (let i = 0; i < 3; i++) {
+        const x = cx + (i - 1) * gap;
+        const fill = i < filled ? DOODLE_BALL_YELLOW : "#e0dac6";
+        ctx2.fillStyle = DOODLE_SHADOW;
+        this.starPath(x + DOODLE_SHADOW_PX, cy + DOODLE_SHADOW_PX, r);
+        ctx2.fill();
+        ctx2.fillStyle = fill;
+        this.starPath(x, cy, r);
+        ctx2.fill();
+        ctx2.strokeStyle = DOODLE_INK;
+        ctx2.lineWidth = 3;
+        ctx2.lineJoin = "round";
+        this.starPath(x, cy, r);
+        ctx2.stroke();
+      }
+    }
+    starPath(cx, cy, r) {
+      const { ctx: ctx2 } = this;
+      ctx2.beginPath();
+      for (let i = 0; i < 10; i++) {
+        const ang = -Math.PI / 2 + i * Math.PI / 5;
+        const rad = i % 2 === 0 ? r : r * 0.45;
+        const x = cx + rad * Math.cos(ang);
+        const y = cy + rad * Math.sin(ang);
+        if (i === 0) ctx2.moveTo(x, y);
+        else ctx2.lineTo(x, y);
+      }
+      ctx2.closePath();
+    }
+    /** 沙漏图标 */
+    drawHourglass(cx, cy, h) {
+      const { ctx: ctx2 } = this;
+      const w = h * 0.7;
+      ctx2.save();
+      ctx2.strokeStyle = DOODLE_INK;
+      ctx2.fillStyle = DOODLE_OBSTACLE;
+      ctx2.lineWidth = 4;
+      ctx2.lineJoin = "round";
+      ctx2.beginPath();
+      ctx2.moveTo(cx - w, cy - h);
+      ctx2.lineTo(cx + w, cy - h);
+      ctx2.lineTo(cx, cy);
+      ctx2.lineTo(cx + w, cy + h);
+      ctx2.lineTo(cx - w, cy + h);
+      ctx2.lineTo(cx, cy);
+      ctx2.closePath();
+      ctx2.fill();
+      ctx2.stroke();
+      ctx2.fillStyle = DOODLE_BALL_YELLOW;
+      ctx2.beginPath();
+      ctx2.arc(cx, cy + h * 0.4, 4, 0, Math.PI * 2);
+      ctx2.fill();
+      ctx2.restore();
+    }
+    /** 庆祝彩屑：用 LCG 种子保证位置稳定，避免每帧抖动 */
+    drawConfetti(seed) {
+      const { ctx: ctx2 } = this;
+      let s = seed >>> 0;
+      const rand = () => {
+        s = s * 1664525 + 1013904223 >>> 0;
+        return (s & 65535) / 65535;
+      };
+      const colors = [DOODLE_BALL_BLUE, DOODLE_BALL_YELLOW, "#e64646", "#5cb85c", "#9b6dd4"];
+      ctx2.save();
+      for (let i = 0; i < 70; i++) {
+        const x = rand() * CANVAS_WIDTH;
+        const y = rand() * CANVAS_HEIGHT * 0.85;
+        const c = colors[Math.floor(rand() * colors.length)];
+        const rotDeg = (rand() - 0.5) * 60;
+        const sz = 8 + rand() * 8;
+        ctx2.save();
+        ctx2.translate(x, y);
+        ctx2.rotate(rotDeg * Math.PI / 180);
+        ctx2.fillStyle = c;
+        ctx2.fillRect(-sz / 2, -sz / 4, sz, sz / 2);
+        ctx2.restore();
+      }
+      ctx2.restore();
+    }
+    /** 按完成时间和 3 星目标分配星级 */
+    starsForTime(elapsed, starTarget) {
+      if (elapsed <= starTarget) return 3;
+      if (elapsed <= starTarget * 1.6) return 2;
+      return 1;
+    }
+    roundRect(x, y, w, h, r) {
+      const { ctx: ctx2 } = this;
+      ctx2.beginPath();
+      ctx2.moveTo(x + r, y);
+      ctx2.lineTo(x + w - r, y);
+      ctx2.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx2.lineTo(x + w, y + h - r);
+      ctx2.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx2.lineTo(x + r, y + h);
+      ctx2.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx2.lineTo(x, y + r);
+      ctx2.quadraticCurveTo(x, y, x + r, y);
+      ctx2.closePath();
+    }
+  };
+
+  // src/platform/DouyinBridge.ts
+  function isTT() {
+    return typeof tt !== "undefined";
+  }
+  var DouyinBridge = {
+    /** 短震动反馈（通关、碰撞等） */
+    vibrate() {
+      if (isTT()) {
+        tt.vibrateShort({ type: "light" });
+      } else {
+        console.log("[Bridge] vibrate stub");
+      }
+    },
+    /** 分享当前关卡成绩 */
+    showShare(title) {
+      if (isTT()) {
+        tt.shareAppMessage({ title });
+      } else {
+        console.log("[Bridge] share stub:", title);
+      }
+    },
+    /**
+     * 播放激励视频广告。
+     * 看完后调用 onSuccess；加载失败或提前关闭调用 onFail。
+     * 开发环境（非抖音）直接调用 onSuccess。
+     */
+    showRewardedAd(onSuccess, onFail) {
+      if (!isTT()) {
+        onSuccess();
+        return;
+      }
+      const adUnitId = "YOUR_AD_UNIT_ID";
+      if (adUnitId === "YOUR_AD_UNIT_ID") {
+        console.warn("[Bridge] adUnitId \u5C1A\u672A\u914D\u7F6E\uFF0C\u5E7F\u544A\u4E0D\u4F1A\u5C55\u793A");
+      }
+      const ad = tt.createRewardedVideoAd({ adUnitId });
+      ad.onClose((res) => {
+        if (res.isEnded) {
+          onSuccess();
+        } else {
+          onFail?.();
+        }
+      });
+      ad.onError(() => onFail?.());
+      ad.show();
+    },
+    /** 切后台事件（用于暂停游戏循环） */
+    onHide(cb) {
+      if (isTT()) {
+        tt.onHide(cb);
+      } else {
+        console.log("[Bridge] onHide stub (registered but will not fire)");
+      }
+    },
+    /** 切回前台事件（用于恢复游戏循环） */
+    onShow(cb) {
+      if (isTT()) {
+        tt.onShow(cb);
+      } else {
+        console.log("[Bridge] onShow stub (registered but will not fire)");
+      }
+    },
+    /** 当前宿主是否支持侧边栏复访（tt.navigateToScene） */
+    canAddToSidebar() {
+      return isTT() && typeof tt.navigateToScene === "function";
+    },
+    /**
+     * 跳转抖音侧边栏场景，引导用户把小游戏加入侧边栏（复访能力）。
+     * 抖音平台审核硬要求：必须存在 tt.navigateToScene({ scene: 'sidebar' }) 调用。
+     */
+    addToSidebar(onSuccess, onFail) {
+      if (!this.canAddToSidebar()) {
+        console.log("[Bridge] addToSidebar stub (host unsupported)");
+        onSuccess?.();
+        return;
+      }
+      tt.navigateToScene({
+        scene: "sidebar",
+        success: () => onSuccess?.(),
+        fail: (err) => onFail?.(err?.errMsg)
+      });
+    }
+  };
+
+  // src/core/Viewport.ts
+  var Viewport = class {
+    constructor(deviceWidth, deviceHeight, dpr = 1) {
+      this.deviceWidth = deviceWidth;
+      this.deviceHeight = deviceHeight;
+      this.dpr = dpr;
+      const scaleX = deviceWidth / CANVAS_WIDTH;
+      const scaleY = deviceHeight / CANVAS_HEIGHT;
+      this.scale = Math.min(scaleX, scaleY);
+      const renderedW = CANVAS_WIDTH * this.scale;
+      const renderedH = CANVAS_HEIGHT * this.scale;
+      this.offsetX = (deviceWidth - renderedW) / 2;
+      this.offsetY = (deviceHeight - renderedH) / 2;
+      this.cssWidth = deviceWidth;
+      this.cssHeight = deviceHeight;
+    }
+    toLogical(deviceX, deviceY) {
+      return {
+        x: (deviceX - this.offsetX) / this.scale,
+        y: (deviceY - this.offsetY) / this.scale
+      };
+    }
+  };
+
+  // src/main.ts
+  var info = tt.getSystemInfoSync();
+  var metrics = {
+    width: info.windowWidth || info.screenWidth || 720,
+    height: info.windowHeight || info.screenHeight || 1280,
+    dpr: info.pixelRatio || 1
+  };
+  var viewport = new Viewport(metrics.width, metrics.height, metrics.dpr);
+  var canvas = tt.createCanvas();
+  canvas.width = metrics.width * metrics.dpr;
+  canvas.height = metrics.height * metrics.dpr;
+  var ctx = canvas.getContext("2d");
+  function applyViewportTransform() {
+    ctx.setTransform(
+      viewport.scale * metrics.dpr,
+      0,
+      0,
+      viewport.scale * metrics.dpr,
+      viewport.offsetX * metrics.dpr,
+      viewport.offsetY * metrics.dpr
+    );
+  }
+  function clearFullCanvas() {
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  applyViewportTransform();
+  var loader = new LevelLoader();
+  var gameRenderer = new GameRenderer(ctx);
+  var hudRenderer = new HUDRenderer(ctx);
+  var overlayRenderer = new OverlayRenderer(ctx, ALL_LEVELS);
+  var currentLevelIndex = 0;
+  var levelObjects = null;
+  var gameManager = null;
+  var joystick = null;
+  var inMenu = true;
+  var paused = false;
+  var lastTime = 0;
+  var physAccum = 0;
+  var autoAdvanceTimer = null;
+  var AUTO_ADVANCE_DELAY_MS = 1500;
+  function clearAutoAdvanceTimer() {
+    if (autoAdvanceTimer !== null) {
+      clearTimeout(autoAdvanceTimer);
+      autoAdvanceTimer = null;
+    }
+  }
+  function loadLevel(index) {
+    clearAutoAdvanceTimer();
+    if (levelObjects) loader.unload(levelObjects);
+    overlayRenderer.clear();
+    currentLevelIndex = index;
+    inMenu = false;
+    const cfg = ALL_LEVELS[index].config;
+    levelObjects = loader.load(cfg);
+    if (joystick) joystick.destroy();
+    joystick = new JoystickInput(canvas, viewport, () => resetLevel());
+    gameManager = new GameManager(
+      cfg,
+      levelObjects.detectors,
+      () => onLevelComplete(),
+      () => onTimeout()
+    );
+    gameManager.start();
+    lastTime = 0;
+    physAccum = 0;
+  }
+  function goToMenu() {
+    clearAutoAdvanceTimer();
+    if (levelObjects) {
+      loader.unload(levelObjects);
+      levelObjects = null;
+    }
+    if (joystick) {
+      joystick.destroy();
+      joystick = null;
+    }
+    gameManager = null;
+    inMenu = true;
+    overlayRenderer.clear();
+  }
+  function resetLevel() {
+    loadLevel(currentLevelIndex);
+  }
+  function onLevelComplete() {
+    DouyinBridge.vibrate();
+    DouyinBridge.showShare(`\u6211\u901A\u8FC7\u4E86\u7B2C ${currentLevelIndex + 1} \u5173\uFF01`);
+    const isLastLevel = currentLevelIndex >= ALL_LEVELS.length - 1;
+    clearAutoAdvanceTimer();
+    autoAdvanceTimer = setTimeout(() => {
+      autoAdvanceTimer = null;
+      if (isLastLevel) goToMenu();
+      else loadLevel(currentLevelIndex + 1);
+    }, AUTO_ADVANCE_DELAY_MS);
+  }
+  function onTimeout() {
+    overlayRenderer.renderTimeout();
+  }
+  canvas.addEventListener("touchend", (e) => {
+    const touch = e.changedTouches[0];
+    if (!touch) return;
+    const lp = viewport.toLogical(touch.clientX, touch.clientY);
+    const hit = overlayRenderer.hitTest(lp.x, lp.y);
+    if (inMenu) {
+      if (hit === "level1" || hit === "level2" || hit === "level3") {
+        loadLevel(Number(hit.slice(5)) - 1);
+      }
+      return;
+    }
+    if (!gameManager) return;
+    const state = gameManager.getState();
+    if (state !== "levelComplete" && state !== "timeout") return;
+    if (hit === "next") {
+      if (currentLevelIndex >= ALL_LEVELS.length - 1) {
+        goToMenu();
+      } else {
+        loadLevel(currentLevelIndex + 1);
+      }
+    } else if (hit === "retry") {
+      resetLevel();
+    } else if (hit === "menu") {
+      goToMenu();
+    } else if (hit === "retryAd") {
+      DouyinBridge.showRewardedAd(
+        () => resetLevel(),
+        () => overlayRenderer.renderTimeout()
+        // 提前关闭广告：重新显示弹窗
+      );
+    } else if (hit === "sidebar") {
+      DouyinBridge.addToSidebar();
+    }
+  });
+  DouyinBridge.onHide(() => {
+    paused = true;
+  });
+  DouyinBridge.onShow(() => {
+    paused = false;
+    lastTime = 0;
+  });
+  function gameLoop(now) {
+    requestAnimationFrame(gameLoop);
+    if (paused) return;
+    clearFullCanvas();
+    applyViewportTransform();
+    if (inMenu) {
+      overlayRenderer.renderLevelSelect();
+      return;
+    }
+    if (!levelObjects || !gameManager || !joystick) return;
+    if (lastTime === 0) {
+      lastTime = now;
+      return;
+    }
+    const rawDt = (now - lastTime) / 1e3;
+    lastTime = now;
+    const dt = Math.min(rawDt, 0.05);
+    if (gameManager.getState() === "playing") {
+      levelObjects.ballController.update(joystick.getDirection());
+      physAccum += dt * 1e3;
+      while (physAccum >= PHYSICS_STEP_MS) {
+        import_matter_js4.default.Engine.update(levelObjects.engine, PHYSICS_STEP_MS);
+        physAccum -= PHYSICS_STEP_MS;
+      }
+      levelObjects.movingObstacles.forEach((mo) => mo.update(dt));
+      levelObjects.detectors.forEach((d) => d.update(dt));
+      gameManager.update(dt);
+    }
+    gameRenderer.render(levelObjects, ALL_LEVELS[currentLevelIndex].config, joystick, dt);
+    hudRenderer.render(currentLevelIndex, gameManager.getElapsed(), ALL_LEVELS[currentLevelIndex].config.timeLimitSeconds);
+    const state = gameManager.getState();
+    if (state === "levelComplete") {
+      overlayRenderer.renderWin(
+        currentLevelIndex >= ALL_LEVELS.length - 1,
+        gameManager.getElapsed(),
+        currentLevelIndex
+      );
+    } else if (state === "timeout") {
+      overlayRenderer.renderTimeout();
+    }
+  }
+  requestAnimationFrame(gameLoop);
+})();
 /*! Bundled license information:
 
 matter-js/build/matter.js:
@@ -30,3 +6382,4 @@ matter-js/build/matter.js:
    * THE SOFTWARE.
    *)
 */
+//# sourceMappingURL=game.js.map
