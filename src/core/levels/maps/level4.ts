@@ -1,74 +1,62 @@
 // src/core/levels/maps/level4.ts
 //
-// Grid: 9 cols × 12 rows  (cell = 80 × 80 logical units)
+// Grid: 9 cols × 13 rows  (cellW = 80, cellH = 960/13 ≈ 73.8 logical units)
 // x ∈ [-360, 360]  y ∈ [-480, 480]  Y-up
 //
 // Legend:  1=wall  0=empty  X=blue  Y=yellow  Z=hole(both)
 //          4=pink trigger block  3=brown reactive block
 //
 // Column centers (x):  -320 -240 -160  -80    0   80  160  240  320
-// Row    centers (y):   440  360  280  200  120   40  -40 -120 -200 -280 -360 -440
+// Row    centers (y):   443  369  295  222  148   74    0  -74 -148 -222 -295 -369 -443
 //
 //  col →   0  1  2  3  4  5  6  7  8
-// row 0:   ·  ·  ·  · [4] ■  ■  ■  ●   ← yellow(col8, 320,440), trigger(col4, 0,440)
-// row 1:   ·  ■  ·  ■  ■  ■  ·  ■  ·
-// row 2:   ·  ■  ·  ■  ·  ·  ·  ■  ·
-// row 3:   ·  ■  ·  ■  ·  ·  ·  ■  ·
-// row 4:   ·  ■  ·  ■  ·  ·  ·  ■  ·
-// row 5:   ○  ■  ·  ■  ■  ■  ■  ■  ·   ← hole(col0, -320,40) — both balls
-// row 6:   ·  ■  ·  ·  ·  ·  ·  ·  ·
-// row 7:   ·  ■  ■  ■  ■  ■  ■  ■  ·
-// row 8:   ·  ■  ■  ■  ·  · [3] ·  ·   ← reactive brown(col6, 160,-200)
-// row 9:   ·  ·  ·  ·  ·  ·  ■  ■  ·
-// row10:   ■  ■  ■  ■  ■  ■  ■  ■  ·   ← floor wall (cols0-7)
-// row11:   ●  ·  ·  ·  ·  ·  ·  ·  ·   ← blue(col0, -320,-440)
+// row 0:   ·  ·  ·  ·  ·  ·  ■ [3]  ●   ← yellow(col8,  320, 443)  reactive(col7, 240, 443)
+// row 1:   ·  ·  ·  ·  ·  ·  ■  ○  ·   ← hole-both(col7, 240, 369)
+// row 2:   ·  ·  ·  ·  ·  ·  ■  ■ [4]  ← trigger(col8,  320, 295)
+// row 3:   ·  ·  ·  ·  ·  ·  ·  ·  ·
+// row 4:   ·  ·  ·  ·  ·  ·  ·  ·  ·
+// row 5:   ·  ·  ·  ·  ·  ·  ·  ·  ·
+// row 6:   ·  ·  ·  ·  ·  ·  ·  ·  ·
+// row 7:   ·  ·  ·  ·  ·  ·  ·  ·  ·
+// row 8:   ·  ·  ·  ·  ·  ·  ·  ·  ·
+// row 9:   ·  ·  ·  ·  ·  ·  ·  ·  ·
+// row10:   ·  ·  ·  ·  ·  ·  ·  ·  ·
+// row11:   ·  ·  ·  ·  ·  ·  ·  ·  ·
+// row12:   ●  ·  ·  ·  ·  ·  ·  ·  ·   ← blue(col0, -320,-443)
 //
-// ── 触发-响应机关 ────────────────────────────────────────────────
-//   4 (trigger, pink)  @ col4 row0  →  (  0, 440)  80×80  sensor
-//   3 (reactive, brown)@ col6 row8  →  (160,-200)  80×80  solid
+// ── 触发-响应机关 ────────────────────────────────────────────────────
+//   4 (trigger, pink)   @ col8 row2  →  (320, 295)  80×74  sensor
+//   3 (reactive, brown) @ col7 row0  →  (240, 443)  80×74  solid
 //
-//   规则：球进入 4 的范围后，按球相对于入场点的位移反方向，
-//         将 3 以 80px（1 格）为步长在 row8 水平滑动。
-//         球离开 4 后，3 立即回到 (col6) 原位。
+//   reactive block 紧贴左侧墙壁（col6），只能向右滑动至 col8（x=320）。
+//   maxShiftX=1 maxShiftY=0（Y 方向：上方是边界，下方是洞口，禁止滑动）。
 //
-//   若 Yellow 从 col3 向右进入触发区并向右移动
-//     → 3 向左（col6→col5→…），打开 col6 通道
-//   若 Yellow 在触发区向左移动
-//     → 3 向右（col6→col7），封堵 col7
+//   规则：球进入 col8,row2 触发区后，按球偏移的反方向推动 3：
+//     · 球在触发区向左移动 → 3 向右（col7 → col8），清空 col7,row0 通道
+//     · 球离开触发区        → 3 回到 col7,row0 原位
 //
-// ── 通关路径提示 ─────────────────────────────────────────────────
-//   Blue:   col0,row11 → [right] row11 → col8 → [up] col8
-//           → [left] row6 → col2 → [up] col2
-//           → [left] row0 → col0 → [down] col0 → HOLE(col0,row5)
+// ── 通关路径提示 ──────────────────────────────────────────────────────
+//   核心难点：洞口在 col7,row1，reactive block 初始堵在 col7,row0 正上方。
+//   Yellow 从 col8,row0 可沿 col8 向下到 col8,row1，再向左进洞（col7,row1）。
+//   Blue   从 col0,row12 沿开阔区域向右向上移动，配合镜像力到达 col7,row1。
+//   当任意球进入 col8,row2 触发区并向左偏移时，reactive block 右移至 col8，
+//   col7,row0 净空，Yellow 也可从 row0 高度直接下落进洞——提供第二条入洞路线。
 //
-//   Yellow: col8,row0 → [down] col8 → [left] row6 → col2
-//           → [up] col2 → [left] row0 → col0 → [down] col0 → HOLE
-//
-//   触发机关是额外的挑战维度：当 Yellow 在触发区移动时
-//   col6 附近的 3 方块会移动，干扰或辅助球在 row8 区域的通过。
-//
-// ── Static walls (greedy merge) ──────────────────────────────────
-//   cols5-7, row0        → top-right wall       center(160, 440) 240×80
-//   col1, rows1-8        → left corridor wall   center(-240, 80) 80×640
-//   col3, rows1-5        → mid-left wall upper  center(-80, 200) 80×400
-//   cols4-5, row1        → mid-top block        center(40,  360) 160×80
-//   cols3-7, row5        → mid barrier          center(40,   40) 400×80   [shares col3 with above]
-//   col7, rows1-5        → right corridor wall  center(240, 200) 80×400
-//   cols1-7, row7        → horizontal bar       center(0,  -40)  560×80
-//   cols1-3, row8        → left stub row8       center(-160,-200) 240×80
-//   cols6-7, row9        → floor stub           center(200,-280) 160×80
-//   cols0-7, row10       → floor wall           center(-40,-360) 640×80
+// ── Static walls (greedy merge) ─────────────────────────────────────
+//   col6, rows0-2  → right-cluster wall  center(160, 369) 80×221
+//   col7, row2     → floor stub          center(240, 295) 80×74
 
 export const LEVEL4_MAP = `\
-00004111Y
-010111010
-010100010
-010100010
-010100010
-Z10111110
-010000000
-011111111
-011100300
-000000110
-111111110
+00000100Y
+0000010Z0
+000001400
+000001113
+000000000
+000000000
+000000000
+000000000
+000000000
+000000000
+000000000
+000000000
 X00000000`;

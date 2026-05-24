@@ -6,14 +6,14 @@ import { LEVEL4_MAP } from './maps/level4';
 export const LEVEL_4: LevelDefinition = {
   config: parseMap(LEVEL4_MAP, {
     holeRadius:       40,
-    timeLimitSeconds: 70,
-    // 3 在 row8 col6，左最多移 2 格到 col4（empty），右最多移 2 格到 col8（empty）
-    // col3 是墙、col9 出屏幕，故 X=2；row7/row9 均有墙，禁止 Y 方向移动
-    reactiveBlockOverrides: [{ maxShiftX: 2, maxShiftY: 0 }],
+    timeLimitSeconds: 75,
+    // reactive block (3) at col7,row0: wall at col6 blocks left, border blocks up,
+    // hole at col7,row1 blocks down → only allow 1-cell rightward slide to col8
+    reactiveBlockOverrides: [{ maxShiftX: 1, maxShiftY: 0 }],
   }),
   meta: {
     title: '第 4 关',
-    subtitle: '联动机关 · 镜像控制',
+    subtitle: '触发机关 · 开路入洞',
     starTargetSeconds: 45,
   },
 };

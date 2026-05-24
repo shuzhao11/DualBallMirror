@@ -11,7 +11,7 @@ interface ButtonRect { x: number; y: number; w: number; h: number; }
 
 export type OverlayHit =
   | 'next' | 'retry' | 'retryAd' | 'menu' | 'sidebar'
-  | 'level1' | 'level2' | 'level3' | 'level4';
+  | 'level1' | 'level2' | 'level3' | 'level4' | 'level5' | 'level6' | 'level7';
 
 export class OverlayRenderer {
   private nextBtn:    ButtonRect | null = null;
@@ -53,11 +53,14 @@ export class OverlayRenderer {
     // 章节标签
     this.drawChapterRibbon(CANVAS_WIDTH / 2, 460, '选 择 关 卡');
 
-    // 3 张关卡卡片
+    // 关卡卡片（数量动态，gap 随关卡数收缩以确保最后一张不超出屏幕）
     const cardW = 540, cardH = 130;
     const cardX = (CANVAS_WIDTH - cardW) / 2;
     const startY = 510;
-    const gap    = 160;
+    const n   = this.levels.length;
+    const gap = n > 1
+      ? Math.min(160, Math.floor((CANVAS_HEIGHT - startY - 60 - cardH) / (n - 1)))
+      : 160;
 
     this.levelBtns = [];
     for (let i = 0; i < this.levels.length; i++) {
